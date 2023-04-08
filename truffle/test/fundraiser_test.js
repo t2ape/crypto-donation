@@ -2,7 +2,7 @@ const { toBN } = require('web3-utils');
 
 const FundraiserContract = artifacts.require("Fundraiser");
 
-contract("Fundraiser", accounts => {
+contract("Fundraiser", (accounts) => {
   const name = "name";
   const description = "description";
   const url = "https://example.com/url";
@@ -15,6 +15,7 @@ contract("Fundraiser", accounts => {
   const donationsAmount = 10000;
   const donationsCount = 100;
   const beneficiary = accounts[1];
+  const custodian = accounts[0];
 
   beforeEach(async () => {
     fundraiser = await FundraiserContract.new(
@@ -26,7 +27,8 @@ contract("Fundraiser", accounts => {
       endedAtUint256,
       donationsAmount,
       donationsCount,
-      beneficiary
+      beneficiary,
+      custodian
     );
   });
 
@@ -74,6 +76,11 @@ contract("Fundraiser", accounts => {
     it("beneficiary が初期値として与えた値になること", async () => {
       const actual = await fundraiser.beneficiary();
       assert.equal(actual, beneficiary);
+    });
+
+    it("owner が初期値として与えた値になること", async () => {
+      const actual = await fundraiser.owner();
+      assert.equal(actual, custodian);
     });
   });
 });

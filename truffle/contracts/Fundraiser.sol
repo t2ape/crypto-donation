@@ -24,7 +24,8 @@ contract Fundraiser is Ownable {
     uint256 _endedAt,
     uint256 _donationsAmount,
     uint256 _donationsCount,
-    address payable _beneficiary
+    address payable _beneficiary,
+    address _custodian
   ) {
     name = _name;
     description = _description;
@@ -35,5 +36,8 @@ contract Fundraiser is Ownable {
     donationsAmount = _donationsAmount;
     donationsCount = _donationsCount;
     beneficiary = _beneficiary;
+    // TODO: 寄付に紐付く団体を考慮した段階で変更が必要になるはず
+    // コントラクトのオーナーではなく寄付対象の管理者 (寄付対象の作成者) をオーナーとしたい
+    transferOwnership(_custodian);
   }
 }
