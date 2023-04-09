@@ -1,16 +1,23 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const EslintWebpackPlugin = require("eslint-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 
 const extensions = [".js", ".jsx"];
 
 module.exports = {
   mode: process.env.NODE_ENV === "production" ? "production" : "development",
-  entry: "./src/index.jsx",
+  entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "build"),
   },
-  resolve: { extensions },
+  resolve: {
+    extensions,
+    alias: {
+      app: path.resolve(__dirname, "src/app/"),
+      'config.js': path.resolve(__dirname, 'src/config.js'),
+    }
+  },
   devServer: {
     client: {
       overlay: false,
@@ -42,6 +49,7 @@ module.exports = {
       template: "./public/index.html",
       favicon: "./public/favicon.ico",
     }),
+    new Dotenv({ path: path.resolve(__dirname, "../.env") }),
   ],
   stats: "minimal",
 };
