@@ -1,9 +1,30 @@
-function App() {
+// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { SettingsProvider } from "app/contexts/SettingsContext";
+import { useRoutes } from "react-router-dom";
+import MatxTheme from "./components/MatxTheme/MatxTheme";
+// import routes from "./routes";
+
+const App = () => {
+  // const content = useRoutes(routes);
+  const content = [];
+
   return (
-    <div id="App">
-      <h1>test</h1>
-    </div>
+    <SettingsProvider>
+      <MatxTheme>
+        {content}
+      </MatxTheme>
+    </SettingsProvider>
   );
-}
+  // return (
+  //   <LocalizationProvider dateAdapter={AdapterDateFns}>
+  //     <SettingsProvider>
+  //       <MatxTheme>
+  //         {content}
+  //       </MatxTheme>
+  //     </SettingsProvider>
+  //   </LocalizationProvider>
+  // );
+};
 
 export default App;
