@@ -10,12 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "build"),
   },
-  resolve: {
-    extensions,
-    alias: {
-      app: path.resolve(__dirname, "src/app/")
-    }
-  },
+  resolve: { extensions },
   devServer: {
     client: {
       overlay: false,
