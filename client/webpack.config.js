@@ -16,6 +16,8 @@ module.exports = {
     extensions,
     alias: {
       app: path.resolve(__dirname, "src/app/"),
+      contracts: path.resolve(__dirname, "src/contracts/"),
+      utils: path.resolve(__dirname, "src/utils/"),
       'config.js': path.resolve(__dirname, 'src/config.js'),
     }
   },

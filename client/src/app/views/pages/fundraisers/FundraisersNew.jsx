@@ -1,3 +1,4 @@
+// TODO: import の順序を整理する
 import { Box, Button, Card, Divider, Grid, styled, TextField } from "@mui/material";
 import { Breadcrumb } from "app/components";
 import { H4 } from "app/components/Typography";
@@ -5,6 +6,11 @@ import { Formik } from "formik";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import * as yup from "yup";
 import MuiTextField from "@mui/material/TextField";
+import {useState, useEffect} from "react";
+import getWeb3 from "utils/getWeb3";
+
+import FundraiserFactoryContract from "contracts/FundraiserFactory.json";
+
 
 // styled components
 const Container = styled("div")(({ theme }) => ({
@@ -19,9 +25,55 @@ const StyledTextField = styled(TextField)({ marginBottom: "16px" });
 const Form = styled("form")({ paddingLeft: "16px", paddingRight: "16px" });
 
 const FundraisersNew = () => {
+  const [ name, setName ] = useState(null);
+  const [ description, setDescription ] = useState(null);
+  const [ url, setUrl ] = useState(null);
+  const [ imageUrl, setImageUrl ] = useState(null);
+  const [ startedAt, setStartedAt ] = useState(null);
+  const [ endedAt, setEndedAt ] = useState(null);
+  const [ beneficiary, setBeneficiary ] = useState(null);
+  const [ contract, setContract ] = useState(null);
+  const [ accounts, setAccounts ] = useState(null);
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const web3 = await getWeb3();
+
+        const networkId = await web3.eth.net.getId();
+        const deployedNetwork = FundraiserFactoryContract.networks[networkId];
+        const contract = new web3.eth.Contract(
+          FundraiserFactoryContract.abi,
+          deployedNetwork && deployedNetwork.address,
+        );
+        setContract(contract);
+
+        const accounts = await web3.eth.getAccounts();
+        setAccounts(accounts);
+      } catch(error) {
+        alert('Failed to load web3, accounts, or contract. Check console for details.');
+        console.error(error);
+      }
+    }
+    init();
+  }, []);
+
   const handleSubmit = async (values) => {
     console.log(values);
-  };
+
+    await contract.methods.createFundraiser(
+      name,
+      description,
+      url,
+      imageUrl,
+      {}, // TODO: startedAt に修正
+      {}, // TODO: endedAt に修正
+      {}, // donationsAmount
+      {}, // donationsCount
+      beneficiary
+    ).send({ from: accounts[0] });
+    alert('Successfully created fundraiser');
+  }
 
   return (
     <Container>
@@ -52,7 +104,10 @@ const FundraisersNew = () => {
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      handleChange(e);
+                    }}
                     value={values.name || ""}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
@@ -66,7 +121,10 @@ const FundraisersNew = () => {
                     variant="outlined"
                     label="Description"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      setDescription(e.target.value);
+                      handleChange(e);
+                    }}
                     value={values.description || ""}
                     error={Boolean(touched.description && errors.description)}
                     helperText={touched.description && errors.description}
@@ -79,7 +137,10 @@ const FundraisersNew = () => {
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      setUrl(e.target.value);
+                      handleChange(e);
+                    }}
                     value={values.url || ""}
                     error={Boolean(touched.url && errors.url)}
                     helperText={touched.url && errors.url}
@@ -87,12 +148,15 @@ const FundraisersNew = () => {
 
                   <StyledTextField
                     fullWidth
-                    name="url"
+                    name="imageUrl"
                     label="image URL"
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      setImageUrl(e.target.value);
+                      handleChange(e);
+                    }}
                     value={values.imageUrl || ""}
                     error={Boolean(touched.imageUrl && errors.imageUrl)}
                     helperText={touched.imageUrl && errors.imageUrl}
@@ -105,7 +169,10 @@ const FundraisersNew = () => {
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      setBeneficiary(e.target.value);
+                      handleChange(e);
+                    }}
                     value={values.beneficiary || ""}
                     error={Boolean(touched.beneficiary && errors.beneficiary)}
                     helperText={touched.beneficiary && errors.beneficiary}
