@@ -10,6 +10,7 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "build"),
+    publicPath: '/',
   },
   resolve: {
     extensions,
@@ -22,6 +23,7 @@ module.exports = {
     client: {
       overlay: false,
     },
+    historyApiFallback: true
   },
   module: {
     rules: [
