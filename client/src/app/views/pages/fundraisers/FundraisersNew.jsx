@@ -107,6 +107,8 @@ const FundraisersNew = () => {
       ).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
+
+      // TODO:JSON-RPC エラーが発生した時のために、例外をキャッチして alert を出す
     }
 
     const formattedInputValues = formatInputValues(values);
@@ -115,6 +117,7 @@ const FundraisersNew = () => {
     }
   }
 
+  // TODO: フォームに、スマートコントラクト側のバリデーションと一致するようなヒントを追加
   return (
     <Container>
       <div className="breadcrumb">
