@@ -58,21 +58,56 @@ const FundraisersNew = () => {
     init();
   }, []);
 
-  const handleSubmit = async (values) => {
-    console.log(values);
+  const handleSubmit = (values) => {
+    const formatInputValues = (values) => {
+      console.log(values);
 
-    await contract.methods.createFundraiser(
-      name,
-      description,
-      url,
-      imageUrl,
-      {}, // TODO: startedAt に修正
-      {}, // TODO: endedAt に修正
-      {}, // donationsAmount
-      {}, // donationsCount
-      beneficiary
-    ).send({ from: accounts[0] });
-    alert('Successfully created fundraiser');
+      let formattedInputValues = {};
+
+      let inputStartedAt = values.startedAt
+      if(inputStartedAt === undefined || inputStartedAt === null) {
+        formattedInputValues.startedAt = 0;
+      } else if (isNaN(Date.parse(inputStartedAt))) {
+        formattedInputValues = null;
+        alert('StartedAt is invalid.');
+      } else {
+        formattedInputValues.startedAt = Math.floor(Date.parse(inputStartedAt) / 1000);
+      }
+
+      let inputEndedAt = values.endedAt
+      if(inputEndedAt === undefined || inputEndedAt === null) {
+        formattedInputValues.endedAt = 0;
+      } else if (isNaN(Date.parse(inputEndedAt))) {
+        formattedInputValues = null;
+        alert('StartedAt is invalid.');
+      } else {
+        formattedInputValues.endedAt = Math.floor(Date.parse(inputEndedAt) / 1000);
+      }
+
+      return formattedInputValues;
+    }
+
+    const submitInputValues = async (values, formattedInputValues) => {
+      console.log(values);
+      console.log(formattedInputValues);
+
+      await contract.methods.createFundraiser(
+        values.name,
+        values.description,
+        values.url,
+        values.imageUrl,
+        formattedInputValues.startedAt,
+        formattedInputValues.endedAt,
+        values.beneficiary
+      ).send({ from: accounts[0] });
+
+      alert('Successfully created fundraiser');
+    }
+
+    const formattedInputValues = formatInputValues(values);
+    if (formattedInputValues !== null) {
+      submitInputValues(values, formattedInputValues);
+    }
   }
 
   return (
@@ -182,7 +217,10 @@ const FundraisersNew = () => {
                 <Grid item sm={6} xs={12}>
                   <DateTimePicker
                     value={values.startedAt || ""}
-                    onChange={(date) => setFieldValue("startedAt", date)}
+                    onChange={(date) => {
+                      setFieldValue("startedAt", date);
+                      setStartedAt(date);
+                    }}
                     renderInput={(props) => (
                       <MuiTextField {...props} label="start dateTime" variant="standard" />
                     )}
@@ -192,7 +230,10 @@ const FundraisersNew = () => {
                 <Grid item sm={6} xs={12}>
                   <DateTimePicker
                     value={values.endedAt || ""}
-                    onChange={(date) => setFieldValue("endedAt", date)}
+                    onChange={(date) => {
+                      setFieldValue("endedAt", date);
+                      setEndedAt(date);
+                    }}
                     renderInput={(props) => (
                       <MuiTextField {...props} label="end dateTime" variant="standard" />
                     )}
@@ -223,7 +264,7 @@ const initialValues = {
   url: "",
   imageUrl: "",
   beneficiary: "",
-  startedAt: new Date(),
-  endedAt: new Date(),
+  startedAt: null,
+  endedAt: null,
 };
 export default FundraisersNew;
