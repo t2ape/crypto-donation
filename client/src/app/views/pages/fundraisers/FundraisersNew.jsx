@@ -25,6 +25,7 @@ const StyledTextField = styled(TextField)({ marginBottom: "16px" });
 const Form = styled("form")({ paddingLeft: "16px", paddingRight: "16px" });
 
 const FundraisersNew = () => {
+  const [ web3, setWeb3 ] = useState(null);
   const [ contract, setContract ] = useState(null);
   const [ accounts, setAccounts ] = useState(null);
 
@@ -32,6 +33,7 @@ const FundraisersNew = () => {
     const init = async () => {
       try {
         const web3 = await getWeb3();
+        setWeb3(web3);
 
         const networkId = await web3.eth.net.getId();
         const deployedNetwork = FundraiserFactoryContract.networks[networkId];
@@ -84,6 +86,16 @@ const FundraisersNew = () => {
       console.log(values);
       console.log(formattedInputValues);
 
+      const gasLimit = await contract.methods.createFundraiser(
+        values.name,
+        values.description,
+        values.url,
+        values.imageUrl,
+        formattedInputValues.startedAt,
+        formattedInputValues.endedAt,
+        values.beneficiary
+      ).estimateGas({ from: accounts[0] });
+      const gasPrice = await web3.eth.getGasPrice();
       await contract.methods.createFundraiser(
         values.name,
         values.description,
@@ -92,7 +104,7 @@ const FundraisersNew = () => {
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary
-      ).send({ from: accounts[0] });
+      ).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
     }
