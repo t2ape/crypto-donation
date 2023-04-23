@@ -1,4 +1,4 @@
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.19;
 
 import "./Fundraiser.sol";
 
@@ -6,16 +6,16 @@ contract FundraiserFactory {
   Fundraiser[] private _fundraisers;
 
   function createFundraiser(
-    string memory name,
-    string memory description,
-    string memory url,
-    string memory imageUrl,
-    uint256 startedAt,
-    uint256 endedAt,
-    uint256 donationsAmount,
-    uint256 donationsCount,
-    address payable beneficiary
+    string memory name, // 必須
+    string memory description, // 必須
+    string memory url, // 任意
+    string memory imageUrl, // 任意
+    uint256 startedAt, // 任意
+    uint256 endedAt, // 任意
+    address payable beneficiary // 必須
   ) public {
+    // TODO: 入力値のバリデーションを追加する
+
     Fundraiser fundraiser = new Fundraiser(
       name,
       description,
@@ -23,8 +23,8 @@ contract FundraiserFactory {
       imageUrl,
       startedAt,
       endedAt,
-      donationsAmount,
-      donationsCount,
+      0,
+      0,
       beneficiary,
       msg.sender
     );
