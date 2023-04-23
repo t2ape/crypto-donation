@@ -25,13 +25,6 @@ const StyledTextField = styled(TextField)({ marginBottom: "16px" });
 const Form = styled("form")({ paddingLeft: "16px", paddingRight: "16px" });
 
 const FundraisersNew = () => {
-  const [ name, setName ] = useState(null);
-  const [ description, setDescription ] = useState(null);
-  const [ url, setUrl ] = useState(null);
-  const [ imageUrl, setImageUrl ] = useState(null);
-  const [ startedAt, setStartedAt ] = useState(null);
-  const [ endedAt, setEndedAt ] = useState(null);
-  const [ beneficiary, setBeneficiary ] = useState(null);
   const [ contract, setContract ] = useState(null);
   const [ accounts, setAccounts ] = useState(null);
 
@@ -140,7 +133,6 @@ const FundraisersNew = () => {
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={(e) => {
-                      setName(e.target.value);
                       handleChange(e);
                     }}
                     value={values.name || ""}
@@ -157,7 +149,6 @@ const FundraisersNew = () => {
                     label="Description"
                     onBlur={handleBlur}
                     onChange={(e) => {
-                      setDescription(e.target.value);
                       handleChange(e);
                     }}
                     value={values.description || ""}
@@ -173,7 +164,6 @@ const FundraisersNew = () => {
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={(e) => {
-                      setUrl(e.target.value);
                       handleChange(e);
                     }}
                     value={values.url || ""}
@@ -189,7 +179,6 @@ const FundraisersNew = () => {
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={(e) => {
-                      setImageUrl(e.target.value);
                       handleChange(e);
                     }}
                     value={values.imageUrl || ""}
@@ -205,7 +194,6 @@ const FundraisersNew = () => {
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={(e) => {
-                      setBeneficiary(e.target.value);
                       handleChange(e);
                     }}
                     value={values.beneficiary || ""}
@@ -219,7 +207,6 @@ const FundraisersNew = () => {
                     value={values.startedAt || ""}
                     onChange={(date) => {
                       setFieldValue("startedAt", date);
-                      setStartedAt(date);
                     }}
                     renderInput={(props) => (
                       <MuiTextField {...props} label="start dateTime" variant="standard" />
@@ -232,7 +219,6 @@ const FundraisersNew = () => {
                     value={values.endedAt || ""}
                     onChange={(date) => {
                       setFieldValue("endedAt", date);
-                      setEndedAt(date);
                     }}
                     renderInput={(props) => (
                       <MuiTextField {...props} label="end dateTime" variant="standard" />
