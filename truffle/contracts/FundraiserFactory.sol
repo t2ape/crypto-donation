@@ -19,7 +19,7 @@ contract FundraiserFactory {
     require(bytes(description).length > 0 && bytes(description).length <= 4000, "description length is invalid.");
     require(bytes(url).length >= 0 && bytes(url).length <= 4000, "url length is invalid.");
     require(bytes(imageUrl).length >= 0 && bytes(imageUrl).length <= 4000, "imageUrl length is invalid.");
-    require(beneficiary != address(0), "beneficiary format is invalid");
+    require(beneficiary != address(0), "beneficiary format is invalid.");
 
     Fundraiser fundraiser = new Fundraiser(
       name,
