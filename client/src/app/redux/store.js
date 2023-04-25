@@ -7,6 +7,7 @@ import { productReducer } from "./slices/productSlice";
 import { ratingReducer } from "./slices/ratingSlice";
 import { scrumReducer } from "./slices/scrumSlice";
 import { userReducer } from "./slices/userSlice";
+import { fundraiserReducer } from "./slices/fundraiserSlice";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     products: productReducer,
     categories: categoryReducer,
     notifications: notificationReducer,
+    fundraisers: fundraiserReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });

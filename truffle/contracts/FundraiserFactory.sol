@@ -1,8 +1,9 @@
 pragma solidity ^0.8.19;
 
 import "./Fundraiser.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract FundraiserFactory {
+contract FundraiserFactory is Ownable {
   Fundraiser[] private _fundraisers;
 
   function createFundraiser(
@@ -38,5 +39,24 @@ contract FundraiserFactory {
 
   function fundraisersCount() public view returns (uint256) {
     return _fundraisers.length;
+  }
+
+  // TODO: アクセス制御をし全 fundraisers のリストは管理者だけがアクセスできるようにする
+  // fundraisers 関数が返すアイテムの最大値
+  uint256 constant maxLimit = 50;
+
+  function fundraisers_for_admin(uint256 limit, uint256 offset) public view onlyOwner returns(Fundraiser[] memory collection) {
+    require(offset <= fundraisersCount(), "offset is over limit.");
+
+    uint256 size = fundraisersCount() - offset;
+    size = size < limit ? size : limit;
+    size = size < maxLimit ? size : maxLimit;
+    collection = new Fundraiser[](size);
+
+    for(uint256 i = 0; i < size; i++) {
+      collection[i] = _fundraisers[offset + i];
+    }
+
+    return collection;
   }
 }
