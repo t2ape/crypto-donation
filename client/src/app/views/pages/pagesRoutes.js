@@ -31,8 +31,8 @@ const pagesRoutes = [
   { path: "/pages/new-product", element: <ProductForm /> },
   { path: "/pages/view-product", element: <ProductViewer /> },
   { path: "/pages/order-list", element: <OrderList /> },
-  { path: "/pages/fundraisers/new", element: <FundraisersNew /> },
-  { path: "/pages/fundraisers", element: <FundraisersIndex /> },
+  { path: "/administrator/pages/fundraisers/new", element: <FundraisersNew /> },
+  { path: "/administrator/pages/fundraisers", element: <FundraisersIndex /> },
 ];
 
 export default pagesRoutes;
