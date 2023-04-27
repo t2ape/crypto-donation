@@ -1,32 +1,18 @@
-import { Edit, TrendingFlat } from "@mui/icons-material";
 import {
-  Box,
-  IconButton,
   Paper,
   styled,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TablePagination,
-  TableRow,
 } from "@mui/material";
 import { Breadcrumb, MatxLoading } from "app/components";
 import { TableHead, TableToolbar } from "app/components/data-table";
-import { H5 } from "app/components/Typography";
 import useFundraisers from "app/hooks/useFundraisers";
 import useTable from "app/hooks/useTable";
-import { useNavigate } from "react-router-dom";
+import FundraiserRow from "./FundraiserRow";
 
 // styled components
-const IMG = styled("img")({
-  height: 32,
-  borderRadius: "4px",
-});
-const FlexBox = styled(Box)({
-  display: "flex",
-  alignItems: "center",
-});
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
   [theme.breakpoints.down("sm")]: { margin: "16px" },
@@ -43,7 +29,6 @@ const FundraisersIndex = () => {
     handleChangePage,
   } = useTable();
 
-  const navigate = useNavigate();
   const { isLoading, fundraisers } = useFundraisers();
 
   // TABLE HEADER COLUMN LIST
@@ -57,15 +42,6 @@ const FundraisersIndex = () => {
   ];
 
   if (isLoading) return <MatxLoading />;
-
-  const fundraiserArray = fundraisers?.map((fundraiser) => ({
-    name: fundraiser.name,
-    startedAt: fundraiser.startedAt,
-    endedAt: fundraiser.endedAt,
-    donationsAmount: fundraiser.donationsAmount,
-    donationsCount: fundraiser.donationsCount,
-    imageUrl: fundraiser.imageUrl,
-  }));
 
   return (
     <Container>
@@ -81,38 +57,16 @@ const FundraisersIndex = () => {
             <TableHead headCells={columns} />
 
             <TableBody>
-              {fundraiserArray
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+              {fundraisers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((fundraiser) => {
+                  console.log('fundraisers:', JSON.stringify(fundraisers));
+                  console.log('fundraiser:', JSON.stringify(fundraiser));
 
                   return (
-                    <TableRow
-                      hover
-                      tabIndex={-1}
-                      key={row.name}
-                    >
-                      {/*TODO: それぞれのセルの表示を文字列でなくする*/}
-                      <TableCell component="th" scope="row" padding="none">
-                        <FlexBox gap={1} justifyContent="center">
-                          <IMG src="https://fastly.picsum.photos/id/436/200/300.jpg?hmac=OuJRsPTZRaNZhIyVFbzDkMYMyORVpV86q5M8igEfM3Y" />
-                          <H5 fontSize={15}>{"row.name"}</H5>
-                        </FlexBox>
-                      </TableCell>
-                      <TableCell align="center">{"row.startedAt"}</TableCell>
-                      <TableCell align="center">{"row.endedAt"}</TableCell>
-                      <TableCell align="center">{"row.donationsAmount"}</TableCell>
-                      <TableCell align="center">{"row.donationsCount"}</TableCell>
-                      <TableCell align="center">
-                        {/*TODO: fundraisers/edit ページへのリンクに変更*/}
-                        <IconButton onClick={() => navigate("/pages/new-product")}>
-                          <Edit />
-                        </IconButton>
-                        {/*TODO: fundraisers/:id もしくは fundraisers/show ページへのリンクに変更*/}
-                        <IconButton onClick={() => navigate("/pages/view-product")}>
-                          <TrendingFlat />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
+                    <FundraiserRow
+                      fundraiser={fundraiser}
+                      key={fundraiser}
+                    />
                   );
                 })}
             </TableBody>
@@ -123,7 +77,7 @@ const FundraisersIndex = () => {
           page={page}
           component="div"
           rowsPerPage={rowsPerPage}
-          count={fundraiserArray.length}
+          count={fundraisers.length}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[]}
         />

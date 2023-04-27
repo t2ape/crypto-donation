@@ -11,7 +11,6 @@ import getWeb3 from "utils/getWeb3";
 
 import FundraiserFactoryContract from "contracts/FundraiserFactory.json";
 
-
 // styled components
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",

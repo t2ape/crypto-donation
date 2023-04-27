@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import getWeb3 from "utils/getWeb3";
+import FundraiserFactoryContract from "contracts/FundraiserFactory.json";
 
 const initialState = {
   error: null,
@@ -7,9 +8,18 @@ const initialState = {
   loading: false,
 };
 
-export const getFundraisers = createAsyncThunk("products/get", async () => {
-  const res = await axios.get("/api/ecommerce/get-product-list");
-  return res.data;
+export const getFundraisers = createAsyncThunk("fundraisers/get", async () => {
+  const web3 = await getWeb3();
+  const networkId = await web3.eth.net.getId();
+  const deployedNetwork = FundraiserFactoryContract.networks[networkId];
+  const contract = new web3.eth.Contract(
+    FundraiserFactoryContract.abi,
+    deployedNetwork && deployedNetwork.address
+  );
+
+  // TODO: ページネーションに応じた limit と offset に変更する
+  const fundraisers = await contract.methods.fundraisers_for_admin(50, 0).call();
+  return fundraisers
 });
 
 const fundraiserSlice = createSlice({
