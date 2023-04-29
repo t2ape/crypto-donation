@@ -1,5 +1,5 @@
 // TODO: import の順序を整理する
-import { Box, Button, Card, Divider, Grid, styled, TextField } from "@mui/material";
+import {Box, Button, Card, Divider, Grid, styled, TextField, Typography} from "@mui/material";
 import { Breadcrumb } from "app/components";
 import { H4 } from "app/components/Typography";
 import { Formik } from "formik";
@@ -24,12 +24,16 @@ const Container = styled("div")(({ theme }) => ({
 }));
 const StyledTextField = styled(TextField)({ marginBottom: "16px" });
 const Form = styled("form")({ paddingLeft: "16px", paddingRight: "16px" });
+const StyledText = styled(Typography)({ marginBottom: '16px' });
+
 
 const FundraisersEdit = () => {
   const { id } = useParams();
   const [ web3, setWeb3 ] = useState(null);
   const [ contract, setContract ] = useState(null);
   const [ accounts, setAccounts ] = useState(null);
+  const [ donationsAmount, setDonationsAmount ] = useState(null);
+  const [ donationsCount, setDonationsCount ] = useState(null);
   const [ initialValues, setInitialValues ] = useState(null);
 
   useEffect(() => {
@@ -50,6 +54,10 @@ const FundraisersEdit = () => {
         const url = await contract.methods.url().call();
         const imageUrl = await contract.methods.imageUrl().call();
         const beneficiary = await contract.methods.beneficiary().call();
+        const donationsAmount = await contract.methods.donationsAmount().call();
+        setDonationsAmount(donationsAmount);
+        const donationsCount = await contract.methods.donationsCount().call();
+        setDonationsCount(donationsCount);
         const startedAt = await contract.methods.startedAt().call();
         const endedAt = await contract.methods.endedAt().call();
 
@@ -240,6 +248,16 @@ const FundraisersEdit = () => {
                     error={Boolean(touched.beneficiary && errors.beneficiary)}
                     helperText={touched.beneficiary && errors.beneficiary}
                   />
+                </Grid>
+
+                <Grid item sm={12} xs={12}>
+                  <StyledText variant="body1" gutterBottom>
+                    {`donationsAmount: ${donationsAmount}`}
+                  </StyledText>
+
+                  <StyledText variant="body1" gutterBottom>
+                    {`donationsCount: ${donationsCount}`}
+                  </StyledText>
                 </Grid>
 
                 <Grid item sm={6} xs={12}>
