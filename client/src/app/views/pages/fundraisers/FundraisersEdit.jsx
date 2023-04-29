@@ -26,7 +26,7 @@ const Container = styled("div")(({ theme }) => ({
 const StyledTextField = styled(TextField)({ marginBottom: "16px" });
 const Form = styled("form")({ paddingLeft: "16px", paddingRight: "16px" });
 const StyledText = styled(Typography)({ marginBottom: '16px' });
-
+const FlexEndBox = styled(FlexBox)({ justifyContent: "flex-end" });
 
 const FundraisersEdit = () => {
   const { id } = useParams();
@@ -35,6 +35,7 @@ const FundraisersEdit = () => {
   const [ accounts, setAccounts ] = useState(null);
   const [ donationsAmount, setDonationsAmount ] = useState(null);
   const [ donationsCount, setDonationsCount ] = useState(null);
+  const [ deletedAt, setDeletedAt ] = useState(null);
   const [ initialValues, setInitialValues ] = useState(null);
 
   useEffect(() => {
@@ -60,6 +61,8 @@ const FundraisersEdit = () => {
         setDonationsAmount(donationsAmount);
         const donationsCount = await contract.methods.donationsCount().call();
         setDonationsCount(donationsCount);
+        const deletedAt = await contract.methods.deletedAt().call();
+        setDeletedAt(deletedAt);
         const startedAt = await contract.methods.startedAt().call();
         const endedAt = await contract.methods.endedAt().call();
 
@@ -148,6 +151,22 @@ const FundraisersEdit = () => {
     }
   }
 
+  const deleteFundraiser = async () => {
+    const gasLimit = await contract.methods.deleteFundraiser().estimateGas({ from: accounts[0] });
+    const gasPrice = await web3.eth.getGasPrice();
+    await contract.methods.deleteFundraiser().send({ from: accounts[0], gasLimit, gasPrice });
+
+    alert('Successfully deleted fundraiser');
+
+    try {
+      const deletedAt = await contract.methods.deletedAt().call();
+      setDeletedAt(deletedAt);
+    } catch(error) {
+      window.console.error(error);
+      alert('Failed to delete fundraiser.');
+    }
+  }
+
   // TODO: フォームに、スマートコントラクト側のバリデーションと一致するようなヒントを追加
   return (
     <Container>
@@ -160,6 +179,24 @@ const FundraisersEdit = () => {
           <H4>Edit Fundraiser</H4>
         </Box>
         <Divider sx={{ mb: 3 }} />
+        <FlexEndBox mb={3} px={2} gap={2} className="viewer_actions">
+          <Button type="submit" color="error" variant="contained" onClick={() => {
+            if (window.confirm("Are you sure you want to delete? This cannot be undone.")) {
+              deleteFundraiser();
+            }
+          }}>
+            Delete
+          </Button>
+
+          {/*<Button type="button" variant="text" onClick={() => toggleInvoiceEditor()}>*/}
+          {/*  Cancel*/}
+          {/*</Button>*/}
+
+          {/*<Button type="submit" color="primary" variant="contained" disabled={loading}>*/}
+          {/*  Save*/}
+          {/*</Button>*/}
+        </FlexEndBox>
+
         <Formik
           onSubmit={handleSubmit}
           enableReinitialize={true}
@@ -279,6 +316,10 @@ const FundraisersEdit = () => {
 
                   <StyledText variant="body1" gutterBottom>
                     {`donationsCount: ${donationsCount}`}
+                  </StyledText>
+
+                  <StyledText variant="body1" gutterBottom>
+                    {`deletedAt: ${deletedAt}`}
                   </StyledText>
                 </Grid>
 
