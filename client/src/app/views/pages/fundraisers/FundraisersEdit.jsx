@@ -104,25 +104,25 @@ const FundraisersEdit = () => {
       console.log(values);
       console.log(formattedInputValues);
 
-      // const gasLimit = await contract.methods.createFundraiser(
-      //   values.name,
-      //   values.description,
-      //   values.url,
-      //   values.imageUrl,
-      //   formattedInputValues.startedAt,
-      //   formattedInputValues.endedAt,
-      //   values.beneficiary
-      // ).estimateGas({ from: accounts[0] });
-      // const gasPrice = await web3.eth.getGasPrice();
-      // await contract.methods.createFundraiser(
-      //   values.name,
-      //   values.description,
-      //   values.url,
-      //   values.imageUrl,
-      //   formattedInputValues.startedAt,
-      //   formattedInputValues.endedAt,
-      //   values.beneficiary
-      // ).send({ from: accounts[0], gasLimit, gasPrice });
+      const gasLimit = await contract.methods.updateFundraiser(
+        values.name,
+        values.description,
+        values.url,
+        values.imageUrl,
+        formattedInputValues.startedAt,
+        formattedInputValues.endedAt,
+        values.beneficiary
+      ).estimateGas({ from: accounts[0] });
+      const gasPrice = await web3.eth.getGasPrice();
+      await contract.methods.updateFundraiser(
+        values.name,
+        values.description,
+        values.url,
+        values.imageUrl,
+        formattedInputValues.startedAt,
+        formattedInputValues.endedAt,
+        values.beneficiary
+      ).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
 
