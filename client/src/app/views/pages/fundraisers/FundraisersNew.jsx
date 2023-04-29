@@ -1,7 +1,7 @@
 // TODO: import の順序を整理する
-import { Box, Button, Card, Divider, Grid, styled, TextField } from "@mui/material";
+import {Box, Button, Card, Checkbox, Divider, Grid, styled, TextField} from "@mui/material";
 import { Breadcrumb } from "app/components";
-import { H4 } from "app/components/Typography";
+import {H4, Paragraph} from "app/components/Typography";
 import { Formik } from "formik";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import * as yup from "yup";
@@ -10,6 +10,7 @@ import {useState, useEffect} from "react";
 import getWeb3 from "utils/getWeb3";
 
 import FundraiserFactoryContract from "contracts/FundraiserFactory.json";
+import {FlexBox} from "app/components/FlexBox";
 
 // styled components
 const Container = styled("div")(({ theme }) => ({
@@ -92,7 +93,8 @@ const FundraisersNew = () => {
         values.imageUrl,
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
-        values.beneficiary
+        values.beneficiary,
+        values.is_open
       ).estimateGas({ from: accounts[0] });
       const gasPrice = await web3.eth.getGasPrice();
       await contract.methods.createFundraiser(
@@ -102,7 +104,8 @@ const FundraisersNew = () => {
         values.imageUrl,
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
-        values.beneficiary
+        values.beneficiary,
+        values.is_open
       ).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
@@ -214,6 +217,22 @@ const FundraisersNew = () => {
                     error={Boolean(touched.beneficiary && errors.beneficiary)}
                     helperText={touched.beneficiary && errors.beneficiary}
                   />
+
+                  <FlexBox gap={1} alignItems="center">
+                    <Checkbox
+                      size="small"
+                      name="is_open"
+                      onChange={(e) => {
+                        handleChange(e);
+                      }}
+                      checked={values.is_open || false}
+                      sx={{ padding: 0 }}
+                    />
+
+                    <Paragraph fontSize={13}>
+                      Fundraiser is open to donations.
+                    </Paragraph>
+                  </FlexBox>
                 </Grid>
 
                 <Grid item sm={6} xs={12}>
@@ -266,5 +285,6 @@ const initialValues = {
   beneficiary: "",
   startedAt: null,
   endedAt: null,
+  is_open: false,
 };
 export default FundraisersNew;
