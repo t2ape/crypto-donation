@@ -40,4 +40,29 @@ contract Fundraiser is Ownable {
     // コントラクトのオーナーではなく寄付対象の管理者 (寄付対象の作成者) をオーナーとしたい
     transferOwnership(_custodian);
   }
+
+  function updateFundraiser(
+    string memory _name, // 必須
+    string memory _description, // 必須
+    string memory _url, // 任意
+    string memory _imageUrl, // 任意
+    uint256 _startedAt, // 任意
+    uint256 _endedAt, // 任意
+    address payable _beneficiary // 必須
+  ) public {
+    // validations
+    require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
+    require(bytes(description).length > 0 && bytes(description).length <= 4000, "description length is invalid.");
+    require(bytes(url).length >= 0 && bytes(url).length <= 4000, "url length is invalid.");
+    require(bytes(imageUrl).length >= 0 && bytes(imageUrl).length <= 4000, "imageUrl length is invalid.");
+    require(beneficiary != address(0), "beneficiary format is invalid.");
+
+    name = _name;
+    description = _description;
+    url = _url;
+    imageUrl = _imageUrl;
+    startedAt = _startedAt;
+    endedAt = _endedAt;
+    beneficiary = _beneficiary;
+  }
 }
