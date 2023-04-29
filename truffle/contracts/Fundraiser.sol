@@ -14,6 +14,7 @@ contract Fundraiser is Ownable {
   uint256 public donationsAmount;
   uint256 public donationsCount;
   address payable public beneficiary;
+  bool public is_open;
 
   constructor(
     string memory _name,
@@ -25,6 +26,7 @@ contract Fundraiser is Ownable {
     uint256 _donationsAmount,
     uint256 _donationsCount,
     address payable _beneficiary,
+    bool _is_open,
     address _custodian
   ) {
     name = _name;
@@ -36,6 +38,7 @@ contract Fundraiser is Ownable {
     donationsAmount = _donationsAmount;
     donationsCount = _donationsCount;
     beneficiary = _beneficiary;
+    is_open = _is_open;
     // TODO: 寄付に紐付く団体を考慮した段階で変更が必要になるはず
     // コントラクトのオーナーではなく寄付対象の管理者 (寄付対象の作成者) をオーナーとしたい
     transferOwnership(_custodian);
@@ -48,7 +51,8 @@ contract Fundraiser is Ownable {
     string memory _imageUrl, // 任意
     uint256 _startedAt, // 任意
     uint256 _endedAt, // 任意
-    address payable _beneficiary // 必須
+    address payable _beneficiary, // 必須
+    bool _is_open // 必須
   ) public {
     // validations
     require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
@@ -64,5 +68,6 @@ contract Fundraiser is Ownable {
     startedAt = _startedAt;
     endedAt = _endedAt;
     beneficiary = _beneficiary;
+    is_open = _is_open;
   }
 }
