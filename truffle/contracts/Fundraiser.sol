@@ -11,6 +11,7 @@ contract Fundraiser is Ownable {
   string public imageUrl;
   uint256 public startedAt;
   uint256 public endedAt;
+  uint256 public deletedAt;
   uint256 public donationsAmount;
   uint256 public donationsCount;
   address payable public beneficiary;
@@ -69,5 +70,9 @@ contract Fundraiser is Ownable {
     endedAt = _endedAt;
     beneficiary = _beneficiary;
     is_open = _is_open;
+  }
+
+  function deleteFundraiser() public {
+    deletedAt = block.timestamp;
   }
 }
