@@ -75,7 +75,7 @@ const FundraiserRow = (props) => {
       <TableCell align="center">{donationsCount}</TableCell>
       <TableCell align="center">
         {/*TODO: fundraisers/edit ページへのリンクに変更*/}
-        <IconButton onClick={() => navigate("/pages/new-product")}>
+        <IconButton onClick={() => navigate(`/administrator/pages/fundraisers/${fundraiser}/edit`)}>
           <Edit />
         </IconButton>
         {/*TODO: fundraisers/:id もしくは fundraisers/show ページへのリンクに変更*/}

@@ -15,6 +15,7 @@ const ProductViewer = Loadable(lazy(() => import("./products/ProductViewer")));
 const CustomerForm = Loadable(lazy(() => import("./customers/customer-form/CustomerForm")));
 const CustomerViewer = Loadable(lazy(() => import("./customers/customer-viewer/CustomerViewer")));
 const FundraisersNew = Loadable(lazy(() => import("./fundraisers/FundraisersNew")));
+const FundraisersEdit = Loadable(lazy(() => import("./fundraisers/FundraisersEdit")));
 const FundraisersIndex = Loadable(lazy(() => import("./fundraisers/FundraisersIndex")));
 
 const pagesRoutes = [
@@ -32,6 +33,7 @@ const pagesRoutes = [
   { path: "/pages/view-product", element: <ProductViewer /> },
   { path: "/pages/order-list", element: <OrderList /> },
   { path: "/administrator/pages/fundraisers/new", element: <FundraisersNew /> },
+  { path: "/administrator/pages/fundraisers/:id/edit", element: <FundraisersEdit /> },
   { path: "/administrator/pages/fundraisers", element: <FundraisersIndex /> },
 ];
 
