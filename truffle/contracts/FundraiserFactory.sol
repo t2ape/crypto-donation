@@ -9,7 +9,7 @@ contract FundraiserFactory is Ownable {
   function isActive(Fundraiser _fundraiser) private view returns (bool) {
     return (
       _fundraiser.isOpen() &&
-      _fundraiser.deletedAt() != 0 &&
+      _fundraiser.deletedAt() == 0 &&
       _fundraiser.startedAt() <= block.timestamp &&
       _fundraiser.endedAt() > block.timestamp
     );
