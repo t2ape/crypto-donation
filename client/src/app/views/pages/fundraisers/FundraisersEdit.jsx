@@ -56,7 +56,7 @@ const FundraisersEdit = () => {
         const url = await contract.methods.url().call();
         const imageUrl = await contract.methods.imageUrl().call();
         const beneficiary = await contract.methods.beneficiary().call();
-        const is_open = await contract.methods.is_open().call();
+        const isOpen = await contract.methods.isOpen().call();
         const donationsAmount = await contract.methods.donationsAmount().call();
         setDonationsAmount(donationsAmount);
         const donationsCount = await contract.methods.donationsCount().call();
@@ -72,7 +72,7 @@ const FundraisersEdit = () => {
           url: url || "",
           imageUrl: imageUrl || "",
           beneficiary: beneficiary || "",
-          is_open: is_open || false,
+          isOpen: isOpen || false,
           startedAt: startedAt || null,
           endedAt: endedAt || null,
         };
@@ -126,7 +126,7 @@ const FundraisersEdit = () => {
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary,
-        values.is_open
+        values.isOpen
       ).estimateGas({ from: accounts[0] });
       const gasPrice = await web3.eth.getGasPrice();
       await contract.methods.updateFundraiser(
@@ -137,7 +137,7 @@ const FundraisersEdit = () => {
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary,
-        values.is_open
+        values.isOpen
       ).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
@@ -206,7 +206,7 @@ const FundraisersEdit = () => {
             url: "",
             imageUrl: "",
             beneficiary: "",
-            is_open: false,
+            isOpen: false,
             startedAt: null,
             endedAt: null,
           }}
@@ -295,11 +295,11 @@ const FundraisersEdit = () => {
                   <FlexBox gap={1} alignItems="center">
                     <Checkbox
                       size="small"
-                      name="is_open"
+                      name="isOpen"
                       onChange={(e) => {
                         handleChange(e);
                       }}
-                      checked={values.is_open || false}
+                      checked={values.isOpen || false}
                       sx={{ padding: 0 }}
                     />
 

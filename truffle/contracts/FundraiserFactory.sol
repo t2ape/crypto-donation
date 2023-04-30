@@ -14,7 +14,7 @@ contract FundraiserFactory is Ownable {
     uint256 startedAt, // 任意
     uint256 endedAt, // 任意
     address payable beneficiary, // 必須
-    bool is_open // 必須
+    bool isOpen // 必須
   ) public {
     // validations
     require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
@@ -33,7 +33,7 @@ contract FundraiserFactory is Ownable {
       0,
       0,
       beneficiary,
-      is_open,
+      isOpen,
       msg.sender
     );
     _fundraisers.push(fundraiser);

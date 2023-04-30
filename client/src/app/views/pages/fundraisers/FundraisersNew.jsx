@@ -94,7 +94,7 @@ const FundraisersNew = () => {
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary,
-        values.is_open
+        values.isOpen
       ).estimateGas({ from: accounts[0] });
       const gasPrice = await web3.eth.getGasPrice();
       await contract.methods.createFundraiser(
@@ -105,7 +105,7 @@ const FundraisersNew = () => {
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary,
-        values.is_open
+        values.isOpen
       ).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
@@ -221,11 +221,11 @@ const FundraisersNew = () => {
                   <FlexBox gap={1} alignItems="center">
                     <Checkbox
                       size="small"
-                      name="is_open"
+                      name="isOpen"
                       onChange={(e) => {
                         handleChange(e);
                       }}
-                      checked={values.is_open || false}
+                      checked={values.isOpen || false}
                       sx={{ padding: 0 }}
                     />
 
@@ -285,6 +285,6 @@ const initialValues = {
   beneficiary: "",
   startedAt: null,
   endedAt: null,
-  is_open: false,
+  isOpen: false,
 };
 export default FundraisersNew;
