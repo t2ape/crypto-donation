@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {Button, Card, Divider, Grid, styled, useTheme} from "@mui/material";
+import {Button, Card, Divider, Grid, IconButton, styled, useTheme} from "@mui/material";
 import FundraiserContract from "contracts/Fundraiser.json";
 import {H4, Paragraph, Span} from "app/components/Typography";
 import getWeb3 from "utils/getWeb3";
 import {useNavigate} from "react-router-dom";
+import {Edit} from "@mui/icons-material";
 
 // styled components
 const FundraiserIMG = styled(Card)({
@@ -94,9 +95,7 @@ const FundraiserCard = (props) => {
           </Paragraph>
 
           <Button type="submit" color="primary" variant="contained" onClick={() => {
-            if (window.confirm("Are you sure you want to donate? This cannot be undone.")) {
-              // deleteFundraiser();
-            }
+            navigate(`/user/pages/fundraisers/${fundraiser}`)
           }}>
             Donate
           </Button>
