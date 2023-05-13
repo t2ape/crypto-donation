@@ -1,8 +1,11 @@
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Fundraiser is Ownable {
+  using SafeMath for uint256;
+
   // TODO: 寄付に紐付く団体を考慮する
 
   string public name;
@@ -16,6 +19,14 @@ contract Fundraiser is Ownable {
   uint256 public donationsCount;
   address payable public beneficiary;
   bool public isOpen;
+
+  struct Donation {
+    uint256 value;
+    uint256 date;
+  }
+  mapping(address => Donation[]) private _donations;
+
+  event DonationReceived(address indexed donor, uint256 value);
 
   constructor(
     string memory _name,
@@ -74,5 +85,17 @@ contract Fundraiser is Ownable {
 
   function deleteFundraiser() public {
     deletedAt = block.timestamp;
+  }
+
+  function donate() public payable {
+    Donation memory donation = Donation({
+      value: msg.value,
+      date: block.timestamp
+    });
+    _donations[msg.sender].push(donation);
+    donationsAmount = donationsAmount.add(msg.value);
+    donationsCount++;
+
+    emit DonationReceived(msg.sender, msg.value);
   }
 }
