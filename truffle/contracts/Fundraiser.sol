@@ -12,20 +12,23 @@ contract Fundraiser is Ownable {
   string public description;
   string public url;
   string public imageUrl;
+  bool public isOpen;
   uint256 public startedAt;
   uint256 public endedAt;
   uint256 public deletedAt;
   uint256 public donationsAmount;
   uint256 public donationsCount;
   address payable public beneficiary;
-  bool public isOpen;
 
   struct Donation {
     uint256 value;
     uint256 date;
   }
+
   mapping(address => Donation[]) private _donations;
 
+  event FundraiserUpdated(address indexed updater, uint256 updatedAt);
+  event FundraiserDeleted(address indexed deletor, uint256 deletedAt);
   event DonationReceived(address indexed donor, uint256 value);
 
   constructor(
@@ -33,27 +36,35 @@ contract Fundraiser is Ownable {
     string memory _description,
     string memory _url,
     string memory _imageUrl,
+    bool _isOpen,
     uint256 _startedAt,
     uint256 _endedAt,
     uint256 _donationsAmount,
     uint256 _donationsCount,
     address payable _beneficiary,
-    bool _isOpen,
     address _custodian
   ) {
     name = _name;
     description = _description;
     url = _url;
     imageUrl = _imageUrl;
+    isOpen = _isOpen;
     startedAt = _startedAt;
     endedAt = _endedAt;
     donationsAmount = _donationsAmount;
     donationsCount = _donationsCount;
     beneficiary = _beneficiary;
-    isOpen = _isOpen;
-    // TODO: 寄付に紐付く団体を考慮した段階で変更が必要になるはず
-    // コントラクトのオーナーではなく寄付対象の管理者 (寄付対象の作成者) をオーナーとしたい
     transferOwnership(_custodian);
+  }
+
+  modifier notDeleted() {
+    require(deletedAt == 0 );
+    _;
+  }
+
+  modifier active() {
+    require(isActive());
+    _;
   }
 
   function updateFundraiser(
@@ -61,11 +72,11 @@ contract Fundraiser is Ownable {
     string memory _description, // 必須
     string memory _url, // 任意
     string memory _imageUrl, // 任意
+    bool _isOpen, // 必須
     uint256 _startedAt, // 任意
     uint256 _endedAt, // 任意
-    address payable _beneficiary, // 必須
-    bool _isOpen // 必須
-  ) public {
+    address payable _beneficiary // 必須
+  ) public onlyOwner notDeleted {
     // validations
     require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
     require(bytes(description).length > 0 && bytes(description).length <= 4000, "description length is invalid.");
@@ -77,17 +88,30 @@ contract Fundraiser is Ownable {
     description = _description;
     url = _url;
     imageUrl = _imageUrl;
+    isOpen = _isOpen;
     startedAt = _startedAt;
     endedAt = _endedAt;
     beneficiary = _beneficiary;
-    isOpen = _isOpen;
+
+    emit FundraiserUpdated(msg.sender, block.timestamp);
   }
 
-  function deleteFundraiser() public {
+  function isActive() public view returns (bool) {
+    return (
+      isOpen &&
+      deletedAt == 0 &&
+      startedAt <= block.timestamp &&
+      endedAt > block.timestamp
+    );
+  }
+
+  function deleteFundraiser() public onlyOwner notDeleted {
     deletedAt = block.timestamp;
+
+    emit FundraiserDeleted(msg.sender, deletedAt);
   }
 
-  function donate() public payable {
+  function donate() public payable active {
     Donation memory donation = Donation({
       value: msg.value,
       date: block.timestamp

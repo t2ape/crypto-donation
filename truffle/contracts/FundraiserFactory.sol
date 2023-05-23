@@ -6,25 +6,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract FundraiserFactory is Ownable {
   Fundraiser[] private _fundraisers;
 
-  function isActive(Fundraiser _fundraiser) private view returns (bool) {
-    return (
-      _fundraiser.isOpen() &&
-      _fundraiser.deletedAt() == 0 &&
-      _fundraiser.startedAt() <= block.timestamp &&
-      _fundraiser.endedAt() > block.timestamp
-    );
-  }
+  event FundraiserCreated(Fundraiser indexed fundraiser, address indexed creator, uint256 createdAt);
 
   function createFundraiser(
     string memory name, // 必須
     string memory description, // 必須
     string memory url, // 任意
     string memory imageUrl, // 任意
+    bool isOpen, // 必須
     uint256 startedAt, // 任意
     uint256 endedAt, // 任意
-    address payable beneficiary, // 必須
-    bool isOpen // 必須
-  ) public {
+    address payable beneficiary // 必須
+  ) public onlyOwner {
     // validations
     require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
     require(bytes(description).length > 0 && bytes(description).length <= 4000, "description length is invalid.");
@@ -33,20 +26,24 @@ contract FundraiserFactory is Ownable {
     require(beneficiary != address(0), "beneficiary format is invalid.");
 
     Fundraiser fundraiser = new Fundraiser(
-      name,
-      description,
-      url,
-      imageUrl,
-      startedAt,
-      endedAt,
-      0,
-      0,
-      beneficiary,
-      isOpen,
-      msg.sender
+      name, // name
+      description, // description
+      url, // url
+      imageUrl, // imageUrl
+      isOpen, // isOpen
+      startedAt, // startedAt
+      endedAt, // endedAt
+      0, // donationsAmount
+      0, // donationsCount
+      beneficiary, // beneficiary
+      msg.sender // custodian
     );
     _fundraisers.push(fundraiser);
+
+    emit FundraiserCreated(fundraiser, msg.sender, block.timestamp);
   }
+
+  // TODO: 以下をリファクタリング
 
   function fundraisersCount() public view returns (uint256) {
     return _fundraisers.length;
@@ -55,7 +52,7 @@ contract FundraiserFactory is Ownable {
   function activeFundraisersCount() public view returns (uint256) {
     uint256 count = 0;
     for (uint256 i = 0; i < _fundraisers.length; i++) {
-      if (isActive(_fundraisers[i])) { count++; }
+      if (_fundraisers[i].isActive()) { count++; }
     }
     return count;
   }
@@ -71,7 +68,7 @@ contract FundraiserFactory is Ownable {
     uint256 collectionIndex = 0;
 
     for (uint256 i = 0; i < _fundraisers.length; i++) {
-      if (isActive(_fundraisers[i])) {
+      if (_fundraisers[i].isActive()) {
         if (collectionIndex >= offset && collectionIndex < offset + size) {
           collection[collectionIndex - offset] = _fundraisers[i];
         }

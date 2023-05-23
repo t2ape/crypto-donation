@@ -123,10 +123,10 @@ const FundraisersEdit = () => {
         values.description,
         values.url,
         values.imageUrl,
+        values.isOpen,
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary,
-        values.isOpen
       ).estimateGas({ from: accounts[0] });
       const gasPrice = await web3.eth.getGasPrice();
       await contract.methods.updateFundraiser(
@@ -134,10 +134,10 @@ const FundraisersEdit = () => {
         values.description,
         values.url,
         values.imageUrl,
+        values.isOpen,
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary,
-        values.isOpen
       ).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
