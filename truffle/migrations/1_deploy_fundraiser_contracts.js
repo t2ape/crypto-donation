@@ -1,6 +1,6 @@
 const FundraiserStorage = artifacts.require('FundraiserStorage');
 const AdminFundraiserLogic = artifacts.require('AdminFundraiserLogic');
-const UserFundraiserLogic = artifacts.require('UserFundraiserLogic');
+const UserFundraiserHandler = artifacts.require('UserFundraiserHandler');
 
 module.exports = function (deployer) {
   deployer.deploy(FundraiserStorage)
@@ -8,6 +8,6 @@ module.exports = function (deployer) {
       return deployer.deploy(AdminFundraiserLogic, FundraiserStorage.address);
     })
     .then(() => {
-      return deployer.deploy(UserFundraiserLogic, FundraiserStorage.address);
+      return deployer.deploy(UserFundraiserHandler, FundraiserStorage.address);
     });
 };

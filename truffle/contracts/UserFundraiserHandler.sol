@@ -4,7 +4,7 @@ import "./Fundraiser.sol";
 import "./FundraiserStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract UserFundraiserLogic {
+contract UserFundraiserHandler {
   // activeFundraisers 関数が返すアイテムの最大値
   uint256 constant maxLimit = 50;
 
