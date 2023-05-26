@@ -21,14 +21,14 @@ contract AdministratorFundraiserHandler is Ownable {
   }
 
   function createFundraiser(
-    string memory name,
-    string memory description,
-    string memory url,
-    string memory imageUrl,
-    bool isOpen,
-    uint256 startedAt,
-    uint256 endedAt,
-    address payable beneficiary
+    string memory name, // 必須
+    string memory description, // 必須
+    string memory url, // 任意
+    string memory imageUrl, // 任意
+    bool isOpen, // 必須
+    uint256 startedAt, // 任意
+    uint256 endedAt, // 任意
+    address payable beneficiary // 必須
   ) public onlyOwner {
     // validations
     require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
