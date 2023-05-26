@@ -7,7 +7,7 @@ import { productReducer } from "./slices/productSlice";
 import { ratingReducer } from "./slices/ratingSlice";
 import { scrumReducer } from "./slices/scrumSlice";
 import { userReducer } from "./slices/userSlice";
-import { fundraiserReducer } from "./slices/fundraiserSlice";
+import { fundraiserReducer } from "./administrator/fundraiserSlice";
 import { fundraiserForUserReducer } from "./user/slices/fundraiserSlice";
 
 const store = configureStore({

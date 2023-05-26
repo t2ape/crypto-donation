@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import getWeb3 from "utils/getWeb3";
-import FundraiserFactoryContract from "contracts/FundraiserFactory.json";
+import AdministratorFundraiserHandlerContract from "contracts/AdministratorFundraiserHandler.json";
 
 const initialState = {
   error: null,
@@ -11,14 +11,14 @@ const initialState = {
 export const getFundraisers = createAsyncThunk("fundraisers/get", async () => {
   const web3 = await getWeb3();
   const networkId = await web3.eth.net.getId();
-  const deployedNetwork = FundraiserFactoryContract.networks[networkId];
+  const deployedNetwork = AdministratorFundraiserHandlerContract.networks[networkId];
   const contract = new web3.eth.Contract(
-    FundraiserFactoryContract.abi,
+    AdministratorFundraiserHandlerContract.abi,
     deployedNetwork && deployedNetwork.address
   );
 
   // TODO: ページネーションに応じた limit と offset に変更する
-  const fundraisers = await contract.methods.fundraisers_for_admin(50, 0).call();
+  const fundraisers = await contract.methods.fundraisers(50, 0).call();
   return fundraisers
 });
 

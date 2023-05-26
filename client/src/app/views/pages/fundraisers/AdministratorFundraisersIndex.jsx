@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Breadcrumb, MatxLoading } from "app/components";
 import { TableHead, TableToolbar } from "app/components/data-table";
-import useFundraisers from "app/hooks/useFundraisers";
+import useFundraisers from "app/hooks/administrator/useFundraisers";
 import useTable from "app/hooks/useTable";
 import FundraiserRow from "./FundraiserRow";
 
@@ -22,7 +22,7 @@ const Container = styled("div")(({ theme }) => ({
   },
 }));
 
-const FundraisersIndex = () => {
+const AdministratorFundraisersIndex = () => {
   const {
     page,
     rowsPerPage,
@@ -86,4 +86,4 @@ const FundraisersIndex = () => {
   );
 };
 
-export default FundraisersIndex;
+export default AdministratorFundraisersIndex;

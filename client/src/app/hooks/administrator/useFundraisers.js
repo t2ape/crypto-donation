@@ -1,4 +1,4 @@
-import { getFundraisers } from "app/redux/slices/fundraiserSlice";
+import { getFundraisers } from "app/redux/administrator/fundraiserSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
