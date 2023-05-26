@@ -14,7 +14,7 @@ const CustomerList = Loadable(lazy(() => import("./customers/CustomerList")));
 const ProductViewer = Loadable(lazy(() => import("./products/ProductViewer")));
 const CustomerForm = Loadable(lazy(() => import("./customers/customer-form/CustomerForm")));
 const CustomerViewer = Loadable(lazy(() => import("./customers/customer-viewer/CustomerViewer")));
-const FundraisersNew = Loadable(lazy(() => import("./fundraisers/FundraisersNew")));
+const AdministratorFundraisersNew = Loadable(lazy(() => import("./fundraisers/AdministratorFundraisersNew")));
 const FundraisersEdit = Loadable(lazy(() => import("./fundraisers/FundraisersEdit")));
 const FundraisersIndex = Loadable(lazy(() => import("./fundraisers/FundraisersIndex")));
 const UserFundraisersShow = Loadable(lazy(() => import("./fundraisers/UserFundraisersShow")));
@@ -34,7 +34,7 @@ const pagesRoutes = [
   { path: "/pages/new-product", element: <ProductForm /> },
   { path: "/pages/view-product", element: <ProductViewer /> },
   { path: "/pages/order-list", element: <OrderList /> },
-  { path: "/administrator/pages/fundraisers/new", element: <FundraisersNew /> },
+  { path: "/administrator/pages/fundraisers/new", element: <AdministratorFundraisersNew /> },
   { path: "/administrator/pages/fundraisers/:id/edit", element: <FundraisersEdit /> },
   { path: "/administrator/pages/fundraisers", element: <FundraisersIndex /> },
   { path: "/user/pages/fundraisers/:id", element: <UserFundraisersShow /> },

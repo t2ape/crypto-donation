@@ -9,7 +9,7 @@ import MuiTextField from "@mui/material/TextField";
 import {useState, useEffect} from "react";
 import getWeb3 from "utils/getWeb3";
 
-import FundraiserFactoryContract from "contracts/FundraiserFactory.json";
+import AdministratorFundraiserHandlerContract from "contracts/AdministratorFundraiserHandler.json";
 import {FlexBox} from "app/components/FlexBox";
 
 // styled components
@@ -24,7 +24,7 @@ const Container = styled("div")(({ theme }) => ({
 const StyledTextField = styled(TextField)({ marginBottom: "16px" });
 const Form = styled("form")({ paddingLeft: "16px", paddingRight: "16px" });
 
-const FundraisersNew = () => {
+const AdministratorFundraisersNew = () => {
   const [ web3, setWeb3 ] = useState(null);
   const [ contract, setContract ] = useState(null);
   const [ accounts, setAccounts ] = useState(null);
@@ -36,9 +36,9 @@ const FundraisersNew = () => {
         setWeb3(web3);
 
         const networkId = await web3.eth.net.getId();
-        const deployedNetwork = FundraiserFactoryContract.networks[networkId];
+        const deployedNetwork = AdministratorFundraiserHandlerContract.networks[networkId];
         const contract = new web3.eth.Contract(
-          FundraiserFactoryContract.abi,
+          AdministratorFundraiserHandlerContract.abi,
           deployedNetwork && deployedNetwork.address,
         );
         setContract(contract);
@@ -287,4 +287,4 @@ const initialValues = {
   endedAt: null,
   isOpen: false,
 };
-export default FundraisersNew;
+export default AdministratorFundraisersNew;
