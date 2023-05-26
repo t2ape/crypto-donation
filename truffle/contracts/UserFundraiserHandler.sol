@@ -1,17 +1,24 @@
 pragma solidity ^0.8.19;
 
 import "./Fundraiser.sol";
+import "./FundraiserStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract UserFundraiserLogic {
-  // fundraisers 関数が返すアイテムの最大値
+  // activeFundraisers 関数が返すアイテムの最大値
   uint256 constant maxLimit = 50;
+
+  FundraiserStorage internal _fundraiserStorage;
+
+  constructor(address fundraiserStorageAddress) {
+    _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
+  }
 
   function activeFundraisersCount() public view returns (uint256) {
     uint256 count = 0;
-    uint256 fundraisersCount = getUint(keccak256("fundraisersCount"));
+    uint256 fundraisersCount = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
     for (uint256 i = 0; i < fundraisersCount; i++) {
-      Fundraiser fundraiser = Fundraiser(getAddress(keccak256(abi.encodePacked("fundraiser", i))));
+      Fundraiser fundraiser = Fundraiser(_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", i))));
       if (fundraiser.isActive()) {
         count++;
       }
@@ -28,10 +35,10 @@ contract UserFundraiserLogic {
     collection = new Fundraiser[](size);
 
     uint256 collectionIndex = 0;
-    uint256 fundraisersCount = getUint(keccak256("fundraisersCount"));
+    uint256 fundraisersCount = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
 
     for (uint256 i = 0; i < fundraisersCount; i++) {
-      Fundraiser fundraiser = Fundraiser(getAddress(keccak256(abi.encodePacked("fundraiser", i))));
+      Fundraiser fundraiser = Fundraiser(_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", i))));
       if (fundraiser.isActive()) {
         if (collectionIndex >= offset && collectionIndex < offset + size) {
           // インクリメントしていった collectionIndex が offset 以上 offset + size 未満の時だけ、
