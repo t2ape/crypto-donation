@@ -4,9 +4,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Fundraiser is Ownable {
-  using SafeMath for uint256;
-
   // TODO: 寄付に紐付く団体を考慮する
+
+  using SafeMath for uint256;
 
   string public name;
   string public description;
@@ -29,7 +29,7 @@ contract Fundraiser is Ownable {
 
   event FundraiserUpdated(address indexed updater, uint256 updatedAt);
   event FundraiserDeleted(address indexed deletor, uint256 deletedAt);
-  event DonationReceived(address indexed donor, uint256 value);
+  event DonationReceived(address indexed donor, uint256 value, uint256 donatedAt);
 
   constructor(
     string memory _name,
@@ -58,7 +58,7 @@ contract Fundraiser is Ownable {
   }
 
   modifier notDeleted() {
-    require(deletedAt == 0 );
+    require(deletedAt == 0);
     _;
   }
 
@@ -96,6 +96,12 @@ contract Fundraiser is Ownable {
     emit FundraiserUpdated(msg.sender, block.timestamp);
   }
 
+  function deleteFundraiser() public onlyOwner notDeleted {
+    deletedAt = block.timestamp;
+
+    emit FundraiserDeleted(msg.sender, deletedAt);
+  }
+
   function isActive() public view returns (bool) {
     return (
       isOpen &&
@@ -103,12 +109,6 @@ contract Fundraiser is Ownable {
       startedAt <= block.timestamp &&
       endedAt > block.timestamp
     );
-  }
-
-  function deleteFundraiser() public onlyOwner notDeleted {
-    deletedAt = block.timestamp;
-
-    emit FundraiserDeleted(msg.sender, deletedAt);
   }
 
   function donate() public payable active {
@@ -120,6 +120,6 @@ contract Fundraiser is Ownable {
     donationsAmount = donationsAmount.add(msg.value);
     donationsCount++;
 
-    emit DonationReceived(msg.sender, msg.value);
+    emit DonationReceived(msg.sender, msg.value, block.timestamp);
   }
 }
