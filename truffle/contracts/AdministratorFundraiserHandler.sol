@@ -1,20 +1,27 @@
 pragma solidity ^0.8.19;
 
 import "./Fundraiser.sol";
+import "./FundraiserStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract AdministratorFundraiserHandler is Ownable {
-  event FundraiserCreated(Fundraiser indexed fundraiser, address indexed creator, uint256 createdAt);
-
   // fundraisers 関数が返すアイテムの最大値
   uint256 constant maxLimit = 50;
 
+  FundraiserStorage internal _fundraiserStorage;
+
+  event FundraiserCreated(Fundraiser indexed fundraiser, address indexed creator, uint256 createdAt);
+
+  constructor(address fundraiserStorageAddress) {
+    _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
+  }
+
   function fundraisersCount() public view onlyOwner returns (uint256) {
-    return getUint(keccak256("fundraisersCount"));
+    return _fundraiserStorage.getUint(keccak256("fundraisersCount"));
   }
 
   function setFundraisersCount(uint256 count) internal onlyOwner {
-    setUint(keccak256("fundraisersCount"), count);
+    _fundraiserStorage.setUint(keccak256("fundraisersCount"), count);
   }
 
   function createFundraiser(
@@ -50,7 +57,7 @@ contract AdministratorFundraiserHandler is Ownable {
 
     uint256 count = fundraisersCount();
     setFundraisersCount(count + 1);
-    setAddress(keccak256(abi.encodePacked("fundraiser", count)), address(fundraiser));
+    _fundraiserStorage.setAddress(keccak256(abi.encodePacked("fundraiser", count)), address(fundraiser));
 
     emit FundraiserCreated(fundraiser, msg.sender, block.timestamp);
   }
@@ -64,7 +71,7 @@ contract AdministratorFundraiserHandler is Ownable {
     collection = new Fundraiser[](size);
 
     for (uint256 i = 0; i < size; i++) {
-      collection[i] = Fundraiser(getAddress(keccak256(abi.encodePacked("fundraiser", offset + i))));
+      collection[i] = Fundraiser(_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", offset + i))));
     }
 
     return collection;
