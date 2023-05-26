@@ -14,18 +14,6 @@ contract UserFundraiserLogic {
     _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
   }
 
-  function activeFundraisersCount() public view returns (uint256) {
-    uint256 count = 0;
-    uint256 fundraisersCount = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
-    for (uint256 i = 0; i < fundraisersCount; i++) {
-      Fundraiser fundraiser = Fundraiser(_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", i))));
-      if (fundraiser.isActive()) {
-        count++;
-      }
-    }
-    return count;
-  }
-
   function activeFundraisers(uint256 limit, uint256 offset) public view returns (Fundraiser[] memory collection) {
     require(offset <= activeFundraisersCount(), "offset is over limit.");
 
@@ -57,5 +45,17 @@ contract UserFundraiserLogic {
     }
 
     return collection;
+  }
+
+  function activeFundraisersCount() public view returns (uint256) {
+    uint256 count = 0;
+    uint256 fundraisersCount = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
+    for (uint256 i = 0; i < fundraisersCount; i++) {
+      Fundraiser fundraiser = Fundraiser(_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", i))));
+      if (fundraiser.isActive()) {
+        count++;
+      }
+    }
+    return count;
   }
 }
