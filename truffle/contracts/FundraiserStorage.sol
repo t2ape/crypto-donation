@@ -13,11 +13,11 @@ contract FundraiserStorage is Ownable {
   mapping(bytes32 => int) intStorage;
 
   modifier onlyAccessPermittedContract() {
-    require(msgSenderIsAccessPermittedContract);
+    require(msgSenderIsAccessPermittedContract());
     _;
   }
 
-  function msgSenderIsAccessPermittedContract() {
+  function msgSenderIsAccessPermittedContract() private view returns(bool) {
     for(uint256 i = 0; i < _accessPermittedContracts.length; i++) {
       if(_accessPermittedContracts[i] == msg.sender) {
         return true;
@@ -47,7 +47,7 @@ contract FundraiserStorage is Ownable {
     return uIntStorage[_key];
   }
 
-  function getString(bytes32 _key) external view returns(string) {
+  function getString(bytes32 _key) external view returns(string memory) {
     return stringStorage[_key];
   }
 
@@ -55,7 +55,7 @@ contract FundraiserStorage is Ownable {
     return addressStorage[_key];
   }
 
-  function getBytes(bytes32 _key) external view returns(bytes) {
+  function getBytes(bytes32 _key) external view returns(bytes memory) {
     return bytesStorage[_key];
   }
 
@@ -72,7 +72,7 @@ contract FundraiserStorage is Ownable {
     uIntStorage[_key] = _value;
   }
 
-  function setString(bytes32 _key, string _value) onlyAccessPermittedContract external {
+  function setString(bytes32 _key, string calldata _value) onlyAccessPermittedContract external {
     stringStorage[_key] = _value;
   }
 
@@ -80,7 +80,7 @@ contract FundraiserStorage is Ownable {
     addressStorage[_key] = _value;
   }
 
-  function setBytes(bytes32 _key, bytes _value) onlyAccessPermittedContract external {
+  function setBytes(bytes32 _key, bytes calldata _value) onlyAccessPermittedContract external {
     bytesStorage[_key] = _value;
   }
 
