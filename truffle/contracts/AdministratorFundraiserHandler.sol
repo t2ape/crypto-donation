@@ -16,10 +16,6 @@ contract AdministratorFundraiserHandler is Ownable {
     _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
   }
 
-  function fundraisersCount() public view onlyOwner returns (uint256) {
-    return _fundraiserStorage.getUint(keccak256("fundraisersCount"));
-  }
-
   function setFundraisersCount(uint256 count) internal onlyOwner {
     _fundraiserStorage.setUint(keccak256("fundraisersCount"), count);
   }
@@ -75,5 +71,9 @@ contract AdministratorFundraiserHandler is Ownable {
     }
 
     return collection;
+  }
+
+  function fundraisersCount() public view onlyOwner returns (uint256) {
+    return _fundraiserStorage.getUint(keccak256("fundraisersCount"));
   }
 }
