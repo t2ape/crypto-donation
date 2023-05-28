@@ -8,9 +8,16 @@ import { MatxTheme } from "./components";
 import store from "./redux/store";
 import routes from "./routes";
 import "../fake-db";
+import React, { useEffect } from 'react';
 
 const App = () => {
   const content = useRoutes(routes);
+
+  useEffect(() => {
+    window.ethereum.on('accountsChanged', function (accounts) {
+      window.location.reload();
+    });
+    }, []);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
