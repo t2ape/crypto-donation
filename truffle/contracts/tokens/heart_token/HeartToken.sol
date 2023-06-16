@@ -5,9 +5,9 @@
 pragma solidity ^0.8.19;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import { IHeartToken } from './interfaces/IHeartToken.sol';
 import { ERC721 } from './base/ERC721.sol';
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
+// TODO: 追加
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
 
 contract HeartToken is Ownable {
@@ -97,7 +97,7 @@ contract HeartToken is Ownable {
      */
   function tokenURI(uint256 tokenId) public view override returns (string memory) {
     require(_exists(tokenId), 'URI query for nonexistent token');
-    return tokenURI(tokenId, seeds[tokenId]);
+    return dataURI(tokenId);
   }
 
   /**
@@ -106,7 +106,9 @@ contract HeartToken is Ownable {
      */
   function dataURI(uint256 tokenId) public view override returns (string memory) {
     require(_exists(tokenId), 'URI query for nonexistent token');
-    return dataURI(tokenId, seeds[tokenId]);
+
+    // TODO: dataURI の生成ロジックを記述する
+    // return dataURI(tokenId, seeds[tokenId]);
   }
 
   /**
