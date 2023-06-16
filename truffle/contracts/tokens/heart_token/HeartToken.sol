@@ -54,7 +54,7 @@ contract HeartToken is Ownable {
     address _founders,
     address _minter,
     IProxyRegistry _proxyRegistry
-  ) ERC721('Heart', 'Heart') {
+  ) ERC721('Heart', 'HEART') {
     founders = _founders;
     minter = _minter;
     proxyRegistry = _proxyRegistry;
