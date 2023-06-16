@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: GPL-3.0
 
-/// @title The Donation ERC-721 token
+/// @title The Heart ERC-721 token
 
 pragma solidity ^0.8.19;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { ITokenDescriptorMinimal } from './interfaces/ITokenDescriptorMinimal.sol';
 import { ITokenSeeder } from './interfaces/ITokenSeeder.sol';
-import { IDonationToken } from './interfaces/IDonationToken.sol';
+import { IHeartToken } from './interfaces/IHeartToken.sol';
 import { ERC721 } from './base/ERC721.sol';
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
 
-contract DonationToken is Ownable {
+contract HeartToken is Ownable {
   // The founders address (creators org)
   address public founders;
 
@@ -89,7 +89,7 @@ contract DonationToken is Ownable {
     ITokenDescriptorMinimal _descriptor,
     ITokenSeeder _seeder,
     IProxyRegistry _proxyRegistry
-  ) ERC721('Donation', 'DONATION') {
+  ) ERC721('Heart', 'Heart') {
     founders = _founders;
     minter = _minter;
     descriptor = _descriptor;
