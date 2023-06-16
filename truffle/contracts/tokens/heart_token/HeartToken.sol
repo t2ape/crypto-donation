@@ -6,7 +6,6 @@ pragma solidity ^0.8.19;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { ITokenDescriptorMinimal } from './interfaces/ITokenDescriptorMinimal.sol';
-import { ITokenSeeder } from './interfaces/ITokenSeeder.sol';
 import { IHeartToken } from './interfaces/IHeartToken.sol';
 import { ERC721 } from './base/ERC721.sol';
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
@@ -22,20 +21,11 @@ contract HeartToken is Ownable {
   // The token descriptor
   ITokenDescriptorMinimal public descriptor;
 
-  // The token seeder
-  ITokenSeeder public seeder;
-
   // Whether the minter can be updated
   bool public isMinterLocked;
 
   // Whether the descriptor can be updated
   bool public isDescriptorLocked;
-
-  // Whether the seeder can be updated
-  bool public isSeederLocked;
-
-  // The token seeds
-  mapping(uint256 => ITokenSeeder.Seed) public seeds;
 
   // The internal token ID tracker
   uint256 private _currentTokenId;
@@ -60,14 +50,6 @@ contract HeartToken is Ownable {
   }
 
   /**
-   * @notice Require that the seeder has not been locked.
-     */
-  modifier whenSeederNotLocked() {
-    require(!isSeederLocked, 'Seeder is locked');
-    _;
-  }
-
-  /**
    * @notice Require that the sender is the founders.
      */
   modifier onlyFounders() {
@@ -87,13 +69,11 @@ contract HeartToken is Ownable {
     address _founders,
     address _minter,
     ITokenDescriptorMinimal _descriptor,
-    ITokenSeeder _seeder,
     IProxyRegistry _proxyRegistry
   ) ERC721('Heart', 'Heart') {
     founders = _founders;
     minter = _minter;
     descriptor = _descriptor;
-    seeder = _seeder;
     proxyRegistry = _proxyRegistry;
   }
 
@@ -197,30 +177,11 @@ contract HeartToken is Ownable {
   }
 
   /**
-   * @notice Set the token seeder.
-     * @dev Only callable by the owner when not locked.
-     */
-  function setSeeder(ITokenSeeder _seeder) external override onlyOwner whenSeederNotLocked {
-    seeder = _seeder;
-
-    emit SeederUpdated(_seeder);
-  }
-
-  /**
-   * @notice Lock the seeder.
-     * @dev This cannot be reversed and is only callable by the owner when not locked.
-     */
-  function lockSeeder() external override onlyOwner whenSeederNotLocked {
-    isSeederLocked = true;
-
-    emit SeederLocked();
-  }
-
-  /**
    * @notice Mint a Token with `tokenID` to the provided `to` address.
      */
   function _mintTo(address to, uint256 tokenID) internal returns (uint256) {
-    ITokenSeeder.Seed memory seed = seeds[tokenID] = seeder.generateSeed(tokenID, descriptor);
+    // TODO: generate seed
+    // ITokenSeeder.Seed memory seed = seeds[tokenID] = seeder.generateSeed(tokenID, descriptor);
 
     _mint(owner(), to, tokenID);
     emit TokenCreated(tokenID, seed);
