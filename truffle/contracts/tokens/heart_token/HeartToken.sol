@@ -5,7 +5,6 @@
 pragma solidity ^0.8.19;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import { ITokenDescriptorMinimal } from './interfaces/ITokenDescriptorMinimal.sol';
 import { IHeartToken } from './interfaces/IHeartToken.sol';
 import { ERC721 } from './base/ERC721.sol';
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
@@ -18,14 +17,8 @@ contract HeartToken is Ownable {
   // An address who has permissions to mint token
   address public minter;
 
-  // The token descriptor
-  ITokenDescriptorMinimal public descriptor;
-
   // Whether the minter can be updated
   bool public isMinterLocked;
-
-  // Whether the descriptor can be updated
-  bool public isDescriptorLocked;
 
   // The internal token ID tracker
   uint256 private _currentTokenId;
@@ -38,14 +31,6 @@ contract HeartToken is Ownable {
      */
   modifier whenMinterNotLocked() {
     require(!isMinterLocked, 'Minter is locked');
-    _;
-  }
-
-  /**
-   * @notice Require that the descriptor has not been locked.
-     */
-  modifier whenDescriptorNotLocked() {
-    require(!isDescriptorLocked, 'Descriptor is locked');
     _;
   }
 
@@ -68,12 +53,10 @@ contract HeartToken is Ownable {
   constructor(
     address _founders,
     address _minter,
-    ITokenDescriptorMinimal _descriptor,
     IProxyRegistry _proxyRegistry
   ) ERC721('Heart', 'Heart') {
     founders = _founders;
     minter = _minter;
-    descriptor = _descriptor;
     proxyRegistry = _proxyRegistry;
   }
 
@@ -114,7 +97,7 @@ contract HeartToken is Ownable {
      */
   function tokenURI(uint256 tokenId) public view override returns (string memory) {
     require(_exists(tokenId), 'URI query for nonexistent token');
-    return descriptor.tokenURI(tokenId, seeds[tokenId]);
+    return tokenURI(tokenId, seeds[tokenId]);
   }
 
   /**
@@ -123,7 +106,7 @@ contract HeartToken is Ownable {
      */
   function dataURI(uint256 tokenId) public view override returns (string memory) {
     require(_exists(tokenId), 'URI query for nonexistent token');
-    return descriptor.dataURI(tokenId, seeds[tokenId]);
+    return dataURI(tokenId, seeds[tokenId]);
   }
 
   /**
@@ -154,26 +137,6 @@ contract HeartToken is Ownable {
     isMinterLocked = true;
 
     emit MinterLocked();
-  }
-
-  /**
-   * @notice Set the token URI descriptor.
-     * @dev Only callable by the owner when not locked.
-     */
-  function setDescriptor(ITokenDescriptorMinimal _descriptor) external override onlyOwner whenDescriptorNotLocked {
-    descriptor = _descriptor;
-
-    emit DescriptorUpdated(_descriptor);
-  }
-
-  /**
-   * @notice Lock the descriptor.
-     * @dev This cannot be reversed and is only callable by the owner when not locked.
-     */
-  function lockDescriptor() external override onlyOwner whenDescriptorNotLocked {
-    isDescriptorLocked = true;
-
-    emit DescriptorLocked();
   }
 
   /**
