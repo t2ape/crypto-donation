@@ -178,7 +178,24 @@ contract HeartToken is Ownable {
     );
   }
 
-  function _generateImage() {
+  function _generateImage(uint256 tokenId, uint256[] _seeds, string[] _colors, uint256 _colorsLength) internal pure returns(bytes memory) {
+    bytes memory pack;
+    uint256 i;
+    for (i = 0; i < _seeds.length - 6; i++) {
+      uint256 _colorsIndex = _randomValue(tokenId, i) % _colorsLength;
+
+      pack = abi.encodePacked(
+        pack,
+        '<polygon points="',
+        _seeds[i], ' ', _seeds[i + 1], ', ',
+        _seeds[i + 2], ' ', _seeds[i + 3], ', ',
+        _seeds[i + 4], ' ', _seeds[i + 5], '"',
+        'fill="',
+        _colors[_colorsIndex],
+        '/>\n'
+      );
+    }
+    return pack;
   }
 
   function _randomValue(uint256 base, uint256 randomNonce) internal pure returns (uint256) {
