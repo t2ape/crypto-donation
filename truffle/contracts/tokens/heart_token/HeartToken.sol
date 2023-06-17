@@ -126,23 +126,23 @@ contract HeartToken is Ownable {
   }
 
   function _generateSVG(uint256 tokenId) internal pure returns (bytes memory) {
-    uint256 randomNonce = 0;
-    uint256 seed = _randomValue(tokenId, randomNonce);
+    uint256 nonce = 0;
+    uint256 seed = _randomValue(tokenId, nonce);
     uint256[14] seeds = [
-      _randomValue(tokenId, randomNonce++) % 180 + 180, _randomValue(tokenId, randomNonce++) % 180 + 180,
-      _randomValue(tokenId, randomNonce++) % 180 + 360, _randomValue(tokenId, randomNonce++) % 180 + 180,
-      _randomValue(tokenId, randomNonce++) % 180 + 540, _randomValue(tokenId, randomNonce++) % 180 + 180,
-      _randomValue(tokenId, randomNonce++) % 180 + 720, _randomValue(tokenId, randomNonce++) % 180 + 180,
-      _randomValue(tokenId, randomNonce++) % 180 + 180, _randomValue(tokenId, randomNonce++) % 180 + 360,
-      _randomValue(tokenId, randomNonce++) % 180 + 360, _randomValue(tokenId, randomNonce++) % 180 + 360,
-      _randomValue(tokenId, randomNonce++) % 180 + 540, _randomValue(tokenId, randomNonce++) % 180 + 360,
-      _randomValue(tokenId, randomNonce++) % 180 + 720, _randomValue(tokenId, randomNonce++) % 180 + 360,
-      _randomValue(tokenId, randomNonce++) % 180 + 180, _randomValue(tokenId, randomNonce++) % 180 + 540,
-      _randomValue(tokenId, randomNonce++) % 180 + 360, _randomValue(tokenId, randomNonce++) % 180 + 540,
-      _randomValue(tokenId, randomNonce++) % 180 + 540, _randomValue(tokenId, randomNonce++) % 180 + 540,
-      _randomValue(tokenId, randomNonce++) % 180 + 720, _randomValue(tokenId, randomNonce++) % 180 + 540,
-      _randomValue(tokenId, randomNonce++) % 180 + 360, _randomValue(tokenId, randomNonce++) % 180 + 720,
-      _randomValue(tokenId, randomNonce++) % 180 + 540, _randomValue(tokenId, randomNonce++) % 180 + 720
+      _randomValue(tokenId, nonce++) % 180 + 180, _randomValue(tokenId, nonce++) % 180 + 180,
+      _randomValue(tokenId, nonce++) % 180 + 360, _randomValue(tokenId, nonce++) % 180 + 180,
+      _randomValue(tokenId, nonce++) % 180 + 540, _randomValue(tokenId, nonce++) % 180 + 180,
+      _randomValue(tokenId, nonce++) % 180 + 720, _randomValue(tokenId, nonce++) % 180 + 180,
+      _randomValue(tokenId, nonce++) % 180 + 180, _randomValue(tokenId, nonce++) % 180 + 360,
+      _randomValue(tokenId, nonce++) % 180 + 360, _randomValue(tokenId, nonce++) % 180 + 360,
+      _randomValue(tokenId, nonce++) % 180 + 540, _randomValue(tokenId, nonce++) % 180 + 360,
+      _randomValue(tokenId, nonce++) % 180 + 720, _randomValue(tokenId, nonce++) % 180 + 360,
+      _randomValue(tokenId, nonce++) % 180 + 180, _randomValue(tokenId, nonce++) % 180 + 540,
+      _randomValue(tokenId, nonce++) % 180 + 360, _randomValue(tokenId, nonce++) % 180 + 540,
+      _randomValue(tokenId, nonce++) % 180 + 540, _randomValue(tokenId, nonce++) % 180 + 540,
+      _randomValue(tokenId, nonce++) % 180 + 720, _randomValue(tokenId, nonce++) % 180 + 540,
+      _randomValue(tokenId, nonce++) % 180 + 360, _randomValue(tokenId, nonce++) % 180 + 720,
+      _randomValue(tokenId, nonce++) % 180 + 540, _randomValue(tokenId, nonce++) % 180 + 720
     ];
 
     if (seed % 10 == 0) {
@@ -198,8 +198,8 @@ contract HeartToken is Ownable {
     return pack;
   }
 
-  function _randomValue(uint256 base, uint256 randomNonce) internal pure returns (uint256) {
-     return uint256(keccak256(abi.encodePacked(base, randomNonce)));
+  function _randomValue(uint256 base, uint256 nonce) internal pure returns (uint256) {
+     return uint256(keccak256(abi.encodePacked(base, nonce)));
   }
 
   /**
