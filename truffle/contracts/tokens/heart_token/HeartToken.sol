@@ -199,7 +199,7 @@ contract HeartToken is Ownable {
   }
 
   function _randomValue(uint256 base, uint256 randomNonce) internal pure returns (uint256) {
-     return uint256(keccak256(abi.encodePacked(base, randomNonce, block.timestamp)));
+     return uint256(keccak256(abi.encodePacked(base, randomNonce)));
   }
 
   /**
