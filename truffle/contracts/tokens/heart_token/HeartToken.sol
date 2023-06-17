@@ -2,6 +2,8 @@
 
 /// @title The Heart ERC-721 token
 
+// TODO: 全体的に、override は Interface の存在を前提とした記述かもなので不要であれば削除する
+
 pragma solidity ^0.8.19;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
@@ -74,13 +76,12 @@ contract HeartToken is Ownable {
   /**
    * @notice Mint a token to the minter, along with a possible founders reward
      * token. Founders reward tokens are minted every 10 token.
-     * @dev Call _mintTo with the to address(es).
      */
-  function mint() public override onlyMinter returns (uint256) {
+  function mint() public override onlyMinter {
     if (_currentTokenId % 10 == 0) {
-      _mintTo(founders, _currentTokenId++);
+      _mint(owner(), founders, _currentTokenId++);
     }
-    return _mintTo(minter, _currentTokenId++);
+    _mint(owner(), minter, _currentTokenId++);
   }
 
   /**
@@ -139,18 +140,5 @@ contract HeartToken is Ownable {
     isMinterLocked = true;
 
     emit MinterLocked();
-  }
-
-  /**
-   * @notice Mint a Token with `tokenID` to the provided `to` address.
-     */
-  function _mintTo(address to, uint256 tokenID) internal returns (uint256) {
-    // TODO: generate seed
-    // ITokenSeeder.Seed memory seed = seeds[tokenID] = seeder.generateSeed(tokenID, descriptor);
-
-    _mint(owner(), to, tokenID);
-    emit TokenCreated(tokenID, seed);
-
-    return tokenID;
   }
 }
