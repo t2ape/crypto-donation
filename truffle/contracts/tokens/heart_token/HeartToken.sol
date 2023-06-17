@@ -2,14 +2,11 @@
 
 /// @title The Heart ERC-721 token
 
-// TODO: 全体的に、override は Interface の存在を前提とした記述かもなので不要であれば削除する
-
 pragma solidity ^0.8.19;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { ERC721 } from './base/ERC721.sol';
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
-// TODO: 追加
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
 
 contract HeartToken is Ownable {
