@@ -13,6 +13,8 @@ import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
 
 contract HeartToken is Ownable {
+  using Strings for uint256;
+
   // The founders address (creators org)
   address public founders;
 
@@ -108,8 +110,79 @@ contract HeartToken is Ownable {
   function dataURI(uint256 tokenId) public view override returns (string memory) {
     require(_exists(tokenId), 'URI query for nonexistent token');
 
-    // TODO: dataURI の生成ロジックを記述する
-    // return dataURI(tokenId, seeds[tokenId]);
+    string memory tokenId = tokenId.toString();
+    string memory name = string(abi.encodePacked('Heart Token #', tokenId));
+    string memory image = Base64.encode(_generateSVG(tokenId));
+    return string(
+      abi.encodePacked(
+        'data:application/json;base64,',
+        Base64.encode(
+          bytes(
+            abi.encodePacked('{"name":"', name, '", "image": "', 'data:image/svg+xml;base64,', image, '"}')
+          )
+        )
+      )
+    );
+  }
+
+  function _generateSVG(uint256 tokenId) internal pure returns (bytes memory) {
+    uint256 randomNonce = 0;
+    uint256 seed = _randomValue(tokenId, randomNonce);
+    uint256[14] seeds = [
+      _randomValue(tokenId, randomNonce++) % 180 + 180, _randomValue(tokenId, randomNonce++) % 180 + 180,
+      _randomValue(tokenId, randomNonce++) % 180 + 360, _randomValue(tokenId, randomNonce++) % 180 + 180,
+      _randomValue(tokenId, randomNonce++) % 180 + 540, _randomValue(tokenId, randomNonce++) % 180 + 180,
+      _randomValue(tokenId, randomNonce++) % 180 + 720, _randomValue(tokenId, randomNonce++) % 180 + 180,
+      _randomValue(tokenId, randomNonce++) % 180 + 180, _randomValue(tokenId, randomNonce++) % 180 + 360,
+      _randomValue(tokenId, randomNonce++) % 180 + 360, _randomValue(tokenId, randomNonce++) % 180 + 360,
+      _randomValue(tokenId, randomNonce++) % 180 + 540, _randomValue(tokenId, randomNonce++) % 180 + 360,
+      _randomValue(tokenId, randomNonce++) % 180 + 720, _randomValue(tokenId, randomNonce++) % 180 + 360,
+      _randomValue(tokenId, randomNonce++) % 180 + 180, _randomValue(tokenId, randomNonce++) % 180 + 540,
+      _randomValue(tokenId, randomNonce++) % 180 + 360, _randomValue(tokenId, randomNonce++) % 180 + 540,
+      _randomValue(tokenId, randomNonce++) % 180 + 540, _randomValue(tokenId, randomNonce++) % 180 + 540,
+      _randomValue(tokenId, randomNonce++) % 180 + 720, _randomValue(tokenId, randomNonce++) % 180 + 540,
+      _randomValue(tokenId, randomNonce++) % 180 + 360, _randomValue(tokenId, randomNonce++) % 180 + 720,
+      _randomValue(tokenId, randomNonce++) % 180 + 540, _randomValue(tokenId, randomNonce++) % 180 + 720
+    ];
+
+    if (seed % 10 == 0) {
+      string[10] colors = [
+        "#F94144",
+        "#F3722C",
+        "#F8961E",
+        "#F9844A",
+        "#F9C74F",
+        "#90BE6D",
+        "#43AA8B",
+        "#4D908E",
+        "#577590",
+        "#277DA1"
+      ];
+    } else {
+      string[6] colors = [
+        "#E60033",
+        "#E6B8C2",
+        "#E68A9E",
+        "#E65C7A",
+        "#E62E56",
+        "#E60033"
+      ];
+    }
+
+    bytes memory image = _generateImage(seeds, colors);
+
+    return abi.encodePacked(
+      '<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">\n',
+      image,
+      '</svg>'
+    );
+  }
+
+  function _generateImage() {
+  }
+
+  function _randomValue(uint256 base, uint256 randomNonce) internal pure returns (uint256) {
+     return uint256(keccak256(abi.encodePacked(base, randomNonce, block.timestamp)));
   }
 
   /**
