@@ -54,20 +54,16 @@ contract HeartToken is Ownable {
 //  TODO: opensea について調べたら proxyRegistry を用いる形に修正
 //  constructor(
 //    address _founders,
-//    address _minter,
 //    IProxyRegistry _proxyRegistry
 //  ) ERC721('Heart', 'HEART') {
 //    founders = _founders;
-//    minter = _minter;
 //    proxyRegistry = _proxyRegistry;
 //  }
 
   constructor(
-    address _founders,
-    address _minter
+    address _founders
   ) ERC721('Heart', 'HEART') {
     founders = _founders;
-    minter = _minter;
   }
 
   /**
