@@ -51,14 +51,23 @@ contract HeartToken is Ownable {
     _;
   }
 
+//  TODO: opensea について調べたら proxyRegistry を用いる形に修正
+//  constructor(
+//    address _founders,
+//    address _minter,
+//    IProxyRegistry _proxyRegistry
+//  ) ERC721('Heart', 'HEART') {
+//    founders = _founders;
+//    minter = _minter;
+//    proxyRegistry = _proxyRegistry;
+//  }
+
   constructor(
     address _founders,
-    address _minter,
-    IProxyRegistry _proxyRegistry
+    address _minter
   ) ERC721('Heart', 'HEART') {
     founders = _founders;
     minter = _minter;
-    proxyRegistry = _proxyRegistry;
   }
 
   /**
@@ -66,9 +75,11 @@ contract HeartToken is Ownable {
      */
   function isApprovedForAll(address owner, address operator) public view override(IERC721, ERC721) returns (bool) {
     // Whitelist OpenSea proxy contract for easy trading.
-    if (proxyRegistry.proxies(owner) == operator) {
-      return true;
-    }
+
+    //  TODO: opensea について調べたら proxyRegistry を用いる形に修正
+//    if (proxyRegistry.proxies(owner) == operator) {
+//      return true;
+//    }
     return super.isApprovedForAll(owner, operator);
   }
 
