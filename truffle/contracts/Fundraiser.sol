@@ -3,10 +3,16 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
+interface IRewardTokenContract {
+  function mint(address to) external;
+}
+
 contract Fundraiser is Ownable {
   // TODO: 寄付に紐付く団体を考慮する
 
   using SafeMath for uint256;
+
+  IRewardTokenContract public rewardTokenContract;
 
   string public name;
   string public description;
@@ -126,6 +132,12 @@ contract Fundraiser is Ownable {
     _donations[msg.sender].push(donation);
     donationsAmount = donationsAmount.add(msg.value);
     donationsCount++;
+
+    if (rewardTokenContract != IRewardTokenContract(rewardToken)) {
+      rewardTokenContract = IRewardTokenContract(rewardToken);
+    }
+
+    rewardTokenContract.mint(msg.value);
 
     emit DonationReceived(msg.sender, msg.value, block.timestamp);
   }
