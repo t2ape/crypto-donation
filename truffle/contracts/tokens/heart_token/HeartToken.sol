@@ -21,18 +21,20 @@ contract HeartToken is Ownable, IERC721, ERC721 {
 
   event FoundersUpdated(address founders);
 
-  event MinterUpdated(address minter);
+  event MintersAdded(address minter);
 
-  event MinterLocked();
+  event MintersDeleted(address minter);
+
+  event MintersLocked();
 
   // The founders address (creators org)
   address public founders;
 
   // An address who has permissions to mint token
-  address public minter;
+  address public minters;
 
   // Whether the minter can be updated
-  bool public isMinterLocked;
+  bool public isMintersLocked;
 
   // The internal token ID tracker
   uint256 private _currentTokenId;
@@ -42,10 +44,10 @@ contract HeartToken is Ownable, IERC721, ERC721 {
   //  IProxyRegistry public immutable proxyRegistry;
 
   /**
-   * @notice Require that the minter has not been locked.
+   * @notice Require that the minters have not been locked.
      */
-  modifier whenMinterNotLocked() {
-    require(!isMinterLocked, 'Minter is locked');
+  modifier whenMintersNotLocked() {
+    require(!isMintersLocked, 'Minters are locked');
     _;
   }
 
@@ -58,11 +60,21 @@ contract HeartToken is Ownable, IERC721, ERC721 {
   }
 
   /**
-   * @notice Require that the sender is the minter.
+   * @notice Require that the sender is a minter.
      */
   modifier onlyMinter() {
-    require(msg.sender == minter, 'Sender is not the minter');
+    require(msgSenderIsMinter(), 'Sender is not a minter');
     _;
+  }
+
+  function msgSenderIsMinter() private view returns(bool) {
+    for(uint256 i = 0; i < _minters.length; i++) {
+      if(_minters[i] == msg.sender) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 //  TODO: opensea について調べたら proxyRegistry を用いる形に修正
@@ -94,15 +106,16 @@ contract HeartToken is Ownable, IERC721, ERC721 {
   }
 
   /**
-   * @notice Mint a token to the minter, along with a possible founders reward
-     * token. Founders reward tokens are minted every 10 token.
+   * @notice Mint a token to the address passed as argument 'to',
+     * along with a possible founders reward token.
+     * Founders reward tokens are minted every 10 token.
      */
-  function mint() public onlyMinter {
+  function mint(address to) public onlyMinter {
     if (_currentTokenId % 10 == 0) {
       _mint(owner(), founders, _currentTokenId++);
       emit TokenCreated(_currentTokenId);
     }
-    _mint(owner(), minter, _currentTokenId++);
+    _mint(owner(), to, _currentTokenId++);
     emit TokenCreated(_currentTokenId);
   }
 
@@ -302,22 +315,39 @@ contract HeartToken is Ownable, IERC721, ERC721 {
   }
 
   /**
-   * @notice Set the token minter.
+   * @notice Add a token minter.
      * @dev Only callable by the owner when not locked.
      */
-  function setMinter(address _minter) external onlyOwner whenMinterNotLocked {
-    minter = _minter;
+  function addMinter(address _minter) external onlyOwner whenMintersNotLocked {
+    minters.push(_minter);
 
-    emit MinterUpdated(_minter);
+    emit MintersAdded(_minter);
   }
 
   /**
-   * @notice Lock the minter.
+   * @notice Delete a token minter.
+     * @dev Only callable by the owner when not locked.
+     */
+  function deleteMinter(address _minter) external onlyOwner whenMintersNotLocked {
+    for(uint256 i = 0; i < minters.length; i++) {
+      if(minters[i] == _minter) {
+        // Delete does not change the array length.
+        // It resets the value at index to it's default value,
+        // in this case address(0)
+        delete minters[i];
+
+        emit MintersDeleted(_minter);
+      }
+    }
+  }
+
+  /**
+   * @notice Lock the minters.
      * @dev This cannot be reversed and is only callable by the owner when not locked.
      */
-  function lockMinter() external onlyOwner whenMinterNotLocked {
-    isMinterLocked = true;
+  function lockMinters() external onlyOwner whenMintersNotLocked {
+    isMintersLocked = true;
 
-    emit MinterLocked();
+    emit MintersLocked();
   }
 }
