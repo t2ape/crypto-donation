@@ -55,6 +55,7 @@ const FundraisersEdit = () => {
         const description = await contract.methods.description().call();
         const url = await contract.methods.url().call();
         const imageUrl = await contract.methods.imageUrl().call();
+        const donationThresholdForToken = await contract.methods.donationThresholdForToken().call();
         const beneficiary = await contract.methods.beneficiary().call();
         const rewardToken = await contract.methods.rewardToken().call();
         const isOpen = await contract.methods.isOpen().call();
@@ -72,6 +73,7 @@ const FundraisersEdit = () => {
           description: description || "",
           url: url || "",
           imageUrl: imageUrl || "",
+          donationThresholdForToken: donationThresholdForToken || 0,
           beneficiary: beneficiary || "",
           rewardToken: rewardToken || "",
           isOpen: isOpen || false,
@@ -128,6 +130,7 @@ const FundraisersEdit = () => {
         values.isOpen,
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
+        values.donationThresholdForToken,
         values.beneficiary,
         values.rewardToken,
       ).estimateGas({ from: accounts[0] });
@@ -140,6 +143,7 @@ const FundraisersEdit = () => {
         values.isOpen,
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
+        values.donationThresholdForToken,
         values.beneficiary,
         values.rewardToken,
       ).send({ from: accounts[0], gasLimit, gasPrice });
@@ -209,6 +213,7 @@ const FundraisersEdit = () => {
             description: "",
             url: "",
             imageUrl: "",
+            donationThresholdForToken: 0,
             beneficiary: "",
             rewardToken: "",
             isOpen: false,
@@ -280,6 +285,22 @@ const FundraisersEdit = () => {
                     value={values.imageUrl || ""}
                     error={Boolean(touched.imageUrl && errors.imageUrl)}
                     helperText={touched.imageUrl && errors.imageUrl}
+                  />
+
+                  <StyledTextField
+                    fullWidth
+                    name="donationThresholdForToken"
+                    label={"Donation threshold for token"}
+                    size="small"
+                    variant="outlined"
+                    type="number"
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    value={values.donationThresholdForToken || 0}
+                    error={Boolean(touched.donationThresholdForToken && errors.donationThresholdForToken)}
+                    helperText={touched.donationThresholdForToken && errors.donationThresholdForToken}
                   />
 
                   <StyledTextField
@@ -382,6 +403,7 @@ const FundraisersEdit = () => {
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
   description: yup.string().required("Description is required"),
+  donationThresholdForToken: yup.string().required("Donation threshold for token should be greater than 0"),
   beneficiary: yup.string().required("Beneficiary is required"),
   rewardToken: yup.string().required("Reward token is required"),
 });

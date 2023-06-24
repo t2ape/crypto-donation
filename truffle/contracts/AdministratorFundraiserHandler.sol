@@ -29,6 +29,7 @@ contract AdministratorFundraiserHandler is Ownable {
     bool isOpen, // 必須
     uint256 startedAt, // 任意
     uint256 endedAt, // 任意
+    uint256 donationThresholdForToken, // 必須
     address payable beneficiary, // 必須
     address rewardToken // 必須
   ) public onlyOwner {
@@ -37,6 +38,7 @@ contract AdministratorFundraiserHandler is Ownable {
     require(bytes(description).length > 0 && bytes(description).length <= 4000, "description length is invalid.");
     require(bytes(url).length >= 0 && bytes(url).length <= 4000, "url length is invalid.");
     require(bytes(imageUrl).length >= 0 && bytes(imageUrl).length <= 4000, "imageUrl length is invalid.");
+    require(donationThresholdForToken > 0, "donationThresholdForToken value is invalid.");
     require(beneficiary != address(0), "beneficiary format is invalid.");
     // TODO: rewardToken が ERC721 準拠のコントラクトであることを確認
 
@@ -50,6 +52,7 @@ contract AdministratorFundraiserHandler is Ownable {
       endedAt,
       0,
       0,
+      donationThresholdForToken,
       beneficiary,
       msg.sender,
       rewardToken

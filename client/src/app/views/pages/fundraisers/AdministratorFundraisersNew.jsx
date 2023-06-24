@@ -94,6 +94,7 @@ const AdministratorFundraisersNew = () => {
         values.isOpen,
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
+        values.donationThresholdForToken,
         values.beneficiary,
         values.rewardToken,
       ).estimateGas({ from: accounts[0] });
@@ -106,6 +107,7 @@ const AdministratorFundraisersNew = () => {
         values.isOpen,
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
+        values.donationThresholdForToken,
         values.beneficiary,
         values.rewardToken,
       ).send({ from: accounts[0], gasLimit, gasPrice });
@@ -207,6 +209,22 @@ const AdministratorFundraisersNew = () => {
 
                   <StyledTextField
                     fullWidth
+                    name="donationThresholdForToken"
+                    label={"Donation threshold for token"}
+                    size="small"
+                    variant="outlined"
+                    type="number"
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    value={values.donationThresholdForToken || 0}
+                    error={Boolean(touched.donationThresholdForToken && errors.donationThresholdForToken)}
+                    helperText={touched.donationThresholdForToken && errors.donationThresholdForToken}
+                  />
+
+                  <StyledTextField
+                    fullWidth
                     name="beneficiary"
                     label="Beneficiary Ethereum Address"
                     size="small"
@@ -291,6 +309,7 @@ const AdministratorFundraisersNew = () => {
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
   description: yup.string().required("Description is required"),
+  donationThresholdForToken: yup.string().required("Donation threshold for token should be greater than 0"),
   beneficiary: yup.string().required("Beneficiary is required"),
   rewardToken: yup.string().required("Reward token is required"),
 });
@@ -300,6 +319,7 @@ const initialValues = {
   description: "",
   url: "",
   imageUrl: "",
+  donationThresholdForToken: 0,
   beneficiary: "",
   rewardToken: "",
   startedAt: null,

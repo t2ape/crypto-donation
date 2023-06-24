@@ -24,6 +24,7 @@ contract Fundraiser is Ownable {
   uint256 public deletedAt;
   uint256 public donationsAmount;
   uint256 public donationsCount;
+  uint256 public donationThresholdForToken;
   address payable public beneficiary;
   address public rewardToken;
 
@@ -48,6 +49,7 @@ contract Fundraiser is Ownable {
     uint256 _endedAt,
     uint256 _donationsAmount,
     uint256 _donationsCount,
+    uint256 _donationThresholdForToken,
     address payable _beneficiary,
     address _custodian,
     address _rewardToken
@@ -61,6 +63,7 @@ contract Fundraiser is Ownable {
     endedAt = _endedAt;
     donationsAmount = _donationsAmount;
     donationsCount = _donationsCount;
+    donationThresholdForToken = _donationThresholdForToken;
     beneficiary = _beneficiary;
     rewardToken = _rewardToken;
     transferOwnership(_custodian);
@@ -84,6 +87,7 @@ contract Fundraiser is Ownable {
     bool _isOpen, // 必須
     uint256 _startedAt, // 任意
     uint256 _endedAt, // 任意
+    uint256 _donationThresholdForToken, // 必須
     address payable _beneficiary, // 必須
     address _rewardToken // 必須
   ) public onlyOwner notDeleted {
@@ -92,6 +96,7 @@ contract Fundraiser is Ownable {
     require(bytes(description).length > 0 && bytes(description).length <= 4000, "description length is invalid.");
     require(bytes(url).length >= 0 && bytes(url).length <= 4000, "url length is invalid.");
     require(bytes(imageUrl).length >= 0 && bytes(imageUrl).length <= 4000, "imageUrl length is invalid.");
+    require(donationThresholdForToken > 0, "donationThresholdForToken value is invalid.");
     require(beneficiary != address(0), "beneficiary format is invalid.");
     // TODO: rewardToken が ERC721 準拠のコントラクトであることを確認
 
@@ -102,6 +107,7 @@ contract Fundraiser is Ownable {
     isOpen = _isOpen;
     startedAt = _startedAt;
     endedAt = _endedAt;
+    donationThresholdForToken = _donationThresholdForToken;
     beneficiary = _beneficiary;
     beneficiary = _beneficiary;
     rewardToken = _rewardToken;
@@ -133,11 +139,13 @@ contract Fundraiser is Ownable {
     donationsAmount = donationsAmount.add(msg.value);
     donationsCount++;
 
-    if (rewardTokenContract != IRewardTokenContract(rewardToken)) {
-      rewardTokenContract = IRewardTokenContract(rewardToken);
-    }
+    if (msg.value >= donationThresholdForToken) {
+      if (rewardTokenContract != IRewardTokenContract(rewardToken)) {
+        rewardTokenContract = IRewardTokenContract(rewardToken);
+      }
 
-    rewardTokenContract.mint(msg.value);
+      rewardTokenContract.mint(msg.value);
+    }
 
     emit DonationReceived(msg.sender, msg.value, block.timestamp);
   }
