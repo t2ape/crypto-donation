@@ -19,6 +19,7 @@ contract Fundraiser is Ownable {
   uint256 public donationsAmount;
   uint256 public donationsCount;
   address payable public beneficiary;
+  address public rewardToken;
 
   struct Donation {
     uint256 value;
@@ -42,7 +43,8 @@ contract Fundraiser is Ownable {
     uint256 _donationsAmount,
     uint256 _donationsCount,
     address payable _beneficiary,
-    address _custodian
+    address _custodian,
+    address _rewardToken
   ) {
     name = _name;
     description = _description;
@@ -54,6 +56,7 @@ contract Fundraiser is Ownable {
     donationsAmount = _donationsAmount;
     donationsCount = _donationsCount;
     beneficiary = _beneficiary;
+    rewardToken = _rewardToken;
     transferOwnership(_custodian);
   }
 
@@ -75,7 +78,8 @@ contract Fundraiser is Ownable {
     bool _isOpen, // 必須
     uint256 _startedAt, // 任意
     uint256 _endedAt, // 任意
-    address payable _beneficiary // 必須
+    address payable _beneficiary, // 必須
+    address _rewardToken // 必須
   ) public onlyOwner notDeleted {
     // validations
     require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
@@ -83,6 +87,7 @@ contract Fundraiser is Ownable {
     require(bytes(url).length >= 0 && bytes(url).length <= 4000, "url length is invalid.");
     require(bytes(imageUrl).length >= 0 && bytes(imageUrl).length <= 4000, "imageUrl length is invalid.");
     require(beneficiary != address(0), "beneficiary format is invalid.");
+    // TODO: rewardToken が ERC721 準拠のコントラクトであることを確認
 
     name = _name;
     description = _description;
@@ -92,6 +97,8 @@ contract Fundraiser is Ownable {
     startedAt = _startedAt;
     endedAt = _endedAt;
     beneficiary = _beneficiary;
+    beneficiary = _beneficiary;
+    rewardToken = _rewardToken;
 
     emit FundraiserUpdated(msg.sender, block.timestamp);
   }

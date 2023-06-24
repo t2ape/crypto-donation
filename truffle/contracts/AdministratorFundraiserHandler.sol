@@ -28,7 +28,8 @@ contract AdministratorFundraiserHandler is Ownable {
     bool isOpen, // 必須
     uint256 startedAt, // 任意
     uint256 endedAt, // 任意
-    address payable beneficiary // 必須
+    address payable beneficiary, // 必須
+    address rewardToken // 必須
   ) public onlyOwner {
     // validations
     require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
@@ -36,6 +37,7 @@ contract AdministratorFundraiserHandler is Ownable {
     require(bytes(url).length >= 0 && bytes(url).length <= 4000, "url length is invalid.");
     require(bytes(imageUrl).length >= 0 && bytes(imageUrl).length <= 4000, "imageUrl length is invalid.");
     require(beneficiary != address(0), "beneficiary format is invalid.");
+    // TODO: rewardToken が ERC721 準拠のコントラクトであることを確認
 
     Fundraiser fundraiser = new Fundraiser(
       name,
@@ -48,7 +50,8 @@ contract AdministratorFundraiserHandler is Ownable {
       0,
       0,
       beneficiary,
-      msg.sender
+      msg.sender,
+      rewardToken
     );
 
     uint256 count = fundraisersCount();

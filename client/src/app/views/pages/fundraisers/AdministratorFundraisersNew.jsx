@@ -95,6 +95,7 @@ const AdministratorFundraisersNew = () => {
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary,
+        values.rewardToken,
       ).estimateGas({ from: accounts[0] });
       const gasPrice = await web3.eth.getGasPrice();
       await contract.methods.createFundraiser(
@@ -106,6 +107,7 @@ const AdministratorFundraisersNew = () => {
         formattedInputValues.startedAt,
         formattedInputValues.endedAt,
         values.beneficiary,
+        values.rewardToken,
       ).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
@@ -218,6 +220,21 @@ const AdministratorFundraisersNew = () => {
                     helperText={touched.beneficiary && errors.beneficiary}
                   />
 
+                  <StyledTextField
+                    fullWidth
+                    name="rewardToken"
+                    label="Reward token Ethereum Address"
+                    size="small"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    value={values.rewardToken || ""}
+                    error={Boolean(touched.rewardToken && errors.rewardToken)}
+                    helperText={touched.rewardToken && errors.rewardToken}
+                  />
+
                   <FlexBox gap={1} alignItems="center">
                     <Checkbox
                       size="small"
@@ -275,6 +292,7 @@ const validationSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
   description: yup.string().required("Description is required"),
   beneficiary: yup.string().required("Beneficiary is required"),
+  rewardToken: yup.string().required("Reward token is required"),
 });
 
 const initialValues = {
@@ -283,6 +301,7 @@ const initialValues = {
   url: "",
   imageUrl: "",
   beneficiary: "",
+  rewardToken: "",
   startedAt: null,
   endedAt: null,
   isOpen: false,
