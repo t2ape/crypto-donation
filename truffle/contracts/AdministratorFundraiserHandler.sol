@@ -20,6 +20,7 @@ contract AdministratorFundraiserHandler is Ownable {
     _fundraiserStorage.setUint(keccak256("fundraisersCount"), count);
   }
 
+  // TODO: Fundraiser 作成・更新時に、HeartToken の minters に Fundraiser を add/delete する方法を検討
   function createFundraiser(
     string memory name, // 必須
     string memory description, // 必須
