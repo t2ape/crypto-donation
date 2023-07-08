@@ -33,6 +33,19 @@ contract Fundraiser is Ownable {
     uint256 date;
   }
 
+  struct FundraiserArgs {
+    string name; // 必須
+    string description; // 必須
+    string url; // 任意
+    string imageUrl; // 任意
+    bool isOpen; // 必須
+    uint256 startedAt; // 任意
+    uint256 endedAt; // 任意
+    uint256 donationThresholdForToken; // 必須
+    address payable beneficiary; // 必須
+    address rewardToken; // 必須
+  }
+
   mapping(address => Donation[]) private _donations;
 
   event FundraiserUpdated(address indexed updater, uint256 updatedAt);
@@ -47,8 +60,6 @@ contract Fundraiser is Ownable {
     bool _isOpen,
     uint256 _startedAt,
     uint256 _endedAt,
-    uint256 _donationsAmount,
-    uint256 _donationsCount,
     uint256 _donationThresholdForToken,
     address payable _beneficiary,
     address _custodian,
@@ -61,8 +72,8 @@ contract Fundraiser is Ownable {
     isOpen = _isOpen;
     startedAt = _startedAt;
     endedAt = _endedAt;
-    donationsAmount = _donationsAmount;
-    donationsCount = _donationsCount;
+    donationsAmount = 0;
+    donationsCount = 0;
     donationThresholdForToken = _donationThresholdForToken;
     beneficiary = _beneficiary;
     rewardToken = _rewardToken;
@@ -79,38 +90,25 @@ contract Fundraiser is Ownable {
     _;
   }
 
-  function updateFundraiser(
-    string memory _name, // 必須
-    string memory _description, // 必須
-    string memory _url, // 任意
-    string memory _imageUrl, // 任意
-    bool _isOpen, // 必須
-    uint256 _startedAt, // 任意
-    uint256 _endedAt, // 任意
-    uint256 _donationThresholdForToken, // 必須
-    address payable _beneficiary, // 必須
-    address _rewardToken // 必須
-  ) public onlyOwner notDeleted {
-    // validations
-    require(bytes(name).length > 0 && bytes(name).length <= 400, "name length is invalid.");
-    require(bytes(description).length > 0 && bytes(description).length <= 4000, "description length is invalid.");
-    require(bytes(url).length >= 0 && bytes(url).length <= 4000, "url length is invalid.");
-    require(bytes(imageUrl).length >= 0 && bytes(imageUrl).length <= 4000, "imageUrl length is invalid.");
-    require(donationThresholdForToken > 0, "donationThresholdForToken value is invalid.");
-    require(beneficiary != address(0), "beneficiary format is invalid.");
+  function updateFundraiser(FundraiserArgs memory args) public onlyOwner notDeleted {
+    require(bytes(args.name).length > 0 && bytes(args.name).length <= 400, "name length is invalid.");
+    require(bytes(args.description).length > 0 && bytes(args.description).length <= 4000, "description length is invalid.");
+    require(bytes(args.url).length >= 0 && bytes(args.url).length <= 4000, "url length is invalid.");
+    require(bytes(args.imageUrl).length >= 0 && bytes(args.imageUrl).length <= 4000, "imageUrl length is invalid.");
+    require(args.donationThresholdForToken > 0, "donationThresholdForToken value is invalid.");
+    require(args.beneficiary != address(0), "beneficiary format is invalid.");
     // TODO: rewardToken が ERC721 準拠のコントラクトであることを確認
 
-    name = _name;
-    description = _description;
-    url = _url;
-    imageUrl = _imageUrl;
-    isOpen = _isOpen;
-    startedAt = _startedAt;
-    endedAt = _endedAt;
-    donationThresholdForToken = _donationThresholdForToken;
-    beneficiary = _beneficiary;
-    beneficiary = _beneficiary;
-    rewardToken = _rewardToken;
+    name = args.name;
+    description = args.description;
+    url = args.url;
+    imageUrl = args.imageUrl;
+    isOpen = args.isOpen;
+    startedAt = args.startedAt;
+    endedAt = args.endedAt;
+    donationThresholdForToken = args.donationThresholdForToken;
+    beneficiary = args.beneficiary;
+    rewardToken = args.rewardToken;
 
     emit FundraiserUpdated(msg.sender, block.timestamp);
   }
@@ -144,7 +142,7 @@ contract Fundraiser is Ownable {
         rewardTokenContract = IRewardTokenContract(rewardToken);
       }
 
-      rewardTokenContract.mint(msg.value);
+      rewardTokenContract.mint(msg.sender);
     }
 
     emit DonationReceived(msg.sender, msg.value, block.timestamp);

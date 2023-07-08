@@ -31,7 +31,7 @@ contract HeartToken is Ownable, IERC721, ERC721 {
   address public founders;
 
   // An address who has permissions to mint token
-  address public minters;
+  address[] public minters;
 
   // Whether the minter can be updated
   bool public isMintersLocked;
@@ -68,8 +68,8 @@ contract HeartToken is Ownable, IERC721, ERC721 {
   }
 
   function msgSenderIsMinter() private view returns(bool) {
-    for(uint256 i = 0; i < _minters.length; i++) {
-      if(_minters[i] == msg.sender) {
+    for(uint256 i = 0; i < minters.length; i++) {
+      if(minters[i] == msg.sender) {
         return true;
       }
     }
