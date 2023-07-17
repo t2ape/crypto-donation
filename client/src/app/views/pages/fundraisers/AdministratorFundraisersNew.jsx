@@ -86,31 +86,31 @@ const AdministratorFundraisersNew = () => {
       console.log(values);
       console.log(formattedInputValues);
 
-      const gasLimit = await contract.methods.createFundraiser(
-        values.name,
-        values.description,
-        values.url,
-        values.imageUrl,
-        values.isOpen,
-        formattedInputValues.startedAt,
-        formattedInputValues.endedAt,
-        values.donationThresholdForToken,
-        values.beneficiary,
-        values.rewardToken,
-      ).estimateGas({ from: accounts[0] });
+      const gasLimit = await contract.methods.createFundraiser({
+        name: values.name,
+        description: values.description,
+        url: values.url,
+        imageUrl: values.imageUrl,
+        isOpen: values.isOpen,
+        startedAt: formattedInputValues.startedAt,
+        endedAt: formattedInputValues.endedAt,
+        donationThresholdForToken: values.donationThresholdForToken,
+        beneficiary: values.beneficiary,
+        rewardToken: values.rewardToken,
+      }).estimateGas({ from: accounts[0] });
       const gasPrice = await web3.eth.getGasPrice();
-      await contract.methods.createFundraiser(
-        values.name,
-        values.description,
-        values.url,
-        values.imageUrl,
-        values.isOpen,
-        formattedInputValues.startedAt,
-        formattedInputValues.endedAt,
-        values.donationThresholdForToken,
-        values.beneficiary,
-        values.rewardToken,
-      ).send({ from: accounts[0], gasLimit, gasPrice });
+      await contract.methods.createFundraiser({
+        name: values.name,
+        description: values.description,
+        url: values.url,
+        imageUrl: values.imageUrl,
+        isOpen: values.isOpen,
+        startedAt: formattedInputValues.startedAt,
+        endedAt: formattedInputValues.endedAt,
+        donationThresholdForToken: values.donationThresholdForToken,
+        beneficiary: values.beneficiary,
+        rewardToken: values.rewardToken,
+      }).send({ from: accounts[0], gasLimit, gasPrice });
 
       alert('Successfully created fundraiser');
 
