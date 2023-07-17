@@ -282,21 +282,40 @@ contract HeartToken is Ownable, IERC721, ERC721 {
 
   function _generateImage(uint256 tokenId, uint256[2][3][42] memory _seeds, string[10] memory _colors) internal pure returns(bytes memory) {
     bytes memory pack;
-    uint256 i;
-    for (i = 0; i < _seeds.length; i++) {
+    uint256[2][3] memory seedValues;
+
+    for (uint256 i = 0; i < _seeds.length; i++) {
       uint256 _colorsIndex = _randomValue(tokenId, i) % 10;
 
-      pack = abi.encodePacked(
-        pack,
-        '<polygon points="',
-        _seeds[i][0][0], ' ', _seeds[i][0][1], ', ',
-        _seeds[i][1][0], ' ', _seeds[i][1][1], ', ',
-        _seeds[i][2][0], ' ', _seeds[i][2][1], '" ',
-        'fill="',
-        _colors[_colorsIndex],
-        '" />\n'
-      );
+      // update seedValues
+      for(uint256 j = 0; j < 3; j++) {
+        for(uint256 k = 0; k < 2; k++) {
+          seedValues[j][k] = _seeds[i][j][k];
+        }
+      }
+
+      pack = abi.encodePacked(pack, _buildPolygon(seedValues, _colors[_colorsIndex]));
     }
+    return pack;
+  }
+
+  function _buildPolygon(uint256[2][3] memory seedValues, string memory color) internal pure returns(bytes memory) {
+    bytes memory pack;
+
+    pack = abi.encodePacked(
+      '<polygon points="',
+      seedValues[0][0].toString(), ' ', seedValues[0][1].toString(), ', '
+    );
+    pack = abi.encodePacked(
+      pack,
+      seedValues[1][0].toString(), ' ', seedValues[1][1].toString(), ', '
+    );
+    pack = abi.encodePacked(
+      pack,
+      seedValues[2][0].toString(), ' ', seedValues[2][1].toString(), '" ',
+      'fill="', color, '" />\n'
+    );
+
     return pack;
   }
 
