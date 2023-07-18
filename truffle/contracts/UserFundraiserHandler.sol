@@ -58,4 +58,8 @@ contract UserFundraiserHandler {
     }
     return count;
   }
+
+  function donatedFundraisers() public view returns(address[] memory) {
+    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("donatedFundraiser", msg.sender)));
+  }
 }

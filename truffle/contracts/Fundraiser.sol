@@ -2,6 +2,7 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "./FundraiserStorage.sol";
 
 interface IRewardTokenContract {
   function mint(address to) external;
@@ -11,6 +12,8 @@ contract Fundraiser is Ownable {
   // TODO: 寄付に紐付く団体を考慮する
 
   using SafeMath for uint256;
+
+  FundraiserStorage internal _fundraiserStorage;
 
   IRewardTokenContract public rewardTokenContract;
 
@@ -53,30 +56,25 @@ contract Fundraiser is Ownable {
   event DonationReceived(address indexed donor, uint256 value, uint256 donatedAt);
 
   constructor(
-    string memory _name,
-    string memory _description,
-    string memory _url,
-    string memory _imageUrl,
-    bool _isOpen,
-    uint256 _startedAt,
-    uint256 _endedAt,
-    uint256 _donationThresholdForToken,
-    address payable _beneficiary,
-    address _custodian,
-    address _rewardToken
+    address fundraiserStorageAddress,
+    FundraiserArgs memory _args,
+    address _custodian
   ) {
-    name = _name;
-    description = _description;
-    url = _url;
-    imageUrl = _imageUrl;
-    isOpen = _isOpen;
-    startedAt = _startedAt;
-    endedAt = _endedAt;
+    _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
+
+    name = _args.name;
+    description = _args.description;
+    url = _args.url;
+    imageUrl = _args.imageUrl;
+    isOpen = _args.isOpen;
+    startedAt = _args.startedAt;
+    endedAt = _args.endedAt;
     donationsAmount = 0;
     donationsCount = 0;
-    donationThresholdForToken = _donationThresholdForToken;
-    beneficiary = _beneficiary;
-    rewardToken = _rewardToken;
+    donationThresholdForToken = _args.donationThresholdForToken;
+    beneficiary = _args.beneficiary;
+    rewardToken = _args.rewardToken;
+
     transferOwnership(_custodian);
   }
 
@@ -129,14 +127,36 @@ contract Fundraiser is Ownable {
   }
 
   function donate() public payable active {
+    // update _donations
     Donation memory donation = Donation({
       value: msg.value,
       date: block.timestamp
     });
     _donations[msg.sender].push(donation);
+
+    // update donatedFundraisers in _fundraiserStorage
+    bool isPresentInDonatedFundraisers = false;
+    address[] memory donatedFundraisers = _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("donatedFundraiser", msg.sender)));
+    for(uint i = 0; i < donatedFundraisers.length; i++){
+      if(donatedFundraisers[i] == address(this)){
+        isPresentInDonatedFundraisers = true;
+        break;
+      }
+    }
+    if(!isPresentInDonatedFundraisers){
+      address[] memory newDonatedFundraisers = new address[](donatedFundraisers.length + 1);
+      for(uint i = 0; i < donatedFundraisers.length; i++) {
+        // start from index i + 1 considering address(this)
+        newDonatedFundraisers[i] = donatedFundraisers[i];
+      }
+      newDonatedFundraisers[donatedFundraisers.length] = address(this);
+    }
+
+    // update this fundraisers' stat
     donationsAmount = donationsAmount.add(msg.value);
     donationsCount++;
 
+    // mint a token
     if (msg.value >= donationThresholdForToken) {
       if (rewardTokenContract != IRewardTokenContract(rewardToken)) {
         rewardTokenContract = IRewardTokenContract(rewardToken);

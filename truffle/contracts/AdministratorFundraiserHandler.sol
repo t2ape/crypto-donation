@@ -44,18 +44,23 @@ contract AdministratorFundraiserHandler is Ownable {
     require(args.beneficiary != address(0), "beneficiary format is invalid.");
     // TODO: rewardToken が ERC721 準拠のコントラクトであることを確認
 
+    Fundraiser.FundraiserArgs memory fundraiserArgs = Fundraiser.FundraiserArgs({
+      name: args.name,
+      description: args.description,
+      url: args.url,
+      imageUrl: args.imageUrl,
+      isOpen: args.isOpen,
+      startedAt: args.startedAt,
+      endedAt: args.endedAt,
+      donationThresholdForToken: args.donationThresholdForToken,
+      beneficiary: args.beneficiary,
+      rewardToken: args.rewardToken
+    });
+
     Fundraiser fundraiser = new Fundraiser(
-      args.name,
-      args.description,
-      args.url,
-      args.imageUrl,
-      args.isOpen,
-      args.startedAt,
-      args.endedAt,
-      args.donationThresholdForToken,
-      args.beneficiary,
-      msg.sender,
-      args.rewardToken
+      address(_fundraiserStorage),
+      fundraiserArgs,
+      msg.sender
     );
 
     uint256 count = fundraisersCount();

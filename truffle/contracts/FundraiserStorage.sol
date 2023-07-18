@@ -3,11 +3,14 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FundraiserStorage is Ownable {
+  // array 関連の function を追加
+
   address[] private _accessPermittedContracts;
   mapping(address => bool) private _accessPermissions;
   mapping(bytes32 => uint) uIntStorage;
   mapping(bytes32 => string) stringStorage;
   mapping(bytes32 => address) addressStorage;
+  mapping(bytes32 => address[]) addressArrayStorage;
   mapping(bytes32 => bytes) bytesStorage;
   mapping(bytes32 => bool) boolStorage;
   mapping(bytes32 => int) intStorage;
@@ -55,6 +58,10 @@ contract FundraiserStorage is Ownable {
     return addressStorage[_key];
   }
 
+  function getAddressArray(bytes32 _key) external view returns(address[] memory) {
+    return addressArrayStorage[_key];
+  }
+
   function getBytes(bytes32 _key) external view returns(bytes memory) {
     return bytesStorage[_key];
   }
@@ -78,6 +85,10 @@ contract FundraiserStorage is Ownable {
 
   function setAddress(bytes32 _key, address _value) onlyAccessPermittedContract external {
     addressStorage[_key] = _value;
+  }
+
+  function setAddressArray(bytes32 _key, address[] memory _values) onlyAccessPermittedContract external {
+    addressArrayStorage[_key] = _values;
   }
 
   function setBytes(bytes32 _key, bytes calldata _value) onlyAccessPermittedContract external {
