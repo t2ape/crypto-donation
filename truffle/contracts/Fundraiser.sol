@@ -146,7 +146,6 @@ contract Fundraiser is Ownable {
     if(!isPresentInDonatedFundraisers){
       address[] memory newDonatedFundraisers = new address[](donatedFundraisers.length + 1);
       for(uint i = 0; i < donatedFundraisers.length; i++) {
-        // start from index i + 1 considering address(this)
         newDonatedFundraisers[i] = donatedFundraisers[i];
       }
       newDonatedFundraisers[donatedFundraisers.length] = address(this);
