@@ -2,7 +2,7 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./FundraiserStorage.sol";
+import "./AdministratorFundraiserHandler.sol";
 
 interface IRewardTokenContract {
   function mint(address to) external;
@@ -13,10 +13,11 @@ contract Fundraiser is Ownable {
 
   using SafeMath for uint256;
 
-  FundraiserStorage internal _fundraiserStorage;
+  AdministratorFundraiserHandler internal _fundraiserHandler;
 
   IRewardTokenContract public rewardTokenContract;
 
+  uint256 public id;
   string public name;
   string public description;
   string public url;
@@ -56,12 +57,13 @@ contract Fundraiser is Ownable {
   event DonationReceived(address indexed donor, uint256 value, uint256 donatedAt);
 
   constructor(
-    address fundraiserStorageAddress,
+    address _fundraiserHandlerAddress,
+    uint256 _id,
     FundraiserArgs memory _args,
     address _custodian
   ) {
-    _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
-
+    _fundraiserHandler = AdministratorFundraiserHandler(_fundraiserHandlerAddress);
+    id = _id;
     name = _args.name;
     description = _args.description;
     url = _args.url;
@@ -134,22 +136,7 @@ contract Fundraiser is Ownable {
     });
     _donations[msg.sender].push(donation);
 
-    // update donatedFundraisers in _fundraiserStorage
-    bool isPresentInDonatedFundraisers = false;
-    address[] memory donatedFundraisers = _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("donatedFundraiser", msg.sender)));
-    for(uint i = 0; i < donatedFundraisers.length; i++){
-      if(donatedFundraisers[i] == address(this)){
-        isPresentInDonatedFundraisers = true;
-        break;
-      }
-    }
-    if(!isPresentInDonatedFundraisers){
-      address[] memory newDonatedFundraisers = new address[](donatedFundraisers.length + 1);
-      for(uint i = 0; i < donatedFundraisers.length; i++) {
-        newDonatedFundraisers[i] = donatedFundraisers[i];
-      }
-      newDonatedFundraisers[donatedFundraisers.length] = address(this);
-    }
+    _fundraiserHandler.setFundraisersDonatedByDonor(msg.sender, address(this));
 
     // update this fundraisers' stat
     donationsAmount = donationsAmount.add(msg.value);

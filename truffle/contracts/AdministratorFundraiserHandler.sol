@@ -25,8 +25,22 @@ contract AdministratorFundraiserHandler is Ownable {
 
   event FundraiserCreated(Fundraiser indexed fundraiser, address indexed creator, uint256 createdAt);
 
+  modifier onlyFundraiser {
+    require(_msgSenderIsFundraiser());
+    _;
+  }
+
   constructor(address fundraiserStorageAddress) {
     _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
+  }
+
+  function _msgSenderIsFundraiser() private view returns(bool) {
+    Fundraiser fundraiser = Fundraiser(msg.sender);
+    if (_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", fundraiser.id))) != address(0)) {
+      return true;
+    }
+
+    return false;
   }
 
   function setFundraisersCount(uint256 count) internal onlyOwner {
@@ -44,6 +58,8 @@ contract AdministratorFundraiserHandler is Ownable {
     require(args.beneficiary != address(0), "beneficiary format is invalid.");
     // TODO: rewardToken が ERC721 準拠のコントラクトであることを確認
 
+    uint256 count = fundraisersCount();
+
     Fundraiser.FundraiserArgs memory fundraiserArgs = Fundraiser.FundraiserArgs({
       name: args.name,
       description: args.description,
@@ -58,12 +74,12 @@ contract AdministratorFundraiserHandler is Ownable {
     });
 
     Fundraiser fundraiser = new Fundraiser(
-      address(_fundraiserStorage),
+      address(this),
+      count,
       fundraiserArgs,
       msg.sender
     );
 
-    uint256 count = fundraisersCount();
     setFundraisersCount(count + 1);
     _fundraiserStorage.setAddress(keccak256(abi.encodePacked("fundraiser", count)), address(fundraiser));
 
@@ -87,5 +103,30 @@ contract AdministratorFundraiserHandler is Ownable {
 
   function fundraisersCount() public view onlyOwner returns (uint256) {
     return _fundraiserStorage.getUint(keccak256("fundraisersCount"));
+  }
+
+  function fundraisersDonatedByDonor(address donor) public view onlyFundraiser returns (address[] memory) {
+    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("fundraisersDonatedByDonor", donor)));
+  }
+
+  function setFundraisersDonatedByDonor(address donor, address fundraiser) public onlyFundraiser {
+    bool contractIsPresentInFundraisers = false;
+    address[] memory fundraisersArray = _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("fundraisersDonatedByDonor", donor)));
+
+    for(uint i = 0; i < fundraisersArray.length; i++){
+      if(fundraisersArray[i] == address(fundraiser)){
+        contractIsPresentInFundraisers = true;
+        break;
+      }
+    }
+
+    if(!contractIsPresentInFundraisers){
+      address[] memory newFundraisers = new address[](fundraisersArray.length + 1);
+      for(uint i = 0; i < fundraisersArray.length; i++) {
+        newFundraisers[i] = fundraisersArray[i];
+      }
+      newFundraisers[fundraisersArray.length] = address(fundraiser);
+      _fundraiserStorage.setAddressArray(keccak256(abi.encodePacked("fundraisersDonatedByDonor", donor)), newFundraisers);
+    }
   }
 }
