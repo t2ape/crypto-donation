@@ -36,7 +36,7 @@ contract AdministratorFundraiserHandler is Ownable {
 
   function _msgSenderIsFundraiser() private view returns(bool) {
     Fundraiser fundraiser = Fundraiser(msg.sender);
-    if (_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", fundraiser.id))) != address(0)) {
+    if (_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", fundraiser.id()))) != address(0)) {
       return true;
     }
 
@@ -105,8 +105,8 @@ contract AdministratorFundraiserHandler is Ownable {
     return _fundraiserStorage.getUint(keccak256("fundraisersCount"));
   }
 
-  function fundraisersDonatedByDonor(address donor) public view onlyFundraiser returns (address[] memory) {
-    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("fundraisersDonatedByDonor", donor)));
+  function fundraisersDonatedByMsgSender() public view returns (address[] memory) {
+    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("fundraisersDonatedByDonor", msg.sender)));
   }
 
   function setFundraisersDonatedByDonor(address donor, address fundraiser) public onlyFundraiser {
@@ -126,6 +126,7 @@ contract AdministratorFundraiserHandler is Ownable {
         newFundraisers[i] = fundraisersArray[i];
       }
       newFundraisers[fundraisersArray.length] = address(fundraiser);
+
       _fundraiserStorage.setAddressArray(keccak256(abi.encodePacked("fundraisersDonatedByDonor", donor)), newFundraisers);
     }
   }
