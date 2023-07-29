@@ -47,6 +47,10 @@ contract UserFundraiserHandler {
     return collection;
   }
 
+  function fundraisersDonatedByMsgSender() public view returns (address[] memory) {
+    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("fundraisersDonatedByDonor", msg.sender)));
+  }
+
   function activeFundraisersCount() public view returns (uint256) {
     uint256 count = 0;
     uint256 fundraisersCount = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
@@ -60,6 +64,6 @@ contract UserFundraiserHandler {
   }
 
   function donatedFundraisers() public view returns(address[] memory) {
-    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("donatedFundraiser", msg.sender)));
+    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("donatedFundraisers", msg.sender)));
   }
 }

@@ -15,3 +15,6 @@ module.exports = async function (deployer) {
   await fundraiserStorageInstance.setAccessPermittedContract(adminFundraiserHandlerInstance.address);
   await fundraiserStorageInstance.setAccessPermittedContract(userFundraiserHandlerInstance.address);
 };
+
+// let HeartToken = artifacts.require('HeartToken');
+// let heartTokenInstance = await HeartToken.deployed();
