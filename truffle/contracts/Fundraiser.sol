@@ -153,4 +153,8 @@ contract Fundraiser is Ownable {
 
     emit DonationReceived(msg.sender, msg.value, block.timestamp);
   }
+
+  function donations() public view returns (Donation[] memory) {
+    return _donations[msg.sender];
+  }
 }

@@ -63,6 +63,7 @@ contract UserFundraiserHandler {
     return count;
   }
 
+  // TODO: 不要そうであれば削除
   function donatedFundraisers() public view returns(address[] memory) {
     return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("donatedFundraisers", msg.sender)));
   }
