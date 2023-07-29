@@ -19,6 +19,7 @@ const FundraisersEdit = Loadable(lazy(() => import("./fundraisers/FundraisersEdi
 const AdministratorFundraisersIndex = Loadable(lazy(() => import("./fundraisers/AdministratorFundraisersIndex")));
 const UserFundraisersShow = Loadable(lazy(() => import("./fundraisers/UserFundraisersShow")));
 const UserFundraisersIndex = Loadable(lazy(() => import("./fundraisers/UserFundraisersIndex")));
+const UserDonatedFundraisersIndex = Loadable(lazy(() => import("./fundraisers/UserDonatedFundraisersIndex")));
 
 const pagesRoutes = [
   { path: "/pages/user-list-1", element: <UserList1 /> },
@@ -39,6 +40,7 @@ const pagesRoutes = [
   { path: "/administrator/pages/fundraisers", element: <AdministratorFundraisersIndex /> },
   { path: "/user/pages/fundraisers/:id", element: <UserFundraisersShow /> },
   { path: "/user/pages/fundraisers", element: <UserFundraisersIndex /> },
+  { path: "/user/pages/donated_fundraisers", element: <UserDonatedFundraisersIndex /> },
 ];
 
 export default pagesRoutes;
