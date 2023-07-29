@@ -10,6 +10,7 @@ import { userReducer } from "./slices/userSlice";
 import { fundraiserReducer } from "./administrator/fundraiserSlice";
 import { fundraiserForUserReducer } from "./user/slices/fundraiserSlice";
 import { donatedFundraiserForUserReducer } from "./user/slices/donatedFundraiserSlice";
+import { donationForUserReducer } from "./user/slices/donationSlice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     fundraisers: fundraiserReducer,
     fundraisersForUser: fundraiserForUserReducer,
     donatedFundraisersForUser: donatedFundraiserForUserReducer,
+    donationsForUser: donationForUserReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });

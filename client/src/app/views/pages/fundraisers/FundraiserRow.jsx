@@ -79,7 +79,7 @@ const FundraiserRow = (props) => {
           <Edit />
         </IconButton>
         {/*TODO: fundraisers/:id もしくは fundraisers/show ページへのリンクに変更*/}
-        <IconButton onClick={() => navigate("/pages/view-product")}>
+        <IconButton onClick={() => navigate(`/user/pages/donated_fundraisers/${fundraiser}`)}>
           <TrendingFlat />
         </IconButton>
       </TableCell>
