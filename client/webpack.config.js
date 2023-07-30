@@ -6,8 +6,8 @@ const Dotenv = require("dotenv-webpack");
 const extensions = [".js", ".jsx"];
 
 module.exports = {
-  mode: process.env.NODENODE_ENV_ENV === "production" ? "production" : "development",
-  entry: "./src/"'."js",
+  mode: process.env.NODE_ENV === "production" ? "production" : "development",
+  entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "build"),
     publicPath: '/',
