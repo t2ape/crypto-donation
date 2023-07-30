@@ -6,8 +6,8 @@ const Dotenv = require("dotenv-webpack");
 const extensions = [".js", ".jsx"];
 
 module.exports = {
-  mode: process.env.NODE_ENV === "production" ? "production" : "development",
-  entry: "./src/index.js",
+  mode: process.env.NODENODE_ENV_ENV === "production" ? "production" : "development",
+  entry: "./src/"'."js",
   output: {
     path: path.resolve(__dirname, "build"),
     publicPath: '/',
@@ -15,10 +15,10 @@ module.exports = {
   resolve: {
     extensions,
     alias: {
-      app: path.resolve(__dirname, "src/app/"),
-      contracts: path.resolve(__dirname, "src/contracts/"),
-      utils: path.resolve(__dirname, "src/utils/"),
-      'config.js': path.resolve(__dirname, 'src/config.js'),
+      "app": path.resolve(__dirname, "src/app/"),
+      "contracts": path.resolve(__dirname, "src/contracts/"),
+      "utils": path.resolve(__dirname, "src/utils/"),
+      "config.js": path.resolve(__dirname, "src/config.js"),
     }
   },
   devServer: {
