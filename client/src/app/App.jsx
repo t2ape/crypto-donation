@@ -1,23 +1,22 @@
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AuthProvider } from "app/contexts/FirebaseAuthContext";
-import { SettingsProvider } from "app/contexts/SettingsContext";
-import { Provider } from "react-redux";
-import { useRoutes } from "react-router-dom";
-import { MatxTheme } from "./components";
-import store from "./redux/store";
-import routes from "./routes";
-import "../fake-db";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AuthProvider } from 'app/contexts/FirebaseAuthContext';
+import { SettingsProvider } from 'app/contexts/SettingsContext';
+import { Provider } from 'react-redux';
+import { useRoutes } from 'react-router-dom';
 import React, { useEffect } from 'react';
+import { MatxTheme } from './components';
+import store from './redux/store';
+import routes from './routes';
 
-const App = () => {
+function App() {
   const content = useRoutes(routes);
 
   useEffect(() => {
-    window.ethereum.on('accountsChanged', function (accounts) {
+    window.ethereum.on('accountsChanged', () => {
       window.location.reload();
     });
-    }, []);
+  }, []);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -30,6 +29,6 @@ const App = () => {
       </Provider>
     </LocalizationProvider>
   );
-};
+}
 
 export default App;
