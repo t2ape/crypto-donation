@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { StyledEngineProvider } from '@mui/material';
-import { SnackbarProvider } from 'notistack';
 import App from './app/App';
 
 // third party css
@@ -15,9 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <StyledEngineProvider injectFirst>
     <BrowserRouter>
-      <SnackbarProvider anchorOrigin={{ horizontal: 'right', vertical: 'top' }}>
-        <App />
-      </SnackbarProvider>
+      <App />
     </BrowserRouter>
   </StyledEngineProvider>,
 );
