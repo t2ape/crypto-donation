@@ -24,4 +24,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
   },
   ignorePatterns: ['src/contracts/*'],
+  settings: {
+    'import/resolver': 'webpack',
+  },
 };
