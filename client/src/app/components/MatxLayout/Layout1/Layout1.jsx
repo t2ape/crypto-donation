@@ -1,15 +1,10 @@
 import { Box, styled, ThemeProvider, useMediaQuery, useTheme } from "@mui/material";
-import MatxSuspense from "app/components/MatxSuspense";
 import useSettings from "app/hooks/useSettings";
 import { sidenavCompactWidth, sideNavWidth } from "app/utils/constant";
 import React, { useEffect, useRef } from "react";
 import Scrollbar from "react-perfect-scrollbar";
-import { Outlet } from "react-router-dom";
 import Footer from "../../Footer";
-import SidenavTheme from "../../MatxTheme/SidenavTheme";
 import SecondarySidebar from "../../SecondarySidebar/SecondarySidebar";
-import Layout1Sidenav from "./Layout1Sidenav";
-import Layout1Topbar from "./Layout1Topbar";
 
 // styled components
 const Layout1Root = styled(Box)(({ theme }) => ({
@@ -86,55 +81,7 @@ const Layout1 = () => {
 
   return (
     <Layout1Root className={layoutClasses}>
-      {showSidenav && sidenavMode !== "close" && (
-        <SidenavTheme>
-          <Layout1Sidenav />
-        </SidenavTheme>
-      )}
-
       <LayoutContainer width={sidenavWidth} open={secondarySidebar.open}>
-        {layout1Settings.topbar.show && layout1Settings.topbar.fixed && (
-          <ThemeProvider theme={topbarTheme}>
-            <Layout1Topbar fixed={true} className="elevation-z8" />
-          </ThemeProvider>
-        )}
-
-        {settings.perfectScrollbar && (
-          <StyledScrollBar>
-            {layout1Settings.topbar.show && !layout1Settings.topbar.fixed && (
-              <ThemeProvider theme={topbarTheme}>
-                <Layout1Topbar />
-              </ThemeProvider>
-            )}
-
-            <Box flexGrow={1} position="relative">
-              <MatxSuspense>
-                <Outlet />
-              </MatxSuspense>
-            </Box>
-
-            {settings.footer.show && !settings.footer.fixed && <Footer />}
-          </StyledScrollBar>
-        )}
-
-        {!settings.perfectScrollbar && (
-          <ContentBox>
-            {layout1Settings.topbar.show && !layout1Settings.topbar.fixed && (
-              <ThemeProvider theme={topbarTheme}>
-                <Layout1Topbar />
-              </ThemeProvider>
-            )}
-
-            <Box flexGrow={1} position="relative">
-              <MatxSuspense>
-                <Outlet />
-              </MatxSuspense>
-            </Box>
-
-            {settings.footer.show && !settings.footer.fixed && <Footer />}
-          </ContentBox>
-        )}
-
         {settings.footer.show && settings.footer.fixed && <Footer />}
       </LayoutContainer>
 

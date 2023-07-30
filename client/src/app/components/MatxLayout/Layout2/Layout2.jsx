@@ -3,12 +3,8 @@ import useSettings from "app/hooks/useSettings";
 import Scrollbar from "react-perfect-scrollbar";
 import { Outlet } from "react-router-dom";
 import Footer from "../../Footer";
-import SidenavTheme from "../../MatxTheme/SidenavTheme";
 import SecondarySidebar from "../../SecondarySidebar/SecondarySidebar";
-import Layout1Sidenav from "../Layout1/Layout1Sidenav";
 import { Layout2Container } from "./layout2.style";
-import Layout2Navbar from "./Layout2Navbar";
-import Layout2Topbar from "./Layout2Topbar";
 
 // styled components
 const Layout2Root = styled("div")({
@@ -58,26 +54,6 @@ const Layout2 = () => {
   return (
     <Layout2Container>
       <Layout2Root className={layoutClasses}>
-        {layout2Settings.topbar.show && (
-          <ThemeProvider theme={topbarTheme}>
-            <Layout2Topbar />
-          </ThemeProvider>
-        )}
-
-        <Box display={{ sm: "grid", xs: "none" }}>
-          {layout2Settings.navbar.show && (
-            <ThemeProvider theme={navbarTheme}>
-              <Layout2Navbar />
-            </ThemeProvider>
-          )}
-        </Box>
-
-        {showSidenav && sidenavMode !== "close" && (
-          <SidenavTheme>
-            <Layout1Sidenav />
-          </SidenavTheme>
-        )}
-
         {settings.perfectScrollbar && (
           <StyledScrollBar options={{ suppressScrollX: true }}>
             <Box p={0} flexGrow={1} position="relative">

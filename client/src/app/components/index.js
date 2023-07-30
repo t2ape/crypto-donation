@@ -9,7 +9,6 @@ export { default as ConfirmationDialog } from "./ConfirmationDialog";
 export { default as FacebookIcon } from "./icons/FacebookIcon";
 export { default as GoogleIcon } from "./icons/GoogleIcon";
 export { default as MatxDivider } from "./MatxDivider";
-export { default as MatxHorizontalNav } from "./MatxHorizontalNav";
 export { MatxLayouts } from "./MatxLayout/index";
 export { default as MatxLayout } from "./MatxLayout/MatxLayout";
 export { default as MatxListItem1 } from "./MatxListItem1";
