@@ -28,7 +28,7 @@ const Form = styled("form")({ paddingLeft: "16px", paddingRight: "16px" });
 const StyledText = styled(Typography)({ marginBottom: '16px' });
 const FlexEndBox = styled(FlexBox)({ justifyContent: "flex-end" });
 
-const FundraisersEdit = () => {
+const Edit = () => {
   const { id } = useParams();
   const [ web3, setWeb3 ] = useState(null);
   const [ contract, setContract ] = useState(null);
@@ -408,4 +408,4 @@ const validationSchema = yup.object().shape({
   rewardToken: yup.string().required("Reward token is required"),
 });
 
-export default FundraisersEdit;
+export default Edit;

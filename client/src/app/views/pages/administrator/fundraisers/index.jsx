@@ -22,7 +22,7 @@ const Container = styled("div")(({ theme }) => ({
   },
 }));
 
-const AdministratorFundraisersIndex = () => {
+const Index = () => {
   const {
     page,
     rowsPerPage,
@@ -86,4 +86,4 @@ const AdministratorFundraisersIndex = () => {
   );
 };
 
-export default AdministratorFundraisersIndex;
+export default Index;

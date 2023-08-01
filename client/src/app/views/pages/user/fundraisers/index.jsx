@@ -10,7 +10,7 @@ const Container = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: { margin: "16px" },
 }));
 
-const UserFundraisersIndex = () => {
+const Index = () => {
   const { isLoading, fundraisers } = useFundraisers();
 
   if (isLoading) return <MatxLoading />;
@@ -27,4 +27,4 @@ const UserFundraisersIndex = () => {
   );
 };
 
-export default UserFundraisersIndex;
+export default Index;

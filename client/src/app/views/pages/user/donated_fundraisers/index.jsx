@@ -8,10 +8,9 @@ import {
 } from "@mui/material";
 import { Breadcrumb, MatxLoading } from "app/components";
 import { TableHead, TableToolbar } from "app/components/data-table";
-import useDonations from "app/hooks/user/useDonations";
+import useDonatedFundraisers from "app/hooks/user/useDonatedFundraisers";
 import useTable from "app/hooks/useTable";
-import {useParams} from "react-router-dom";
-import DonationRow from "./DonationRow";
+import FundraiserRow from "../../administrator/fundraisers/FundraiserRow";
 
 // styled components
 const Container = styled("div")(({ theme }) => ({
@@ -23,21 +22,25 @@ const Container = styled("div")(({ theme }) => ({
   },
 }));
 
-const UserDonatedFundraisersShow = () => {
-  const { id } = useParams();
-
+const Index = () => {
   const {
     page,
     rowsPerPage,
     handleChangePage,
   } = useTable();
 
-  const { isLoading, donations } = useDonations(id);
+  const { isLoading, donatedFundraisers } = useDonatedFundraisers();
+
+  // console.log(`fundraisers: ${fundraisers}`);
 
   // TABLE HEADER COLUMN LIST
   const columns = [
-    { id: "value", align: "center", disablePadding: true, label: "Value" },
-    { id: "date", align: "center", disablePadding: false, label: "Date" },
+    { id: "name", align: "center", disablePadding: true, label: "Name" },
+    { id: "startedAt", align: "center", disablePadding: false, label: "StartedAt" },
+    { id: "endedAt", align: "center", disablePadding: false, label: "EndedAt" },
+    { id: "donationsAmount", align: "center", disablePadding: false, label: "DonationsAmount" },
+    { id: "donationsCount", align: "center", disablePadding: false, label: "DonationsCount" },
+    { id: "edit", align: "center", disablePadding: false, label: "Edit" },
   ];
 
   if (isLoading) return <MatxLoading />;
@@ -56,13 +59,15 @@ const UserDonatedFundraisersShow = () => {
             <TableHead headCells={columns} />
 
             <TableBody>
-              {donations?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((donation) => {
+              {donatedFundraisers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((fundraiser) => {
+                  console.log('fundraisers:', JSON.stringify(donatedFundraisers));
+                  console.log('fundraiser:', JSON.stringify(fundraiser));
+
                   return (
-                    // TODO: 修正
-                    <DonationRow
-                      donation={donation}
-                      key={donation}
+                    <FundraiserRow
+                      fundraiser={fundraiser}
+                      key={fundraiser}
                     />
                   );
                 })}
@@ -84,4 +89,4 @@ const UserDonatedFundraisersShow = () => {
   );
 };
 
-export default UserDonatedFundraisersShow;
+export default Index;

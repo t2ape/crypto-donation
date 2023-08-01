@@ -24,7 +24,7 @@ const Container = styled("div")(({ theme }) => ({
 const StyledTextField = styled(TextField)({ marginBottom: "16px" });
 const Form = styled("form")({ paddingLeft: "16px", paddingRight: "16px" });
 
-const AdministratorFundraisersNew = () => {
+const New = () => {
   const [ web3, setWeb3 ] = useState(null);
   const [ contract, setContract ] = useState(null);
   const [ accounts, setAccounts ] = useState(null);
@@ -326,4 +326,4 @@ const initialValues = {
   endedAt: null,
   isOpen: false,
 };
-export default AdministratorFundraisersNew;
+export default New;
