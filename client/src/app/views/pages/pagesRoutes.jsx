@@ -2,19 +2,19 @@ import { lazy } from 'react';
 import Loadable from 'app/components/Loadable';
 
 const AdministratorFundraisersIndex = Loadable(
-  lazy(() => import('./administrator/fundraisers/index')),
+  lazy(() => import('./administrator/fundraisers/AdministratorFundraisersIndex')),
 );
 const AdministratorFundraisersNew = Loadable(
-  lazy(() => import('./administrator/fundraisers/new')),
+  lazy(() => import('./administrator/fundraisers/AdministratorFundraisersNew')),
 );
-const FundraisersEdit = Loadable(lazy(() => import('./administrator/fundraisers/edit')));
-const UserFundraisersIndex = Loadable(lazy(() => import('./user/fundraisers/index')));
-const UserFundraisersShow = Loadable(lazy(() => import('./user/fundraisers/show')));
+const FundraisersEdit = Loadable(lazy(() => import('./administrator/fundraisers/AdministratorFundraisersEdit')));
+const UserFundraisersIndex = Loadable(lazy(() => import('./user/fundraisers/UserFundraisersIndex')));
+const UserFundraisersShow = Loadable(lazy(() => import('./user/fundraisers/UserFundraisersShow')));
 const UserDonatedFundraisersIndex = Loadable(
-  lazy(() => import('./user/donated_fundraisers/index')),
+  lazy(() => import('./user/donated_fundraisers/UserDonatedFundraisersIndex')),
 );
 const UserDonatedFundraisersShow = Loadable(
-  lazy(() => import('./user/donated_fundraisers/show')),
+  lazy(() => import('./user/donated_fundraisers/UserDonatedFundraisersShow')),
 );
 
 const pagesRoutes = [
