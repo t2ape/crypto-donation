@@ -9,10 +9,8 @@ import MuiTextField from "@mui/material/TextField";
 import {useState, useEffect} from "react";
 import getWeb3 from "utils/getWeb3";
 import { useParams } from 'react-router-dom';
-
-// import FundraiserFactoryContract from "contracts/FundraiserFactory.json";
-import FundraiserContract from "contracts/Fundraiser.json";
 import {FlexBox} from "app/components/FlexBox";
+import FundraiserContract from "contracts/Fundraiser.json";
 
 // styled components
 const Container = styled("div")(({ theme }) => ({

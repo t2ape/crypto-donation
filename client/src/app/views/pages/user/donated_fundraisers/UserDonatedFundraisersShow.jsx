@@ -11,7 +11,7 @@ import { TableHead, TableToolbar } from "app/components/data-table";
 import useDonations from "app/hooks/user/useDonations";
 import useTable from "app/hooks/useTable";
 import {useParams} from "react-router-dom";
-import DonationRow from "../../administrator/fundraisers/DonationRow";
+import DonationRow from "./DonationRow";
 
 // styled components
 const Container = styled("div")(({ theme }) => ({
