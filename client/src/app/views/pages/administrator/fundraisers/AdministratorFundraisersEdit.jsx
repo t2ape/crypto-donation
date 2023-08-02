@@ -1,3 +1,5 @@
+// TODO: donationThresholdForToken に double を設定できないようなので修正
+
 import { useState, useEffect } from 'react';
 
 import {

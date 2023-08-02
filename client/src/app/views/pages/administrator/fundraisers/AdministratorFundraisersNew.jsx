@@ -1,4 +1,5 @@
-// TODO: import の順序を整理する
+// TODO: donationThresholdForToken に double を設定できないようなので修正
+
 import { useState, useEffect } from 'react';
 
 import {
@@ -20,6 +21,7 @@ import { Breadcrumb } from 'app/components';
 import { FlexBox } from 'app/components/FlexBox';
 import { H4, Paragraph } from 'app/components/Typography';
 import AdministratorFundraiserHandlerContract from 'contracts/AdministratorFundraiserHandler.json';
+import dateToSecond from 'utils/dateFormatter';
 import getWeb3 from 'utils/getWeb3';
 
 // styled components
@@ -42,108 +44,97 @@ function New() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3 = await getWeb3();
-        setWeb3(web3);
+        const localWeb3 = await getWeb3();
+        setWeb3(localWeb3);
 
-        const networkId = await web3.eth.net.getId();
-        const deployedNetwork = AdministratorFundraiserHandlerContract.networks[networkId];
-        const contract = new web3.eth.Contract(
+        const localNetworkId = await localWeb3.eth.net.getId();
+        const localDeployedNetwork = AdministratorFundraiserHandlerContract
+          .networks[localNetworkId];
+        const localContract = new localWeb3.eth.Contract(
           AdministratorFundraiserHandlerContract.abi,
-          deployedNetwork && deployedNetwork.address,
+          localDeployedNetwork && localDeployedNetwork.address,
         );
-        setContract(contract);
+        setContract(localContract);
 
-        const accounts = await web3.eth.getAccounts();
-        setAccounts(accounts);
+        const localAccounts = await localWeb3.eth.getAccounts();
+        setAccounts(localAccounts);
       } catch (error) {
         alert(
           'Failed to load web3, accounts, or contract. Check console for details.',
         );
-        console.error(error);
+        console.error(error); // eslint-disable-line no-console
       }
     };
     init();
   }, []);
 
-  const handleSubmit = (values) => {
-    const formatInputValues = (values) => {
-      console.log(values);
-
-      let formattedInputValues = {};
-
-      const inputStartedAt = values.startedAt;
-      if (inputStartedAt === undefined || inputStartedAt === null) {
-        formattedInputValues.startedAt = 0;
-      } else if (isNaN(Date.parse(inputStartedAt))) {
-        formattedInputValues = null;
-        alert('StartedAt is invalid.');
-      } else {
-        formattedInputValues.startedAt = Math.floor(
-          Date.parse(inputStartedAt) / 1000,
-        );
-      }
-
-      const inputEndedAt = values.endedAt;
-      if (inputEndedAt === undefined || inputEndedAt === null) {
-        formattedInputValues.endedAt = 0;
-      } else if (isNaN(Date.parse(inputEndedAt))) {
-        formattedInputValues = null;
-        alert('StartedAt is invalid.');
-      } else {
-        formattedInputValues.endedAt = Math.floor(
-          Date.parse(inputEndedAt) / 1000,
-        );
-      }
-
-      return formattedInputValues;
-    };
-
-    const submitInputValues = async (values, formattedInputValues) => {
-      console.log(values);
-      console.log(formattedInputValues);
-
-      const gasLimit = await contract.methods
-        .createFundraiser({
-          name: values.name,
-          description: values.description,
-          url: values.url,
-          imageUrl: values.imageUrl,
-          isOpen: values.isOpen,
+  const handleFormSubmit = (values) => {
+    const submitInputValues = async (inputValues, formattedInputValues) => {
+      try {
+        const createFundraiserParams = {
+          name: inputValues.name,
+          description: inputValues.description,
+          url: inputValues.url,
+          imageUrl: inputValues.imageUrl,
+          isOpen: inputValues.isOpen,
           startedAt: formattedInputValues.startedAt,
           endedAt: formattedInputValues.endedAt,
-          donationThresholdForToken: values.donationThresholdForToken,
-          beneficiary: values.beneficiary,
-          rewardToken: values.rewardToken,
-        })
-        .estimateGas({ from: accounts[0] });
-      const gasPrice = await web3.eth.getGasPrice();
-      await contract.methods
-        .createFundraiser({
-          name: values.name,
-          description: values.description,
-          url: values.url,
-          imageUrl: values.imageUrl,
-          isOpen: values.isOpen,
-          startedAt: formattedInputValues.startedAt,
-          endedAt: formattedInputValues.endedAt,
-          donationThresholdForToken: values.donationThresholdForToken,
-          beneficiary: values.beneficiary,
-          rewardToken: values.rewardToken,
-        })
-        .send({ from: accounts[0], gasLimit, gasPrice });
+          donationThresholdForToken: inputValues.donationThresholdForToken,
+          beneficiary: inputValues.beneficiary,
+          rewardToken: inputValues.rewardToken,
+        };
 
-      alert('Successfully created fundraiser');
+        const gasLimit = await contract.methods
+          .createFundraiser(createFundraiserParams)
+          .estimateGas({ from: accounts[0] });
+        const gasPrice = await web3.eth.getGasPrice();
+        await contract.methods
+          .createFundraiser(createFundraiserParams)
+          .send({ from: accounts[0], gasLimit, gasPrice });
 
-      // TODO:JSON-RPC エラーが発生した時のために、例外をキャッチして alert を出す
+        alert('Successfully created fundraiser');
+      } catch (error) {
+        console.error(error); // eslint-disable-line no-console
+        alert('Failed to create fundraiser');
+      }
     };
 
-    const formattedInputValues = formatInputValues(values);
-    if (formattedInputValues !== null) {
+    const formattedInputValues = {
+      startedAt: dateToSecond(values.startedAt),
+      endedAt: dateToSecond(values.endedAt),
+    };
+    if (formattedInputValues.startedAt !== null && formattedInputValues.endedAt !== null) {
       submitInputValues(values, formattedInputValues);
+    } else {
+      alert('StartedAt or EndedAt is invalid.');
     }
   };
 
-  // TODO: フォームに、スマートコントラクト側のバリデーションと一致するようなヒントを追加
+  const initialValues = {
+    name: '',
+    description: '',
+    url: '',
+    imageUrl: '',
+    donationThresholdForToken: 0,
+    beneficiary: '',
+    rewardToken: '',
+    isOpen: false,
+    startedAt: null,
+    endedAt: null,
+  };
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required('Name is required'),
+    description: yup.string().required('Description is required'),
+    donationThresholdForToken: yup
+      .number()
+      .typeError('Donation threshold for token should be a number')
+      .required('Donation threshold for token is required')
+      .moreThan(0, 'Donation threshold for token should be greater than 0'),
+    beneficiary: yup.string().required('Beneficiary is required'),
+    rewardToken: yup.string().required('Reward token is required'),
+  });
+
   return (
     <Container>
       <div className="breadcrumb">
@@ -162,7 +153,7 @@ function New() {
         <Divider sx={{ mb: 3 }} />
 
         <Formik
-          onSubmit={handleSubmit}
+          onSubmit={handleFormSubmit}
           enableReinitialize
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -186,9 +177,7 @@ function New() {
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
+                    onChange={handleChange}
                     value={values.name || ''}
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
@@ -202,9 +191,7 @@ function New() {
                     variant="outlined"
                     label="Description"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
+                    onChange={handleChange}
                     value={values.description || ''}
                     error={Boolean(touched.description && errors.description)}
                     helperText={touched.description && errors.description}
@@ -217,9 +204,7 @@ function New() {
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
+                    onChange={handleChange}
                     value={values.url || ''}
                     error={Boolean(touched.url && errors.url)}
                     helperText={touched.url && errors.url}
@@ -232,9 +217,7 @@ function New() {
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
+                    onChange={handleChange}
                     value={values.imageUrl || ''}
                     error={Boolean(touched.imageUrl && errors.imageUrl)}
                     helperText={touched.imageUrl && errors.imageUrl}
@@ -248,9 +231,7 @@ function New() {
                     variant="outlined"
                     type="number"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
+                    onChange={handleChange}
                     value={values.donationThresholdForToken || 0}
                     error={Boolean(
                       touched.donationThresholdForToken
@@ -269,9 +250,7 @@ function New() {
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
+                    onChange={handleChange}
                     value={values.beneficiary || ''}
                     error={Boolean(touched.beneficiary && errors.beneficiary)}
                     helperText={touched.beneficiary && errors.beneficiary}
@@ -284,9 +263,7 @@ function New() {
                     size="small"
                     variant="outlined"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
+                    onChange={handleChange}
                     value={values.rewardToken || ''}
                     error={Boolean(touched.rewardToken && errors.rewardToken)}
                     helperText={touched.rewardToken && errors.rewardToken}
@@ -296,9 +273,7 @@ function New() {
                     <Checkbox
                       size="small"
                       name="isOpen"
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
+                      onChange={handleChange}
                       checked={values.isOpen || false}
                       sx={{ padding: 0 }}
                     />
@@ -311,13 +286,13 @@ function New() {
 
                 <Grid item sm={6} xs={12}>
                   <DateTimePicker
-                    value={values.startedAt || ''}
+                    value={values.startedAt || null}
                     onChange={(date) => {
                       setFieldValue('startedAt', date);
                     }}
                     renderInput={(props) => (
                       <MuiTextField
-                        {...props}
+                        {...props} // eslint-disable-line react/jsx-props-no-spreading
                         label="start dateTime"
                         variant="standard"
                       />
@@ -327,13 +302,13 @@ function New() {
 
                 <Grid item sm={6} xs={12}>
                   <DateTimePicker
-                    value={values.endedAt || ''}
+                    value={values.endedAt || null}
                     onChange={(date) => {
                       setFieldValue('endedAt', date);
                     }}
                     renderInput={(props) => (
                       <MuiTextField
-                        {...props}
+                        {...props} // eslint-disable-line react/jsx-props-no-spreading
                         label="end dateTime"
                         variant="standard"
                       />
@@ -348,7 +323,7 @@ function New() {
                 variant="contained"
                 sx={{ my: 2, px: 6 }}
               >
-                Add Fundraiser
+                Create Fundraiser
               </Button>
             </Form>
           )}
@@ -358,26 +333,4 @@ function New() {
   );
 }
 
-const validationSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  description: yup.string().required('Description is required'),
-  donationThresholdForToken: yup
-    .string()
-    .required('Donation threshold for token should be greater than 0'),
-  beneficiary: yup.string().required('Beneficiary is required'),
-  rewardToken: yup.string().required('Reward token is required'),
-});
-
-const initialValues = {
-  name: '',
-  description: '',
-  url: '',
-  imageUrl: '',
-  donationThresholdForToken: 0,
-  beneficiary: '',
-  rewardToken: '',
-  startedAt: null,
-  endedAt: null,
-  isOpen: false,
-};
 export default New;
