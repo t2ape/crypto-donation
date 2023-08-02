@@ -338,7 +338,7 @@ function Edit() {
                     />
 
                     <Paragraph fontSize={13}>
-                      Fundraiser is open to donations.
+                      Fundraiser is open to donation.
                     </Paragraph>
                   </FlexBox>
                 </Grid>
