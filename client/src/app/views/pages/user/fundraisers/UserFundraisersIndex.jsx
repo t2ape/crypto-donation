@@ -1,8 +1,8 @@
 import {styled} from "@mui/material";
 import {Breadcrumb, MatxLoading} from "app/components";
 import useFundraisers from "app/hooks/user/useFundraisers";
-import FundraiserCard from "app/views/user/pages/fundraisers/FundraiserCard";
-import FundraisersCardPagination from "app/views/user/pages/fundraisers/FundraisersCardPagination.jsx"
+import FundraiserCard from "app/views/pages/user/fundraisers/FundraiserCard";
+import FundraisersCardPagination from "app/views/pages/user/fundraisers/FundraisersCardPagination.jsx"
 
 // styled components
 const Container = styled("div")(({ theme }) => ({

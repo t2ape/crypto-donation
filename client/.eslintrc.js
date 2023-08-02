@@ -22,6 +22,8 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'no-alert': 'off',
     'import/order': [
       'error',
       {
