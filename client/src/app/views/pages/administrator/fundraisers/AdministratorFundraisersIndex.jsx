@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react';
+
 import {
+  Button,
   Paper,
   styled,
   Table,
@@ -6,11 +9,14 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-import { Breadcrumb, MatxLoading } from 'app/components';
+import { Breadcrumb } from 'app/components';
 import { TableHead, TableToolbar } from 'app/components/data-table';
-import useFundraisers from 'app/hooks/administrator/useFundraisers';
+import { FlexBox } from 'app/components/FlexBox';
 import useTable from 'app/hooks/useTable';
+import AdministratorFundraiserHandlerContract from 'contracts/AdministratorFundraiserHandler.json';
+import getWeb3 from 'utils/getWeb3';
 
 import FundraiserRow from './FundraiserRow';
 
@@ -23,16 +29,21 @@ const Container = styled('div')(({ theme }) => ({
     [theme.breakpoints.down('sm')]: { marginBottom: '16px' },
   },
 }));
+const FlexEndBox = styled(FlexBox)({ justifyContent: 'flex-end' });
 
-function Index() {
+function AdministratorFundraisersIndex() {
   const { page, rowsPerPage, handleChangePage } = useTable();
-
-  const { isLoading, fundraisers } = useFundraisers();
+  const [fundraisers, setFundraisers] = useState([]);
+  const [fundraisersCount, setFundraisersCount] = useState(0);
+  const navigate = useNavigate();
 
   // TABLE HEADER COLUMN LIST
   const columns = [
     {
-      id: 'name', align: 'center', disablePadding: true, label: 'Name',
+      id: 'name',
+      align: 'center',
+      disablePadding: true,
+      label: 'Name',
     },
     {
       id: 'startedAt',
@@ -41,7 +52,10 @@ function Index() {
       label: 'StartedAt',
     },
     {
-      id: 'endedAt', align: 'center', disablePadding: false, label: 'EndedAt',
+      id: 'endedAt',
+      align: 'center',
+      disablePadding: false,
+      label: 'EndedAt',
     },
     {
       id: 'donationsAmount',
@@ -56,38 +70,72 @@ function Index() {
       label: 'DonationsCount',
     },
     {
-      id: 'edit', align: 'center', disablePadding: false, label: 'Edit',
+      id: 'edit',
+      align: 'center',
+      disablePadding: false,
+      label: 'Edit',
     },
   ];
 
-  if (isLoading) return <MatxLoading />;
+  // if (isLoading) return <MatxLoading />;
+  // TODO: 削除
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const localWeb3 = await getWeb3();
+        const localNetworkId = await localWeb3.eth.net.getId();
+        const localDeployedNetwork = AdministratorFundraiserHandlerContract
+          .networks[localNetworkId];
+        const localContract = new localWeb3.eth.Contract(
+          AdministratorFundraiserHandlerContract.abi,
+          localDeployedNetwork && localDeployedNetwork.address,
+        );
+        const localFundraisers = await localContract.methods
+          .fundraisers(rowsPerPage, page * rowsPerPage)
+          .call();
+        setFundraisers(localFundraisers);
+        const localFundraisersCount = await localContract.methods
+          .fundraisersCount()
+          .call();
+        setFundraisersCount(parseInt(localFundraisersCount, 10));
+      } catch (error) {
+        alert(
+          'Failed to load web3, accounts, or contract. Check console for details.',
+        );
+        console.error(error); // eslint-disable-line no-console
+      }
+    };
+    init();
+  }, [page, rowsPerPage]);
 
   return (
     <Container>
       <div className="breadcrumb">
-        <Breadcrumb
-          routeSegments={[
-            { name: 'Pages', path: '/pages' },
-            { name: 'Fundraisers' },
-          ]}
-        />
+        <Breadcrumb routeSegments={[{ name: 'Fundraisers' }]} />
       </div>
 
+      <FlexEndBox mb={3} px={2} gap={2} className="new-fundraiser">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => navigate('/administrator/fundraisers/new')}
+        >
+          New
+        </Button>
+      </FlexEndBox>
+
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableToolbar title="All Fundraisers" />
+        <TableToolbar title="Fundraisers" />
 
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <TableHead headCells={columns} />
 
             <TableBody>
-              {fundraisers
-                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((fundraiser) => {
-                  return (
-                    <FundraiserRow fundraiser={fundraiser} key={fundraiser} />
-                  );
-                })}
+              {fundraisers.map((fundraiser) => (
+                <FundraiserRow fundraiser={fundraiser} key={fundraiser} />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -96,7 +144,7 @@ function Index() {
           page={page}
           component="div"
           rowsPerPage={rowsPerPage}
-          count={fundraisers.length}
+          count={fundraisersCount}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[]}
         />
@@ -105,4 +153,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default AdministratorFundraisersIndex;
