@@ -40,7 +40,7 @@ const Form = styled('form')({ paddingLeft: '16px', paddingRight: '16px' });
 const StyledText = styled(Typography)({ marginBottom: '16px' });
 const FlexEndBox = styled(FlexBox)({ justifyContent: 'flex-end' });
 
-function Edit() {
+function AdministratorFundraisersEdit() {
   const { id } = useParams();
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
@@ -408,4 +408,4 @@ function Edit() {
   );
 }
 
-export default Edit;
+export default AdministratorFundraisersEdit;

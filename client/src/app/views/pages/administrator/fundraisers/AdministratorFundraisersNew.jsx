@@ -36,7 +36,7 @@ const Container = styled('div')(({ theme }) => ({
 const StyledTextField = styled(TextField)({ marginBottom: '16px' });
 const Form = styled('form')({ paddingLeft: '16px', paddingRight: '16px' });
 
-function New() {
+function AdministratorFundraisersNew() {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [accounts, setAccounts] = useState(null);
@@ -333,4 +333,4 @@ function New() {
   );
 }
 
-export default New;
+export default AdministratorFundraisersNew;
