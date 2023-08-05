@@ -61,7 +61,7 @@ function AdministratorFundraisersIndex() {
       id: 'donationsAmount',
       align: 'center',
       disablePadding: false,
-      label: 'DonationsAmount',
+      label: 'DonationsAmount (ether)',
     },
     {
       id: 'donationsCount',

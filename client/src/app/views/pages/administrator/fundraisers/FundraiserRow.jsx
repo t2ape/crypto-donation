@@ -4,6 +4,7 @@ import { Edit } from '@mui/icons-material';
 import {
   Box, IconButton, styled, TableCell, TableRow,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 import { H5 } from 'app/components/Typography';
@@ -20,58 +21,61 @@ const FlexBox = styled(Box)({
   alignItems: 'center',
 });
 
-function FundraiserRow(props) {
-  console.log('props', JSON.stringify(props));
-  const { fundraiser } = props;
+function FundraiserRow({ fundraiser }) {
   const [name, setName] = useState(null);
   const [startedAt, setStartedAt] = useState(null);
   const [endedAt, setEndedAt] = useState(null);
-  const [donationsAmount, setDonationsAmount] = useState(null);
+  const [donationsAmountLabel, setDonationsAmountLabel] = useState(null);
   const [donationsCount, setDonationsCount] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
 
+  FundraiserRow.propTypes = {
+    fundraiser: PropTypes.string.isRequired,
+  };
+
   useEffect(() => {
-    if (fundraiser) {
-      const init = async (fundraiser) => {
-        try {
-          const web3 = await getWeb3();
-          const contract = new web3.eth.Contract(
-            FundraiserContract.abi,
-            fundraiser,
-          );
-          const name = await contract.methods.name().call();
-          setName(name);
-          const description = await contract.methods.startedAt().call();
-          setStartedAt(description);
-          const totalDonations = await contract.methods.endedAt().call();
-          setEndedAt(totalDonations);
-          const imageURL = await contract.methods.donationsAmount().call();
-          setDonationsAmount(imageURL);
-          const url = await contract.methods.donationsCount().call();
-          setDonationsCount(url);
-        } catch (error) {
-          alert(
-            'Failed to load web3, accounts, or contract. Check console for details.',
-          );
-          console.error(error);
-        }
-      };
-      init(fundraiser);
-    }
-  }, [fundraiser]);
+    const init = async () => {
+      try {
+        const localWeb3 = await getWeb3();
+        const localContract = new localWeb3.eth.Contract(
+          FundraiserContract.abi,
+          fundraiser,
+        );
+        const localName = await localContract.methods.name().call();
+        setName(localName);
+        const localStartedAt = await localContract.methods.startedAt().call();
+        setStartedAt(localStartedAt);
+        const localEndedAt = await localContract.methods.endedAt().call();
+        setEndedAt(localEndedAt);
+        const localDonationsAmount = await localContract.methods.donationsAmount().call();
+        const localDonationsAmountLabel = localWeb3.utils.fromWei(localDonationsAmount, 'ether');
+        setDonationsAmountLabel(localDonationsAmountLabel);
+        const localDonationsCount = await localContract.methods.donationsCount().call();
+        setDonationsCount(localDonationsCount);
+        const localImageUrl = await localContract.methods.imageUrl().call();
+        setImageUrl(localImageUrl);
+      } catch (error) {
+        alert(
+          'Failed to load web3, accounts, or contract. Check console for details.',
+        );
+        console.error(error); // eslint-disable-line no-console
+      }
+    };
+    init();
+  }, []);
 
   return (
     <TableRow hover tabIndex={-1} key={name}>
       <TableCell component="th" scope="row" padding="none">
         <FlexBox gap={1} justifyContent="center">
-          {/* TODO: IMG の URL を適切な値に修正 */}
-          <IMG src="https://fastly.picsum.photos/id/436/200/300.jpg?hmac=OuJRsPTZRaNZhIyVFbzDkMYMyORVpV86q5M8igEfM3Y" />
+          <IMG src={imageUrl} />
           <H5 fontSize={15}>{name}</H5>
         </FlexBox>
       </TableCell>
-      <TableCell align="center">{startedAt}</TableCell>
-      <TableCell align="center">{endedAt}</TableCell>
-      <TableCell align="center">{donationsAmount}</TableCell>
+      <TableCell align="center">{startedAt ? new Date(startedAt * 1000).toLocaleString() : null}</TableCell>
+      <TableCell align="center">{endedAt ? new Date(endedAt * 1000).toLocaleString() : null}</TableCell>
+      <TableCell align="center">{donationsAmountLabel}</TableCell>
       <TableCell align="center">{donationsCount}</TableCell>
       <TableCell align="center">
         <IconButton
