@@ -20,7 +20,6 @@ const FundraiserIMG = styled(Card)({
 
 const IMG = styled('img')({
   padding: 32,
-  maxWidth: 400,
   width: '100%',
 });
 
@@ -100,7 +99,7 @@ function FundraiserCard({ fundraiser }) {
   }, []);
 
   return (
-    <Card sx={{ px: 4, py: 4 }} elevation={3}>
+    <Card sx={{ px: 4, py: 4, width: '600px' }} elevation={3}>
       <Grid container spacing={3}>
         <Grid item md={6} xs={12}>
           <FundraiserIMG>
