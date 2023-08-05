@@ -52,7 +52,12 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['src/contracts/*', 'src/app/components'],
+  ignorePatterns: [
+    'src/contracts/*',
+    'src/app/components/*',
+    'src/app/contexts/*',
+    'src/app/utils/*',
+  ],
   settings: {
     'import/resolver': 'webpack',
   },
