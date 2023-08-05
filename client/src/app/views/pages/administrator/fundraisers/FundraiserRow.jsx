@@ -1,39 +1,43 @@
-import { Edit, TrendingFlat } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
-import {Box, IconButton, styled, TableCell, TableRow} from "@mui/material";
-import FundraiserContract from "contracts/Fundraiser.json";
-import { H5 } from "app/components/Typography";
-import getWeb3 from "utils/getWeb3";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+
+import { Edit } from '@mui/icons-material';
+import {
+  Box, IconButton, styled, TableCell, TableRow,
+} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+import { H5 } from 'app/components/Typography';
+import FundraiserContract from 'contracts/Fundraiser.json';
+import getWeb3 from 'utils/getWeb3';
 
 // styled components
-const IMG = styled("img")({
+const IMG = styled('img')({
   height: 32,
-  borderRadius: "4px",
+  borderRadius: '4px',
 });
 const FlexBox = styled(Box)({
-  display: "flex",
-  alignItems: "center",
+  display: 'flex',
+  alignItems: 'center',
 });
 
-const FundraiserRow = (props) => {
+function FundraiserRow(props) {
   console.log('props', JSON.stringify(props));
   const { fundraiser } = props;
-  const [ name, setName ] = useState(null);
-  const [ startedAt, setStartedAt ] = useState(null);
-  const [ endedAt, setEndedAt ] = useState(null);
-  const [ donationsAmount, setDonationsAmount ] = useState(null);
-  const [ donationsCount, setDonationsCount ] = useState(null);
+  const [name, setName] = useState(null);
+  const [startedAt, setStartedAt] = useState(null);
+  const [endedAt, setEndedAt] = useState(null);
+  const [donationsAmount, setDonationsAmount] = useState(null);
+  const [donationsCount, setDonationsCount] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(fundraiser) {
+    if (fundraiser) {
       const init = async (fundraiser) => {
         try {
           const web3 = await getWeb3();
           const contract = new web3.eth.Contract(
             FundraiserContract.abi,
-            fundraiser
+            fundraiser,
           );
           const name = await contract.methods.name().call();
           setName(name);
@@ -45,26 +49,22 @@ const FundraiserRow = (props) => {
           setDonationsAmount(imageURL);
           const url = await contract.methods.donationsCount().call();
           setDonationsCount(url);
-        } catch(error) {
+        } catch (error) {
           alert(
             'Failed to load web3, accounts, or contract. Check console for details.',
           );
           console.error(error);
         }
-      }
+      };
       init(fundraiser);
     }
   }, [fundraiser]);
 
   return (
-    <TableRow
-      hover
-      tabIndex={-1}
-      key={name}
-    >
+    <TableRow hover tabIndex={-1} key={name}>
       <TableCell component="th" scope="row" padding="none">
         <FlexBox gap={1} justifyContent="center">
-          {/*TODO: IMG の URL を適切な値に修正*/}
+          {/* TODO: IMG の URL を適切な値に修正 */}
           <IMG src="https://fastly.picsum.photos/id/436/200/300.jpg?hmac=OuJRsPTZRaNZhIyVFbzDkMYMyORVpV86q5M8igEfM3Y" />
           <H5 fontSize={15}>{name}</H5>
         </FlexBox>
@@ -74,12 +74,14 @@ const FundraiserRow = (props) => {
       <TableCell align="center">{donationsAmount}</TableCell>
       <TableCell align="center">{donationsCount}</TableCell>
       <TableCell align="center">
-        <IconButton onClick={() => navigate(`/administrator/fundraisers/${fundraiser}/edit`)}>
+        <IconButton
+          onClick={() => navigate(`/administrator/fundraisers/${fundraiser}/edit`)}
+        >
           <Edit />
         </IconButton>
       </TableCell>
     </TableRow>
-  )
+  );
 }
 
 export default FundraiserRow;
