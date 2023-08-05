@@ -1,13 +1,13 @@
-import { Box, Menu, styled } from "@mui/material";
-import { Fragment, useState } from "react";
+import { Box, Menu, styled } from '@mui/material';
+import { Fragment, useState } from 'react';
 
 const MenuButton = styled(Box)(({ theme }) => ({
-  display: "inline-block",
+  display: 'inline-block',
   color: theme.palette.text.primary,
-  "& div:hover": { backgroundColor: theme.palette.action.hover },
+  '& div:hover': { backgroundColor: theme.palette.action.hover },
 }));
 
-const MatxMenu = ({ horizontalPosition = "left", children, menuButton }) => {
+const MatxMenu = ({ horizontalPosition = 'left', children, menuButton }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => setAnchorEl(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -21,8 +21,8 @@ const MatxMenu = ({ horizontalPosition = "left", children, menuButton }) => {
         open={!!anchorEl}
         anchorEl={anchorEl}
         onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: horizontalPosition }}
-        transformOrigin={{ vertical: "top", horizontal: horizontalPosition }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: horizontalPosition }}
+        transformOrigin={{ vertical: 'top', horizontal: horizontalPosition }}
       >
         {children.map((child, index) => (
           <Box onClick={handleClose} key={index}>

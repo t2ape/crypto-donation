@@ -1,20 +1,20 @@
-import { themeShadows } from "./themeColors";
+import { themeShadows } from './themeColors';
 
 export const components = {
   MuiTable: {
     styleOverrides: {
-      root: { tableLayout: "fixed" },
+      root: { tableLayout: 'fixed' },
     },
   },
   MuiTableCell: {
     styleOverrides: {
       root: {
-        fontSize: "14px",
-        whiteSpace: "pre-wrap",
-        wordBreak: "break-all",
-        padding: "12px 8px 12px 0px",
+        fontSize: '14px',
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-all',
+        padding: '12px 8px 12px 0px',
       },
-      head: { fontSize: "13px", padding: "12px 0px" },
+      head: { fontSize: '13px', padding: '12px 0px' },
     },
   },
   MUIDataTableSelectCell: {
@@ -35,29 +35,29 @@ export const components = {
   MuiButton: {
     styleOverrides: {
       root: {
-        fontSize: "14px",
-        fontWeight: "400",
-        textTransform: "none",
+        fontSize: '14px',
+        fontWeight: '400',
+        textTransform: 'none',
       },
       contained: { boxShadow: themeShadows[8] },
     },
   },
   MuiCssBaseline: {
     styleOverrides: {
-      "*": { boxSizing: "border-box" },
+      '*': { boxSizing: 'border-box' },
       html: {
-        width: "100%",
-        height: "100%",
-        MozOsxFontSmoothing: "grayscale",
-        WebkitFontSmoothing: "antialiased",
+        width: '100%',
+        height: '100%',
+        MozOsxFontSmoothing: 'grayscale',
+        WebkitFontSmoothing: 'antialiased',
       },
       body: {
-        height: "100%",
+        height: '100%',
         fontFamily: "'Roboto', Helvetica, Arial, sans-serif",
       },
-      "#root": { height: "100%" },
-      a: { color: "inherit", textDecoration: "none" },
-      "#nprogress .bar": { zIndex: "2000 !important" },
+      '#root': { height: '100%' },
+      a: { color: 'inherit', textDecoration: 'none' },
+      '#nprogress .bar': { zIndex: '2000 !important' },
     },
   },
   MuiFab: {
@@ -66,23 +66,23 @@ export const components = {
     },
   },
   MuiAccordion: {
-    styleOverrides: { root: { "&:before": { display: "none" } } },
+    styleOverrides: { root: { '&:before': { display: 'none' } } },
   },
   MuiTooltip: {
-    styleOverrides: { tooltip: { fontSize: "11px" } },
+    styleOverrides: { tooltip: { fontSize: '11px' } },
   },
   MuiMenuItem: {
-    styleOverrides: { root: { fontSize: "0.875rem" } },
+    styleOverrides: { root: { fontSize: '0.875rem' } },
   },
   MuiExpansionPanel: {
-    styleOverrides: { root: { "&:before": { display: "none" } } },
+    styleOverrides: { root: { '&:before': { display: 'none' } } },
   },
   MuiCard: {
     styleOverrides: {
       root: {
-        borderRadius: "8px",
+        borderRadius: '8px',
         boxShadow:
-          "0px 3px 3px -2px rgb(0 0 0 / 6%), 0px 3px 4px 0px rgb(0 0 0 / 4%), 0px 1px 8px 0px rgb(0 0 0 / 4%) !important",
+          '0px 3px 3px -2px rgb(0 0 0 / 6%), 0px 3px 4px 0px rgb(0 0 0 / 4%), 0px 1px 8px 0px rgb(0 0 0 / 4%) !important',
       },
     },
   },

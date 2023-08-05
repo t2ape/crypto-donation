@@ -1,6 +1,6 @@
-import useSettings from "app/hooks/useSettings";
-import MatxSuspense from "../MatxSuspense";
-import { MatxLayouts } from "./index";
+import useSettings from 'app/hooks/useSettings';
+import MatxSuspense from '../MatxSuspense';
+import { MatxLayouts } from './index';
 
 const MatxLayout = (props) => {
   const { settings } = useSettings();

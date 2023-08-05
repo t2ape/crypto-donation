@@ -1,26 +1,26 @@
-import { Box, styled } from "@mui/material";
-import React from "react";
+import { Box, styled } from '@mui/material';
+import React from 'react';
 
 const DividerRoot = styled(Box)(({ theme }) => ({
   // borderBottom: `1px solid ${palette.divider}`,
-  textAlign: "center",
-  position: "relative",
+  textAlign: 'center',
+  position: 'relative',
   height: 16,
-  "&::after": {
+  '&::after': {
     left: 0,
     zIndex: 1,
-    top: "10px",
+    top: '10px',
     content: '""',
-    width: "100%",
-    height: "1px",
-    position: "absolute",
+    width: '100%',
+    height: '1px',
+    position: 'absolute',
     backgroundColor: theme.palette.divider,
   },
-  "& span": {
+  '& span': {
     zIndex: 5,
-    background: "#fff",
-    padding: "4px 6px",
-    position: "relative",
+    background: '#fff',
+    padding: '4px 6px',
+    position: 'relative',
     color: theme.palette.text.secondary,
   },
 }));

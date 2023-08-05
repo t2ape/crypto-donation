@@ -1,36 +1,36 @@
-import { Box, styled, ThemeProvider, useTheme } from "@mui/material";
-import useSettings from "app/hooks/useSettings";
-import Scrollbar from "react-perfect-scrollbar";
-import { Outlet } from "react-router-dom";
-import Footer from "../../Footer";
-import SecondarySidebar from "../../SecondarySidebar/SecondarySidebar";
-import { Layout2Container } from "./layout2.style";
+import { Box, styled, ThemeProvider, useTheme } from '@mui/material';
+import useSettings from 'app/hooks/useSettings';
+import Scrollbar from 'react-perfect-scrollbar';
+import { Outlet } from 'react-router-dom';
+import Footer from '../../Footer';
+import SecondarySidebar from '../../SecondarySidebar/SecondarySidebar';
+import { Layout2Container } from './layout2.style';
 
 // styled components
-const Layout2Root = styled("div")({
+const Layout2Root = styled('div')({
   flexGrow: 1,
-  height: "100vh",
-  display: "flex",
-  overflow: "hidden",
-  position: "relative",
-  flexDirection: "column",
+  height: '100vh',
+  display: 'flex',
+  overflow: 'hidden',
+  position: 'relative',
+  flexDirection: 'column',
 });
 
 const ContentBox = styled(Box)({
   padding: 0,
-  height: "100%",
-  display: "flex",
-  overflowY: "auto",
-  overflowX: "hidden",
-  flexDirection: "column",
-  justifyContent: "space-between",
+  height: '100%',
+  display: 'flex',
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
 });
 
 const StyledScrollBar = styled(Scrollbar)({
-  flexGrow: "1",
-  display: "flex",
-  position: "relative",
-  flexDirection: "column",
+  flexGrow: '1',
+  display: 'flex',
+  position: 'relative',
+  flexDirection: 'column',
 });
 
 const Layout2 = () => {
@@ -46,7 +46,7 @@ const Layout2 = () => {
 
   let layoutClasses = {
     [settings.activeLayout]: true,
-    "bg-default text-primary": true,
+    'bg-default text-primary': true,
     [`sidenav-${layout2Settings.leftSidebar.mode}`]: true,
     [`layout-${layout2Settings.mode} theme-${theme.palette.type}`]: true,
   };

@@ -1,61 +1,61 @@
-import { Box, Divider, styled, useTheme } from "@mui/material";
-import { getTimeDifference } from "app/utils/utils";
-import { Link } from "react-router-dom";
-import { themeShadows } from "../MatxTheme/themeColors";
-import { H5, Paragraph, Small, Span } from "../Typography";
+import { Box, Divider, styled, useTheme } from '@mui/material';
+import { getTimeDifference } from 'app/utils/utils';
+import { Link } from 'react-router-dom';
+import { themeShadows } from '../MatxTheme/themeColors';
+import { H5, Paragraph, Small, Span } from '../Typography';
 
-const Circle = styled("div")(({ theme }) => ({
+const Circle = styled('div')(({ theme }) => ({
   top: 23,
   left: 18,
   width: 16,
   height: 16,
-  display: "flex",
-  borderRadius: "50%",
-  alignItems: "center",
-  position: "absolute",
-  justifyContent: "center",
+  display: 'flex',
+  borderRadius: '50%',
+  alignItems: 'center',
+  position: 'absolute',
+  justifyContent: 'center',
   boxShadow: themeShadows[3],
-  "& .circleContent": {
-    padding: "4px",
-    overflow: "hidden",
-    borderRadius: "300px",
+  '& .circleContent': {
+    padding: '4px',
+    overflow: 'hidden',
+    borderRadius: '300px',
     background: theme.palette.primary.main,
   },
 }));
 
-const VerticalLine = styled("div")({
+const VerticalLine = styled('div')({
   left: 25,
   width: 2,
-  position: "absolute",
-  background: "rgba(var(--body), 0.1)",
+  position: 'absolute',
+  background: 'rgba(var(--body), 0.1)',
 });
 
 const UpperLine = styled(VerticalLine)({
   left: 25,
   width: 2,
-  position: "absolute",
-  background: "rgba(var(--body), 0.1)",
+  position: 'absolute',
+  background: 'rgba(var(--body), 0.1)',
 });
 
 const LowerLine = styled(VerticalLine)({
   left: 25,
   width: 2,
-  position: "absolute",
-  background: "rgba(var(--body), 0.1)",
+  position: 'absolute',
+  background: 'rgba(var(--body), 0.1)',
 });
 
 const StyledP = styled(Paragraph)({
-  fontSize: "14px",
+  fontSize: '14px',
   borderRadius: 4,
-  padding: "6px 12px",
-  marginTop: "8px",
-  marginBottom: "8px",
-  background: "rgba(var(--body),0.03)",
+  padding: '6px 12px',
+  marginTop: '8px',
+  marginBottom: '8px',
+  background: 'rgba(var(--body),0.03)',
 });
 
 const StyledLink = styled(Link)(({ theme }) => ({
-  marginLeft: "4px",
-  fontWeight: "500",
+  marginLeft: '4px',
+  fontWeight: '500',
   color: theme.palette.primary.main,
 }));
 
@@ -76,7 +76,9 @@ const NotificationCard = (props) => {
 
         <Box display="flex" justifyContent="space-between">
           <Box fontSize="13px">
-            <H5 sx={{ mt: 0, mb: "4px", fontSize: "14px" }}>{notification.title}</H5>
+            <H5 sx={{ mt: 0, mb: '4px', fontSize: '14px' }}>
+              {notification.title}
+            </H5>
             <Span sx={{ color: secondary }}>on</Span>
             <StyledLink to="/">Project Name</StyledLink>
           </Box>

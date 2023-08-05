@@ -8,30 +8,30 @@ import {
   styled,
   ThemeProvider,
   useTheme,
-} from "@mui/material";
-import useSettings from "app/hooks/useSettings";
-import { getNotification } from "app/redux/slices/notificationSlice";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { themeShadows } from "../MatxTheme/themeColors";
-import NotificationCard from "./NotificationCard";
+} from '@mui/material';
+import useSettings from 'app/hooks/useSettings';
+import { getNotification } from 'app/redux/slices/notificationSlice';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { themeShadows } from '../MatxTheme/themeColors';
+import NotificationCard from './NotificationCard';
 
 // styled components
-const NotificationBox = styled("div")(({ theme }) => ({
+const NotificationBox = styled('div')(({ theme }) => ({
   width: 360,
-  [theme.breakpoints.down("xs")]: { width: "100vw" },
+  [theme.breakpoints.down('xs')]: { width: '100vw' },
 }));
 
-const Notification = styled("div")({
-  padding: "16px",
-  display: "flex",
-  alignItems: "center",
+const Notification = styled('div')({
+  padding: '16px',
+  display: 'flex',
+  alignItems: 'center',
   boxShadow: themeShadows[6],
-  "& h5": {
-    marginLeft: "8px",
+  '& h5': {
+    marginLeft: '8px',
     marginTop: 0,
     marginBottom: 0,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 
@@ -57,7 +57,7 @@ const NotificationBar2 = () => {
         onClick={handleDrawerToggle}
         style={{
           color:
-            parentThemePalette.type === "light"
+            parentThemePalette.type === 'light'
               ? parentThemePalette.text.secondary
               : parentThemePalette.text.primary,
         }}
@@ -91,8 +91,12 @@ const NotificationBar2 = () => {
           ))}
 
           {!!notifications.length && (
-            <Box sx={{ m: 4, textAlign: "center" }}>
-              <Button variant="contained" color="primary" sx={{ width: "100%" }}>
+            <Box sx={{ m: 4, textAlign: 'center' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ width: '100%' }}
+              >
                 View All Notifications
               </Button>
             </Box>

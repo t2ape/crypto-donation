@@ -1,4 +1,4 @@
-import TableHead from "./TableHead";
-import TableToolbar from "./TableToolbar";
+import TableHead from './TableHead';
+import TableToolbar from './TableToolbar';
 
 export { TableHead, TableToolbar };

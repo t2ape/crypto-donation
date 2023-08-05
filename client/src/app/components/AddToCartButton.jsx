@@ -1,15 +1,15 @@
-import { Button, Icon, styled } from "@mui/material";
-import { FlexAlignCenter } from "./FlexBox";
+import { Button, Icon, styled } from '@mui/material';
+import { FlexAlignCenter } from './FlexBox';
 
-const ButtonContainer = styled("div")({
+const ButtonContainer = styled('div')({
   width: 160,
-  display: "flex",
-  justifyContent: "space-between",
+  display: 'flex',
+  justifyContent: 'space-between',
 });
 
 const ProductPrice = styled(FlexAlignCenter)(({ theme }) => ({
   width: 160,
-  flexGrow: "1",
+  flexGrow: '1',
   background: theme.palette.background.paper,
 }));
 
@@ -24,7 +24,12 @@ const AddToCartButton = ({
   return (
     <div>
       {amount === 0 && (
-        <Button sx={propStyle} variant="contained" color="primary" onClick={handleAddCart}>
+        <Button
+          sx={propStyle}
+          variant="contained"
+          color="primary"
+          onClick={handleAddCart}
+        >
           <Icon sx={{ mr: 1 }} fontSize="small">
             shopping_cart
           </Icon>

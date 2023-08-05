@@ -1,29 +1,29 @@
-import { styled } from "@mui/material";
-import { topBarHeight } from "app/utils/constant";
-import clsx from "clsx";
-import React, { cloneElement } from "react";
+import { styled } from '@mui/material';
+import { topBarHeight } from 'app/utils/constant';
+import clsx from 'clsx';
+import React, { cloneElement } from 'react';
 
-const PopupRoot = styled("div")(({ theme }) => ({
-  "& .popupOpen": {
+const PopupRoot = styled('div')(({ theme }) => ({
+  '& .popupOpen': {
     top: topBarHeight + 16,
-    [theme.breakpoints.down("sm")]: { bottom: 0 },
+    [theme.breakpoints.down('sm')]: { bottom: 0 },
   },
-  "& .closeIcon": { position: "absolute", top: 6, right: 6 },
+  '& .closeIcon': { position: 'absolute', top: 6, right: 6 },
 }));
 
-const Popup = styled("div")(({ theme }) => ({
-  position: "fixed",
+const Popup = styled('div')(({ theme }) => ({
+  position: 'fixed',
   right: theme.spacing(2),
   bottom: theme.spacing(2),
-  top: "100vh",
-  transition: "top 250ms ease-in-out",
+  top: '100vh',
+  transition: 'top 250ms ease-in-out',
   boxShadow: theme.shadows[6],
   borderRadius: 6,
   zIndex: 99999,
   width: 360,
-  overflow: "hidden",
-  "@media only screen and (max-width: 450px)": {
-    width: "calc(100% - 32px)",
+  overflow: 'hidden',
+  '@media only screen and (max-width: 450px)': {
+    width: 'calc(100% - 32px)',
     left: theme.spacing(2),
   },
 }));

@@ -1,9 +1,9 @@
-import { styled } from "@mui/material";
+import { styled } from '@mui/material';
 
-const Container = styled("div")(() => ({
-  height: "100%",
-  display: "flex",
-  position: "relative",
+const Container = styled('div')(() => ({
+  height: '100%',
+  display: 'flex',
+  position: 'relative',
 }));
 
 const MatxSidenavContainer = ({ children }) => {

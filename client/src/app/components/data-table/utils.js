@@ -17,8 +17,8 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  if (order === "desc") return (a, b) => descendingComparator(a, b, orderBy);
-  else return (a, b) => -descendingComparator(a, b, orderBy);
+  if (order === 'desc') return (a, b) => descendingComparator(a, b, orderBy);
+  return (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 export { stableSort, getComparator, descendingComparator };

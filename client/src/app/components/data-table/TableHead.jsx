@@ -1,9 +1,8 @@
-import { TableCell, TableRow } from "@mui/material";
-import MuiTableHead from "@mui/material/TableHead";
+import { TableCell, TableRow } from '@mui/material';
+import MuiTableHead from '@mui/material/TableHead';
 
 const TableHead = (props) => {
-  const { headCells } =
-    props;
+  const { headCells } = props;
 
   return (
     <MuiTableHead>
@@ -12,7 +11,7 @@ const TableHead = (props) => {
           <TableCell
             key={headCell.id}
             align={headCell.align}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
           >
             {headCell.label}
           </TableCell>

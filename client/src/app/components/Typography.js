@@ -1,9 +1,13 @@
-import { Box, styled } from "@mui/material";
-import clsx from "clsx";
+import { Box, styled } from '@mui/material';
+import clsx from 'clsx';
 
 const StyledBox = styled(Box)(({ ellipsis }) => ({
-  textTransform: "none",
-  ...(ellipsis && { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }),
+  textTransform: 'none',
+  ...(ellipsis && {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  }),
 }));
 
 /**
@@ -11,7 +15,9 @@ const StyledBox = styled(Box)(({ ellipsis }) => ({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const H1 = ({ children, className, ellipsis, ...props }) => {
+export function H1({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       mb={0}
@@ -21,20 +27,22 @@ export const H1 = ({ children, className, ellipsis, ...props }) => {
       fontWeight="500"
       lineHeight="1.5"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const H2 = ({ children, className, ellipsis, ...props }) => {
+export function H2({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       mb={0}
@@ -44,20 +52,22 @@ export const H2 = ({ children, className, ellipsis, ...props }) => {
       fontWeight="500"
       lineHeight="1.5"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const H3 = ({ children, className, ellipsis, ...props }) => {
+export function H3({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       mb={0}
@@ -67,20 +77,22 @@ export const H3 = ({ children, className, ellipsis, ...props }) => {
       fontWeight="500"
       lineHeight="1.5"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const H4 = ({ children, className, ellipsis, ...props }) => {
+export function H4({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       mb={0}
@@ -90,20 +102,22 @@ export const H4 = ({ children, className, ellipsis, ...props }) => {
       fontWeight="500"
       lineHeight="1.5"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const H5 = ({ children, className, ellipsis, ...props }) => {
+export function H5({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       mb={0}
@@ -113,20 +127,22 @@ export const H5 = ({ children, className, ellipsis, ...props }) => {
       fontWeight="500"
       lineHeight="1.5"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const H6 = ({ children, className, ellipsis, ...props }) => {
+export function H6({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       mb={0}
@@ -136,20 +152,22 @@ export const H6 = ({ children, className, ellipsis, ...props }) => {
       fontWeight="500"
       lineHeight="1.5"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const Paragraph = ({ children, className, ellipsis, ...props }) => {
+export function Paragraph({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       mb={0}
@@ -157,20 +175,22 @@ export const Paragraph = ({ children, className, ellipsis, ...props }) => {
       component="p"
       fontSize="14px"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const Small = ({ children, className, ellipsis, ...props }) => {
+export function Small({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       fontSize="12px"
@@ -178,49 +198,53 @@ export const Small = ({ children, className, ellipsis, ...props }) => {
       lineHeight="1.5"
       component="small"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const Span = ({ children, className, ellipsis, ...props }) => {
+export function Span({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       component="span"
       lineHeight="1.5"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
 
 /**
  * @typedef {import("@mui/material").BoxProps} Other
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export const Tiny = ({ children, className, ellipsis, ...props }) => {
+export function Tiny({
+  children, className, ellipsis, ...props
+}) {
   return (
     <StyledBox
       fontSize="10px"
       lineHeight="1.5"
       component="small"
       ellipsis={ellipsis}
-      className={clsx({ [className || ""]: true })}
+      className={clsx({ [className || '']: true })}
       {...props}
     >
       {children}
     </StyledBox>
   );
-};
+}
