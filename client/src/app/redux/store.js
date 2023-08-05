@@ -8,8 +8,8 @@ import { productReducer } from './slices/productSlice';
 import { ratingReducer } from './slices/ratingSlice';
 import { scrumReducer } from './slices/scrumSlice';
 import { userReducer } from './slices/userSlice';
-import { donatedFundraiserForUserReducer } from './user/slices/donatedFundraiserSlice';
-import { donationForUserReducer } from './user/slices/donationSlice';
+import { userDonatedFundraiserReducer } from './user/slices/donatedFundraiserSlice';
+import { userDonationReducer } from './user/slices/donationSlice';
 
 const store = configureStore({
   reducer: {
@@ -21,8 +21,8 @@ const store = configureStore({
     products: productReducer,
     categories: categoryReducer,
     notifications: notificationReducer,
-    userDonatedFundraisers: donatedFundraiserForUserReducer,
-    donationsForUser: donationForUserReducer,
+    userDonatedFundraisers: userDonatedFundraiserReducer,
+    userDonations: userDonationReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

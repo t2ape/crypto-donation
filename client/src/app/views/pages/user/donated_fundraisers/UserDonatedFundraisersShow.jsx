@@ -5,39 +5,41 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
-} from "@mui/material";
-import { Breadcrumb, MatxLoading } from "app/components";
-import { TableHead, TableToolbar } from "app/components/data-table";
-import useDonations from "app/hooks/user/useDonations";
-import useCollection from "app/hooks/useCollection";
-import {useParams} from "react-router-dom";
-import DonationRow from "./DonationRow";
+} from '@mui/material';
+import { useParams } from 'react-router-dom';
+
+import { Breadcrumb, MatxLoading } from 'app/components';
+import { TableHead, TableToolbar } from 'app/components/data-table';
+import useCollection from 'app/hooks/useCollection';
+import useDonations from 'app/hooks/user/useDonations';
+
+import DonationRow from './DonationRow';
 
 // styled components
-const Container = styled("div")(({ theme }) => ({
-  margin: "30px",
-  [theme.breakpoints.down("sm")]: { margin: "16px" },
-  "& .breadcrumb": {
-    marginBottom: "30px",
-    [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
+const Container = styled('div')(({ theme }) => ({
+  margin: '30px',
+  [theme.breakpoints.down('sm')]: { margin: '16px' },
+  '& .breadcrumb': {
+    marginBottom: '30px',
+    [theme.breakpoints.down('sm')]: { marginBottom: '16px' },
   },
 }));
 
-const Show = () => {
+function Show() {
   const { id } = useParams();
 
-  const {
-    page,
-    rowsPerPage,
-    handleChangePage,
-  } = useCollection();
+  const { page, itemsPerPage, handleChangePage } = useCollection();
 
   const { isLoading, donations } = useDonations(id);
 
   // TABLE HEADER COLUMN LIST
   const columns = [
-    { id: "value", align: "center", disablePadding: true, label: "Value" },
-    { id: "date", align: "center", disablePadding: false, label: "Date" },
+    {
+      id: 'value', align: 'center', disablePadding: true, label: 'Value (ether)',
+    },
+    {
+      id: 'date', align: 'center', disablePadding: false, label: 'Date',
+    },
   ];
 
   if (isLoading) return <MatxLoading />;
@@ -45,43 +47,50 @@ const Show = () => {
   return (
     <Container>
       <div className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: "Pages", path: "/pages" }, { name: "Fundraisers" }]} />
+        <Breadcrumb
+          routeSegments={[
+            { name: 'Donated Fundraisers', path: '/donated_fundraisers' },
+            { name: 'Donations' },
+          ]}
+        />
       </div>
 
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <TableToolbar title="All Fundraisers" />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Paper sx={{ width: '60%', mb: 2 }}>
+          <TableToolbar title="Donations" />
 
-        <TableContainer>
-          <Table sx={{ minWidth: 750 }}>
-            <TableHead headCells={columns} />
+          <TableContainer>
+            <Table sx={{ minWidth: 750 }}>
+              <TableHead headCells={columns} />
 
-            <TableBody>
-              {donations?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((donation) => {
-                  return (
-                    // TODO: 修正
-                    <DonationRow
-                      donation={donation}
-                      key={donation}
-                    />
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              <TableBody>
+                {donations
+                  ?.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage)
+                  .map((donation) => (
+                    <DonationRow donation={donation} key={donation} />
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-        <TablePagination
-          page={page}
-          component="div"
-          rowsPerPage={rowsPerPage}
-          // TODO: 修正
-          count={10}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[]}
-        />
-      </Paper>
+          <TablePagination
+            page={page}
+            component="div"
+            rowsPerPage={itemsPerPage}
+            count={donations.length}
+            onPageChange={handleChangePage}
+            rowsPerPageOptions={[]}
+          />
+        </Paper>
+      </div>
     </Container>
   );
-};
+}
 
 export default Show;

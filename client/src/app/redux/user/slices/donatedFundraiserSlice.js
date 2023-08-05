@@ -47,4 +47,4 @@ const donatedFundraiserSlice = createSlice({
   },
 });
 
-export const donatedFundraiserForUserReducer = donatedFundraiserSlice.reducer;
+export const userDonatedFundraiserReducer = donatedFundraiserSlice.reducer;

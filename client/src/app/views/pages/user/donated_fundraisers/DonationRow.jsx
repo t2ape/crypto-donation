@@ -1,33 +1,45 @@
-import React from "react";
-import {Box, styled, TableCell, TableRow} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
 
-// styled components
-const IMG = styled("img")({
-  height: 32,
-  borderRadius: "4px",
-});
-const FlexBox = styled(Box)({
-  display: "flex",
-  alignItems: "center",
-});
+import { TableCell, TableRow } from '@mui/material';
+import PropTypes from 'prop-types';
 
-const DonationRow = (props) => {
-  console.log('props', JSON.stringify(props));
-  const { donation } = props;
-  const navigate = useNavigate();
+import getWeb3 from 'utils/getWeb3';
+
+function DonationRow({ donation }) {
+  const [web3, setWeb3] = useState(null);
+
+  DonationRow.propTypes = {
+    donation: PropTypes.shape({
+      value: PropTypes.number.isRequired,
+      date: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const localWeb3 = await getWeb3();
+        setWeb3(localWeb3);
+      } catch (error) {
+        alert(
+          'Failed to load web3, accounts, or contract. Check console for details.',
+        );
+        console.error(error); // eslint-disable-line no-console
+      }
+    };
+    init();
+  }, []);
 
   return (
-    // TODO: key を適切な値に修正
-    <TableRow
-      hover
-      tabIndex={-1}
-      key={donation.value}
-    >
-      <TableCell align="center">{donation.value}</TableCell>
-      <TableCell align="center">{donation.date}</TableCell>
+    <TableRow hover tabIndex={-1}>
+      <TableCell align="center">
+        {web3 ? web3.utils.fromWei(donation.value, 'ether') : null}
+      </TableCell>
+      <TableCell align="center">
+        {new Date(donation.date * 1000).toLocaleString()}
+      </TableCell>
     </TableRow>
-  )
+  );
 }
 
 export default DonationRow;

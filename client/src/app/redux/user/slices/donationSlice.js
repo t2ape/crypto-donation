@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import getWeb3 from "utils/getWeb3";
-import FundraiserContract from "contracts/Fundraiser.json";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+import FundraiserContract from 'contracts/Fundraiser.json';
+import getWeb3 from 'utils/getWeb3';
 
 const initialState = {
   error: null,
@@ -8,39 +9,40 @@ const initialState = {
   loading: false,
 };
 
-export const getDonations = createAsyncThunk("user/donations/get", async (id) => {
-  const web3 = await getWeb3();
-  const accounts = await web3.eth.getAccounts();
-  const selectedAccount = accounts[0];
+export const getDonations = createAsyncThunk(
+  'user/donations/get',
+  async (id) => {
+    const web3 = await getWeb3();
+    const accounts = await web3.eth.getAccounts();
+    const selectedAccount = accounts[0];
 
-  const contract = new web3.eth.Contract(
-    FundraiserContract.abi,
-    id
-  );
+    const contract = new web3.eth.Contract(FundraiserContract.abi, id);
 
-  const donations = await contract.methods.donations().call({ from: selectedAccount });
-  return donations
-});
+    const donations = await contract.methods
+      .donations()
+      .call({ from: selectedAccount });
+    return donations;
+  },
+);
 
 const donationSlice = createSlice({
   initialState,
-  name: "donationsForUser",
+  name: 'userDonations',
   extraReducers: (builder) => {
     builder
       .addCase(getDonations.pending, (state) => {
-        state.loading = true;
+        state.loading = true; // eslint-disable-line no-param-reassign
       })
       .addCase(getDonations.fulfilled, (state, actions) => {
-        state.loading = false;
-        state.donations = actions.payload;
-        // console.log(`donations: ${state.donations}`);
+        state.loading = false; // eslint-disable-line no-param-reassign
+        state.donations = actions.payload; // eslint-disable-line no-param-reassign
       })
       .addCase(getDonations.rejected, (state, actions) => {
-        state.loading = false;
-        state.donations = [];
-        state.error = actions.error.message;
+        state.loading = false; // eslint-disable-line no-param-reassign
+        state.donations = []; // eslint-disable-line no-param-reassign
+        state.error = actions.error.message; // eslint-disable-line no-param-reassign
       });
   },
 });
 
-export const donationForUserReducer = donationSlice.reducer;
+export const userDonationReducer = donationSlice.reducer;
