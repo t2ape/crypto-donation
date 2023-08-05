@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getDonations } from 'app/redux/user/slices/donationSlice';
+import { getDonations } from 'app/redux/slices/user/donationSlice';
 
 const useDonations = (id) => {
   const dispatch = useDispatch();

@@ -3,7 +3,6 @@ import { useState } from "react";
 import Chatbox from "../Chatbox";
 import ChatHead from "../ChatHead";
 import MatxCustomizer from "../MatxCustomizer/MatxCustomizer";
-import ShoppingCart from "../ShoppingCart";
 import { Span } from "../Typography";
 
 const SidebarRoot = styled("div")(({ theme, width }) => ({
@@ -47,7 +46,6 @@ const SecondarySidebarContent = ({ chatTheme }) => {
     <SidebarRoot width={"50px"} className="secondary-sidebar">
       <Span m="auto" />
       <MatxCustomizer />
-      <ShoppingCart />
 
       <ChatHead
         openChat={openChat}
