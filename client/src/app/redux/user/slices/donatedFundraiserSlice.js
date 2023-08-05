@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import getWeb3 from "utils/getWeb3";
-import UserFundraiserHandlerContract from "contracts/UserFundraiserHandler.json";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+import UserFundraiserHandlerContract from 'contracts/UserFundraiserHandler.json';
+import getWeb3 from 'utils/getWeb3';
 
 const initialState = {
   error: null,
@@ -8,39 +9,40 @@ const initialState = {
   loading: false,
 };
 
-export const getDonatedFundraisers = createAsyncThunk("user/donated_fundraisers/get", async () => {
-  const web3 = await getWeb3();
-  const networkId = await web3.eth.net.getId();
-
-  const accounts = await web3.eth.getAccounts();
-  const selectedAccount = accounts[0];
-
-  const deployedNetwork = UserFundraiserHandlerContract.networks[networkId];
-  const contract = new web3.eth.Contract(
-    UserFundraiserHandlerContract.abi,
-    deployedNetwork && deployedNetwork.address
-  );
-
-  const donatedFundraisers = await contract.methods.fundraisersDonatedByMsgSender().call({ from: selectedAccount });
-  return donatedFundraisers
-});
+export const getDonatedFundraisers = createAsyncThunk(
+  'user/donated_fundraisers/get',
+  async () => {
+    const web3 = await getWeb3();
+    const networkId = await web3.eth.net.getId();
+    const accounts = await web3.eth.getAccounts();
+    const deployedNetwork = UserFundraiserHandlerContract.networks[networkId];
+    const contract = new web3.eth.Contract(
+      UserFundraiserHandlerContract.abi,
+      deployedNetwork && deployedNetwork.address,
+    );
+    const donatedFundraisers = await contract.methods
+      .fundraisersDonatedByMsgSender()
+      .call({ from: accounts[0] });
+    return donatedFundraisers;
+  },
+);
 
 const donatedFundraiserSlice = createSlice({
   initialState,
-  name: "donatedFundraisersForUser",
+  name: 'userDonatedFundraisers',
   extraReducers: (builder) => {
     builder
       .addCase(getDonatedFundraisers.pending, (state) => {
-        state.loading = true;
+        state.loading = true; // eslint-disable-line no-param-reassign
       })
       .addCase(getDonatedFundraisers.fulfilled, (state, actions) => {
-        state.loading = false;
-        state.donatedFundraisers = actions.payload;
+        state.loading = false; // eslint-disable-line no-param-reassign
+        state.donatedFundraisers = actions.payload; // eslint-disable-line no-param-reassign
       })
       .addCase(getDonatedFundraisers.rejected, (state, actions) => {
-        state.loading = false;
-        state.donatedFundraisers = [];
-        state.error = actions.error.message;
+        state.loading = false; // eslint-disable-line no-param-reassign
+        state.donatedFundraisers = []; // eslint-disable-line no-param-reassign
+        state.error = actions.error.message; // eslint-disable-line no-param-reassign
       });
   },
 });

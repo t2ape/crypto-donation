@@ -1,10 +1,14 @@
-import { getDonatedFundraisers } from "app/redux/user/slices/donatedFundraiserSlice";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getDonatedFundraisers } from 'app/redux/user/slices/donatedFundraiserSlice';
 
 const useDonatedFundraisers = () => {
   const dispatch = useDispatch();
-  const { error, donatedFundraisers, loading } = useSelector((state) => state.donatedFundraisersForUser);
+  const { error, donatedFundraisers, loading } = useSelector(
+    (state) => state.donatedFundraisersForUser,
+  );
 
   // console.log(`donated_fundraisers: ${fundraisers}`);
 
