@@ -1,6 +1,6 @@
 import pagesRoutes from './views/pages/pagesRoutes';
-import Redirect from './auth/Redirect';
-import NotFound from './views/sessions/NotFound';
+import Redirect from './views/pages/Redirect';
+import NotFound from './views/pages/NotFound';
 
 const routes = [
   ...pagesRoutes,
