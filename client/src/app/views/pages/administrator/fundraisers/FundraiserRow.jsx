@@ -66,7 +66,7 @@ function FundraiserRow({ fundraiser }) {
   }, []);
 
   return (
-    <TableRow hover tabIndex={-1} key={name}>
+    <TableRow hover tabIndex={-1}>
       <TableCell component="th" scope="row" padding="none">
         <FlexBox gap={1} justifyContent="center">
           <IMG src={imageUrl} />
