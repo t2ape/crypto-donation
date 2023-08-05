@@ -49,7 +49,7 @@ function Show() {
       <div className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Donated Fundraisers', path: '/donated_fundraisers' },
+            { name: 'Donated Fundraisers', path: '/user/donated_fundraisers' },
             { name: 'Donations' },
           ]}
         />
