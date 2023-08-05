@@ -59,7 +59,7 @@ function UserDonatedFundraisersIndex() {
         <Breadcrumb
           routeSegments={[
             { name: 'Pages', path: '/pages' },
-            { name: 'Fundraisers' },
+            { name: 'Donated Fundraisers' },
           ]}
         />
       </div>
