@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { Breadcrumb } from 'app/components';
 import { TableHead, TableToolbar } from 'app/components/data-table';
 import { FlexBox } from 'app/components/FlexBox';
-import useTable from 'app/hooks/useTable';
+import useCollection from 'app/hooks/useCollection';
 import AdministratorFundraiserHandlerContract from 'contracts/AdministratorFundraiserHandler.json';
 import getWeb3 from 'utils/getWeb3';
 
@@ -32,7 +32,7 @@ const Container = styled('div')(({ theme }) => ({
 const FlexEndBox = styled(FlexBox)({ justifyContent: 'flex-end' });
 
 function AdministratorFundraisersIndex() {
-  const { page, rowsPerPage, handleChangePage } = useTable();
+  const { page, itemsPerPage, handleChangePage } = useCollection();
   const [fundraisers, setFundraisers] = useState([]);
   const [fundraisersCount, setFundraisersCount] = useState(0);
   const navigate = useNavigate();
@@ -89,7 +89,7 @@ function AdministratorFundraisersIndex() {
           localDeployedNetwork && localDeployedNetwork.address,
         );
         const localFundraisers = await localContract.methods
-          .fundraisers(rowsPerPage, page * rowsPerPage)
+          .fundraisers(itemsPerPage, page * itemsPerPage)
           .call();
         setFundraisers(localFundraisers);
         const localFundraisersCount = await localContract.methods
@@ -104,7 +104,7 @@ function AdministratorFundraisersIndex() {
       }
     };
     init();
-  }, [page, rowsPerPage]);
+  }, [page, itemsPerPage]);
 
   return (
     <Container>
@@ -140,7 +140,7 @@ function AdministratorFundraisersIndex() {
         <TablePagination
           page={page}
           component="div"
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={itemsPerPage}
           count={fundraisersCount}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[]}

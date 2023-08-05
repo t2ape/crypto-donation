@@ -1,16 +1,16 @@
 import { useState } from "react";
 
-const useTable = () => {
+const useCollection = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage] = useState(30);
+  const [itemsPerPage] = useState(1);
 
   const handleChangePage = (_, newPage) => setPage(newPage);
 
   return {
     page,
-    rowsPerPage,
+    itemsPerPage,
     handleChangePage,
   };
 };
 
-export default useTable;
+export default useCollection;

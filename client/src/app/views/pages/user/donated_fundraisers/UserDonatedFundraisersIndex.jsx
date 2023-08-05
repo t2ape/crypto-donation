@@ -9,7 +9,7 @@ import {
 import { Breadcrumb, MatxLoading } from "app/components";
 import { TableHead, TableToolbar } from "app/components/data-table";
 import useDonatedFundraisers from "app/hooks/user/useDonatedFundraisers";
-import useTable from "app/hooks/useTable";
+import useCollection from "app/hooks/useCollection";
 import FundraiserRow from "../../administrator/fundraisers/FundraiserRow";
 
 // styled components
@@ -27,7 +27,7 @@ const Index = () => {
     page,
     rowsPerPage,
     handleChangePage,
-  } = useTable();
+  } = useCollection();
 
   const { isLoading, donatedFundraisers } = useDonatedFundraisers();
 

@@ -9,7 +9,7 @@ import {
 import { Breadcrumb, MatxLoading } from "app/components";
 import { TableHead, TableToolbar } from "app/components/data-table";
 import useDonations from "app/hooks/user/useDonations";
-import useTable from "app/hooks/useTable";
+import useCollection from "app/hooks/useCollection";
 import {useParams} from "react-router-dom";
 import DonationRow from "./DonationRow";
 
@@ -30,7 +30,7 @@ const Show = () => {
     page,
     rowsPerPage,
     handleChangePage,
-  } = useTable();
+  } = useCollection();
 
   const { isLoading, donations } = useDonations(id);
 

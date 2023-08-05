@@ -26,7 +26,7 @@ const FundraiserCard = (props) => {
   const secondary = theme.palette.text.secondary;
 
   console.log('props', JSON.stringify(props));
-  const { item: fundraiser } = props;
+  const { fundraiser: fundraiser } = props;
   const [ name, setName ] = useState(null);
   const [ description, setDescription ] = useState(null);
   const [ startedAt, setStartedAt ] = useState(null);

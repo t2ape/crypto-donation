@@ -7,7 +7,6 @@ import { productReducer } from "./slices/productSlice";
 import { ratingReducer } from "./slices/ratingSlice";
 import { scrumReducer } from "./slices/scrumSlice";
 import { userReducer } from "./slices/userSlice";
-import { fundraiserForUserReducer } from "./user/slices/fundraiserSlice";
 import { donatedFundraiserForUserReducer } from "./user/slices/donatedFundraiserSlice";
 import { donationForUserReducer } from "./user/slices/donationSlice";
 
@@ -21,7 +20,6 @@ const store = configureStore({
     products: productReducer,
     categories: categoryReducer,
     notifications: notificationReducer,
-    fundraisersForUser: fundraiserForUserReducer,
     donatedFundraisersForUser: donatedFundraiserForUserReducer,
     donationsForUser: donationForUserReducer,
   },
