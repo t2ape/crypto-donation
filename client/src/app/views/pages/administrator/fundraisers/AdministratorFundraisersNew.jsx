@@ -48,8 +48,8 @@ function AdministratorFundraisersNew() {
         setWeb3(localWeb3);
 
         const localNetworkId = await localWeb3.eth.net.getId();
-        const localDeployedNetwork = AdministratorFundraiserHandlerContract
-          .networks[localNetworkId];
+        const localDeployedNetwork =
+          AdministratorFundraiserHandlerContract.networks[localNetworkId];
         const localContract = new localWeb3.eth.Contract(
           AdministratorFundraiserHandlerContract.abi,
           localDeployedNetwork && localDeployedNetwork.address,
@@ -103,7 +103,10 @@ function AdministratorFundraisersNew() {
       startedAt: dateToSecond(values.startedAt),
       endedAt: dateToSecond(values.endedAt),
     };
-    if (formattedInputValues.startedAt !== null && formattedInputValues.endedAt !== null) {
+    if (
+      formattedInputValues.startedAt !== null &&
+      formattedInputValues.endedAt !== null
+    ) {
       submitInputValues(values, formattedInputValues);
     } else {
       alert('StartedAt or EndedAt is invalid.');
@@ -234,12 +237,12 @@ function AdministratorFundraisersNew() {
                     onChange={handleChange}
                     value={values.donationThresholdForToken || 0}
                     error={Boolean(
-                      touched.donationThresholdForToken
-                        && errors.donationThresholdForToken,
+                      touched.donationThresholdForToken &&
+                        errors.donationThresholdForToken,
                     )}
                     helperText={
-                      touched.donationThresholdForToken
-                      && errors.donationThresholdForToken
+                      touched.donationThresholdForToken &&
+                      errors.donationThresholdForToken
                     }
                   />
 

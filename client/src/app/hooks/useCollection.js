@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const useCollection = () => {
   const [page, setPage] = useState(0);

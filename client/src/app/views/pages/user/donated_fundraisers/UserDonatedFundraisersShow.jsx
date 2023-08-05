@@ -35,10 +35,16 @@ function Show() {
   // TABLE HEADER COLUMN LIST
   const columns = [
     {
-      id: 'value', align: 'center', disablePadding: true, label: 'Value (ether)',
+      id: 'value',
+      align: 'center',
+      disablePadding: true,
+      label: 'Value (ether)',
     },
     {
-      id: 'date', align: 'center', disablePadding: false, label: 'Date',
+      id: 'date',
+      align: 'center',
+      disablePadding: false,
+      label: 'Date',
     },
   ];
 
@@ -71,7 +77,10 @@ function Show() {
 
               <TableBody>
                 {donations
-                  ?.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage)
+                  ?.slice(
+                    page * itemsPerPage,
+                    page * itemsPerPage + itemsPerPage,
+                  )
                   .map((donation) => (
                     <DonationRow donation={donation} key={donation} />
                   ))}

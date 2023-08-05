@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  Button, Card, Divider, Grid, styled, TextField,
-} from '@mui/material';
+import { Button, Card, Divider, Grid, styled, TextField } from '@mui/material';
 import { Formik } from 'formik';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -184,9 +182,7 @@ function FundraiserShow() {
             <Paragraph sx={{ mt: 0, mb: 1 }} style={{ whiteSpace: 'pre-line' }}>
               {details.map((detail) => (
                 <React.Fragment key={detail.label}>
-                  {detail.label}
-                  {' '}
-                  {detail.value}
+                  {detail.label} {detail.value}
                   {'\n'}
                 </React.Fragment>
               ))}

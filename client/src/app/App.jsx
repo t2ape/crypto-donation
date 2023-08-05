@@ -21,9 +21,7 @@ function App() {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Provider store={store}>
         <SettingsProvider>
-          <MatxTheme>
-            {content}
-          </MatxTheme>
+          <MatxTheme>{content}</MatxTheme>
         </SettingsProvider>
       </Provider>
     </LocalizationProvider>

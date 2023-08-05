@@ -82,8 +82,8 @@ function AdministratorFundraisersIndex() {
       try {
         const localWeb3 = await getWeb3();
         const localNetworkId = await localWeb3.eth.net.getId();
-        const localDeployedNetwork = AdministratorFundraiserHandlerContract
-          .networks[localNetworkId];
+        const localDeployedNetwork =
+          AdministratorFundraiserHandlerContract.networks[localNetworkId];
         const localContract = new localWeb3.eth.Contract(
           AdministratorFundraiserHandlerContract.abi,
           localDeployedNetwork && localDeployedNetwork.address,

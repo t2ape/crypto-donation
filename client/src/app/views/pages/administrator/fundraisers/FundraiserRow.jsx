@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Edit } from '@mui/icons-material';
-import {
-  Box, IconButton, styled, TableCell, TableRow,
-} from '@mui/material';
+import { Box, IconButton, styled, TableCell, TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,10 +46,17 @@ function FundraiserRow({ fundraiser }) {
         setStartedAt(localStartedAt);
         const localEndedAt = await localContract.methods.endedAt().call();
         setEndedAt(localEndedAt);
-        const localDonationsAmount = await localContract.methods.donationsAmount().call();
-        const localDonationsAmountLabel = localWeb3.utils.fromWei(localDonationsAmount, 'ether');
+        const localDonationsAmount = await localContract.methods
+          .donationsAmount()
+          .call();
+        const localDonationsAmountLabel = localWeb3.utils.fromWei(
+          localDonationsAmount,
+          'ether',
+        );
         setDonationsAmountLabel(localDonationsAmountLabel);
-        const localDonationsCount = await localContract.methods.donationsCount().call();
+        const localDonationsCount = await localContract.methods
+          .donationsCount()
+          .call();
         setDonationsCount(localDonationsCount);
         const localImageUrl = await localContract.methods.imageUrl().call();
         setImageUrl(localImageUrl);
@@ -73,13 +78,19 @@ function FundraiserRow({ fundraiser }) {
           <H5 fontSize={15}>{name}</H5>
         </FlexBox>
       </TableCell>
-      <TableCell align="center">{startedAt ? new Date(startedAt * 1000).toLocaleString() : null}</TableCell>
-      <TableCell align="center">{endedAt ? new Date(endedAt * 1000).toLocaleString() : null}</TableCell>
+      <TableCell align="center">
+        {startedAt ? new Date(startedAt * 1000).toLocaleString() : null}
+      </TableCell>
+      <TableCell align="center">
+        {endedAt ? new Date(endedAt * 1000).toLocaleString() : null}
+      </TableCell>
       <TableCell align="center">{donationsAmountLabel}</TableCell>
       <TableCell align="center">{donationsCount}</TableCell>
       <TableCell align="center">
         <IconButton
-          onClick={() => navigate(`/administrator/fundraisers/${fundraiser}/edit`)}
+          onClick={() =>
+            navigate(`/administrator/fundraisers/${fundraiser}/edit`)
+          }
         >
           <Edit />
         </IconButton>

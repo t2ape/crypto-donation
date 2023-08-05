@@ -15,9 +15,7 @@ const StyledBox = styled(Box)(({ ellipsis }) => ({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function H1({
-  children, className, ellipsis, ...props
-}) {
+export function H1({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       mb={0}
@@ -40,9 +38,7 @@ export function H1({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function H2({
-  children, className, ellipsis, ...props
-}) {
+export function H2({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       mb={0}
@@ -65,9 +61,7 @@ export function H2({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function H3({
-  children, className, ellipsis, ...props
-}) {
+export function H3({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       mb={0}
@@ -90,9 +84,7 @@ export function H3({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function H4({
-  children, className, ellipsis, ...props
-}) {
+export function H4({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       mb={0}
@@ -115,9 +107,7 @@ export function H4({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function H5({
-  children, className, ellipsis, ...props
-}) {
+export function H5({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       mb={0}
@@ -140,9 +130,7 @@ export function H5({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function H6({
-  children, className, ellipsis, ...props
-}) {
+export function H6({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       mb={0}
@@ -165,9 +153,7 @@ export function H6({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function Paragraph({
-  children, className, ellipsis, ...props
-}) {
+export function Paragraph({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       mb={0}
@@ -188,9 +174,7 @@ export function Paragraph({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function Small({
-  children, className, ellipsis, ...props
-}) {
+export function Small({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       fontSize="12px"
@@ -211,9 +195,7 @@ export function Small({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function Span({
-  children, className, ellipsis, ...props
-}) {
+export function Span({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       component="span"
@@ -232,9 +214,7 @@ export function Span({
  * @param {Other & {ellipsis: boolean}}
  * @returns {JSX.Element}
  */
-export function Tiny({
-  children, className, ellipsis, ...props
-}) {
+export function Tiny({ children, className, ellipsis, ...props }) {
   return (
     <StyledBox
       fontSize="10px"

@@ -24,7 +24,8 @@ function UserFundraisersIndex() {
       try {
         const localWeb3 = await getWeb3();
         const localNetworkId = await localWeb3.eth.net.getId();
-        const localDeployedNetwork = UserFundraiserHandlerContract.networks[localNetworkId];
+        const localDeployedNetwork =
+          UserFundraiserHandlerContract.networks[localNetworkId];
         const localContract = new localWeb3.eth.Contract(
           UserFundraiserHandlerContract.abi,
           localDeployedNetwork && localDeployedNetwork.address,

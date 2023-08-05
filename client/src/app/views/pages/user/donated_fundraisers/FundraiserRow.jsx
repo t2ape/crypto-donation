@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  List,
-} from '@mui/icons-material';
-import {
-  Box, IconButton, styled, TableCell, TableRow,
-} from '@mui/material';
+import { List } from '@mui/icons-material';
+import { Box, IconButton, styled, TableCell, TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 

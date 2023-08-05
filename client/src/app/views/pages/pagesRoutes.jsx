@@ -2,14 +2,24 @@ import { lazy } from 'react';
 import Loadable from 'app/components/Loadable';
 
 const AdministratorFundraisersIndex = Loadable(
-  lazy(() => import('./administrator/fundraisers/AdministratorFundraisersIndex')),
+  lazy(() =>
+    import('./administrator/fundraisers/AdministratorFundraisersIndex'),
+  ),
 );
 const AdministratorFundraisersNew = Loadable(
   lazy(() => import('./administrator/fundraisers/AdministratorFundraisersNew')),
 );
-const FundraisersEdit = Loadable(lazy(() => import('./administrator/fundraisers/AdministratorFundraisersEdit')));
-const UserFundraisersIndex = Loadable(lazy(() => import('./user/fundraisers/UserFundraisersIndex')));
-const UserFundraisersShow = Loadable(lazy(() => import('./user/fundraisers/UserFundraisersShow')));
+const FundraisersEdit = Loadable(
+  lazy(() =>
+    import('./administrator/fundraisers/AdministratorFundraisersEdit'),
+  ),
+);
+const UserFundraisersIndex = Loadable(
+  lazy(() => import('./user/fundraisers/UserFundraisersIndex')),
+);
+const UserFundraisersShow = Loadable(
+  lazy(() => import('./user/fundraisers/UserFundraisersShow')),
+);
 const UserDonatedFundraisersIndex = Loadable(
   lazy(() => import('./user/donated_fundraisers/UserDonatedFundraisersIndex')),
 );

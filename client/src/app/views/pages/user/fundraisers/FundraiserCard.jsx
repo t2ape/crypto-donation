@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  Button, Card, Divider, Grid, styled,
-} from '@mui/material';
+import { Button, Card, Divider, Grid, styled } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
@@ -117,9 +115,7 @@ function FundraiserCard({ fundraiser }) {
           <Paragraph sx={{ mt: 0, mb: 1 }} style={{ whiteSpace: 'pre-line' }}>
             {details.map((detail) => (
               <React.Fragment key={detail.label}>
-                {detail.label}
-                {' '}
-                {detail.value}
+                {detail.label} {detail.value}
                 {'\n'}
               </React.Fragment>
             ))}

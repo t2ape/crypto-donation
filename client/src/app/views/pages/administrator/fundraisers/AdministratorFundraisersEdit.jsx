@@ -55,27 +55,40 @@ function AdministratorFundraisersEdit() {
       try {
         const localWeb3 = await getWeb3();
         setWeb3(localWeb3);
-        const localContract = new localWeb3.eth.Contract(FundraiserContract.abi, id);
+        const localContract = new localWeb3.eth.Contract(
+          FundraiserContract.abi,
+          id,
+        );
         setContract(localContract);
         const localAccounts = await localWeb3.eth.getAccounts();
         setAccounts(localAccounts);
 
-        const localDonationsAmount = await localContract.methods.donationsAmount().call();
+        const localDonationsAmount = await localContract.methods
+          .donationsAmount()
+          .call();
         setDonationsAmount(localDonationsAmount);
-        const localDonationsCount = await localContract.methods.donationsCount().call();
+        const localDonationsCount = await localContract.methods
+          .donationsCount()
+          .call();
         setDonationsCount(localDonationsCount);
         const localDeletedAt = await localContract.methods.deletedAt().call();
         setDeletedAt(localDeletedAt);
 
         const localName = await localContract.methods.name().call();
-        const localDescription = await localContract.methods.description().call();
+        const localDescription = await localContract.methods
+          .description()
+          .call();
         const localUrl = await localContract.methods.url().call();
         const localImageUrl = await localContract.methods.imageUrl().call();
         const localDonationThresholdForToken = await localContract.methods
           .donationThresholdForToken()
           .call();
-        const localBeneficiary = await localContract.methods.beneficiary().call();
-        const localRewardToken = await localContract.methods.rewardToken().call();
+        const localBeneficiary = await localContract.methods
+          .beneficiary()
+          .call();
+        const localRewardToken = await localContract.methods
+          .rewardToken()
+          .call();
         const localIsOpen = await localContract.methods.isOpen().call();
         const localStartedAt = await localContract.methods.startedAt().call();
         const localEndedAt = await localContract.methods.endedAt().call();
@@ -89,8 +102,8 @@ function AdministratorFundraisersEdit() {
           beneficiary: localBeneficiary || '',
           rewardToken: localRewardToken || '',
           isOpen: localIsOpen || false,
-          startedAt: (localStartedAt ? new Date(localStartedAt * 1000) : null),
-          endedAt: (localEndedAt ? new Date(localEndedAt * 1000) : null),
+          startedAt: localStartedAt ? new Date(localStartedAt * 1000) : null,
+          endedAt: localEndedAt ? new Date(localEndedAt * 1000) : null,
         };
         setInitialValues(localInitialValues);
       } catch (error) {
@@ -138,7 +151,10 @@ function AdministratorFundraisersEdit() {
       startedAt: dateToSecond(values.startedAt),
       endedAt: dateToSecond(values.endedAt),
     };
-    if (formattedInputValues.startedAt !== null && formattedInputValues.endedAt !== null) {
+    if (
+      formattedInputValues.startedAt !== null &&
+      formattedInputValues.endedAt !== null
+    ) {
       submitInputValues(values, formattedInputValues);
     } else {
       alert('StartedAt or EndedAt is invalid.');
@@ -295,12 +311,12 @@ function AdministratorFundraisersEdit() {
                     onChange={handleChange}
                     value={values.donationThresholdForToken || 0}
                     error={Boolean(
-                      touched.donationThresholdForToken
-                        && errors.donationThresholdForToken,
+                      touched.donationThresholdForToken &&
+                        errors.donationThresholdForToken,
                     )}
                     helperText={
-                      touched.donationThresholdForToken
-                      && errors.donationThresholdForToken
+                      touched.donationThresholdForToken &&
+                      errors.donationThresholdForToken
                     }
                   />
 
