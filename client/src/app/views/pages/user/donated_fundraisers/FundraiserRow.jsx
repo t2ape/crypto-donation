@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Edit } from '@mui/icons-material';
+import {
+  List,
+} from '@mui/icons-material';
 import {
   Box, IconButton, styled, TableCell, TableRow,
 } from '@mui/material';
@@ -23,10 +25,7 @@ const FlexBox = styled(Box)({
 
 function FundraiserRow({ fundraiser }) {
   const [name, setName] = useState(null);
-  const [startedAt, setStartedAt] = useState(null);
-  const [endedAt, setEndedAt] = useState(null);
-  const [donationsAmountLabel, setDonationsAmountLabel] = useState(null);
-  const [donationsCount, setDonationsCount] = useState(null);
+  const [description, setDescription] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
 
@@ -44,15 +43,10 @@ function FundraiserRow({ fundraiser }) {
         );
         const localName = await localContract.methods.name().call();
         setName(localName);
-        const localStartedAt = await localContract.methods.startedAt().call();
-        setStartedAt(localStartedAt);
-        const localEndedAt = await localContract.methods.endedAt().call();
-        setEndedAt(localEndedAt);
-        const localDonationsAmount = await localContract.methods.donationsAmount().call();
-        const localDonationsAmountLabel = localWeb3.utils.fromWei(localDonationsAmount, 'ether');
-        setDonationsAmountLabel(localDonationsAmountLabel);
-        const localDonationsCount = await localContract.methods.donationsCount().call();
-        setDonationsCount(localDonationsCount);
+        const localDescription = await localContract.methods
+          .description()
+          .call();
+        setDescription(localDescription);
         const localImageUrl = await localContract.methods.imageUrl().call();
         setImageUrl(localImageUrl);
       } catch (error) {
@@ -73,11 +67,12 @@ function FundraiserRow({ fundraiser }) {
           <H5 fontSize={15}>{name}</H5>
         </FlexBox>
       </TableCell>
+      <TableCell align="center">{description}</TableCell>
       <TableCell align="center">
         <IconButton
-          onClick={() => navigate(`/administrator/fundraisers/${fundraiser}/edit`)}
+          onClick={() => navigate(`/user/donated_fundraisers/${fundraiser}`)}
         >
-          <Edit />
+          <List />
         </IconButton>
       </TableCell>
     </TableRow>

@@ -7,7 +7,7 @@ import { getDonatedFundraisers } from 'app/redux/user/slices/donatedFundraiserSl
 const useDonatedFundraisers = () => {
   const dispatch = useDispatch();
   const { error, donatedFundraisers, loading } = useSelector(
-    (state) => state.donatedFundraisersForUser,
+    (state) => state.userDonatedFundraisers,
   );
 
   // console.log(`donated_fundraisers: ${fundraisers}`);
