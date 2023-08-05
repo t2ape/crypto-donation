@@ -77,9 +77,6 @@ function AdministratorFundraisersIndex() {
     },
   ];
 
-  // if (isLoading) return <MatxLoading />;
-  // TODO: 削除
-
   useEffect(() => {
     const init = async () => {
       try {
