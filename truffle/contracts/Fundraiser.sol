@@ -3,11 +3,16 @@
 pragma solidity ^0.8.19;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {SafeMath} from "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import {AdministratorFundraiserHandler} from "./AdministratorFundraiserHandler.sol";
 
 interface IRewardTokenContract {
   function mint(address to) external;
+}
+
+interface IERC165 {
+  function supportsInterface(bytes4 interfaceID) external view returns (bool);
 }
 
 // solhint-disable-next-line max-states-count
@@ -68,14 +73,14 @@ contract Fundraiser is Ownable {
     uint256 donatedAt
   );
 
-  constructor(ConstructorArgs _args) {
+  constructor(ConstructorArgs memory _args) {
     _fundraiserHandler = AdministratorFundraiserHandler(
       address(_args.fundraiserHandlerAddress)
     );
 
     id = uint256(_args.id);
 
-    fundraiserArgs = FundraiserArgs(_args.fundraiserArgs);
+    FundraiserArgs memory fundraiserArgs = _args.fundraiserArgs;
 
     name = fundraiserArgs.name;
     description = fundraiserArgs.description;
@@ -99,11 +104,11 @@ contract Fundraiser is Ownable {
   }
 
   modifier active() {
-    require(_isActive(), "fundraiser in not active");
+    require(isActive(), "fundraiser in not active");
     _;
   }
 
-  function _isActive() private view returns (bool) {
+  function isActive() public view returns (bool) {
     return (isOpen &&
       deletedAt == 0 &&
       startedAt <= block.timestamp && // solhint-disable-line not-rely-on-time
@@ -111,8 +116,9 @@ contract Fundraiser is Ownable {
   }
 
   function _tokenAddressIsErc721(address _address) private view returns (bool) {
-    try IERC721(_address).name() returns (string memory) {
-      return true;
+    bytes4 interfaceID = 0x80ac58cd; // Interface ID of IERC721
+    try IERC165(_address).supportsInterface(interfaceID) returns (bool result) {
+      return result;
     } catch {
       return false;
     }

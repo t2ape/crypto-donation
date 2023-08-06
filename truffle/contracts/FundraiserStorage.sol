@@ -139,7 +139,7 @@ contract FundraiserStorage is Ownable {
     delete _addressStorage[_key];
   }
 
-  function deleteAddress(bytes32 _key) external onlyAccessPermittedContract {
+  function deleteAddressArray(bytes32 _key) external onlyAccessPermittedContract {
     delete _addressArrayStorage[_key];
   }
 

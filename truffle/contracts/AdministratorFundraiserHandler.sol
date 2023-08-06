@@ -7,6 +7,10 @@ import {FundraiserStorage} from "./FundraiserStorage.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
+interface IERC165 {
+  function supportsInterface(bytes4 interfaceID) external view returns (bool);
+}
+
 contract AdministratorFundraiserHandler is Ownable {
   FundraiserStorage private _fundraiserStorage;
 
@@ -52,8 +56,9 @@ contract AdministratorFundraiserHandler is Ownable {
   }
 
   function _tokenAddressIsErc721(address _address) private view returns (bool) {
-    try IERC721(_address).name() returns (string memory) {
-      return true;
+    bytes4 interfaceID = 0x80ac58cd; // Interface ID of IERC721
+    try IERC165(_address).supportsInterface(interfaceID) returns (bool result) {
+      return result;
     } catch {
       return false;
     }
