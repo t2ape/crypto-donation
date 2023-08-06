@@ -50,6 +50,14 @@ contract HeartToken is Ownable, IERC721, ERC721 {
   }
 
   /**
+   * @notice Require that the sender is a minter.
+   */
+  modifier onlyMinter() {
+    require(msgSenderIsMinter(), "Sender is not a minter");
+    _;
+  }
+
+  /**
    * @notice Require that the sender is the founders.
    */
   modifier onlyFounders() {
@@ -57,12 +65,12 @@ contract HeartToken is Ownable, IERC721, ERC721 {
     _;
   }
 
-  /**
-   * @notice Require that the sender is a minter.
-   */
-  modifier onlyMinter() {
-    require(msgSenderIsMinter(), "Sender is not a minter");
-    _;
+  constructor(
+    address _founders,
+    IProxyRegistry _proxyRegistry
+  ) ERC721("Heart", "HEART") {
+    founders = _founders;
+    PROXY_REGISTRY = _proxyRegistry;
   }
 
   function msgSenderIsMinter() private view returns (bool) {
@@ -73,14 +81,6 @@ contract HeartToken is Ownable, IERC721, ERC721 {
     }
 
     return false;
-  }
-
-  constructor(
-    address _founders,
-    IProxyRegistry _proxyRegistry
-  ) ERC721("Heart", "HEART") {
-    founders = _founders;
-    PROXY_REGISTRY = _proxyRegistry;
   }
 
   /**
