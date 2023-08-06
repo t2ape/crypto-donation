@@ -10,7 +10,8 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.2",
     "@truffle/hdwallet-provider": "^2.1.7",
-    "base64-sol": "^1.0.1"
+    "base64-sol": "^1.0.1",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "prettier": "^3.0.1",
