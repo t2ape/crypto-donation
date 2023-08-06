@@ -7,7 +7,7 @@ if (!founders) {
   throw new Error("founders is not set");
 }
 
-const proxyRegistry = process.env.FOUNDERS_ADDRESS;
+const proxyRegistry = process.env.PROXY_REGISTRY_ADDRESS;
 if (!proxyRegistry) {
   throw new Error("proxyRegistry is not set");
 }
