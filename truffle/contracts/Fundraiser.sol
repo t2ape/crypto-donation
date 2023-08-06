@@ -1,16 +1,15 @@
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./AdministratorFundraiserHandler.sol";
+import Ownable from "@openzeppelin/contracts/access/Ownable.sol";
+import SafeMath from "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import AdministratorFundraiserHandler from "./AdministratorFundraiserHandler.sol";
 
 interface IRewardTokenContract {
   function mint(address to) external;
 }
 
+// solhint-disable-next-line max-states-count
 contract Fundraiser is Ownable {
-  // TODO: 寄付に紐付く団体を考慮する
-
   using SafeMath for uint256;
 
   AdministratorFundraiserHandler internal _fundraiserHandler;
@@ -38,16 +37,16 @@ contract Fundraiser is Ownable {
   }
 
   struct FundraiserArgs {
-    string name; // 必須
-    string description; // 必須
-    string url; // 任意
-    string imageUrl; // 任意
-    bool isOpen; // 必須
-    uint256 startedAt; // 任意
-    uint256 endedAt; // 任意
-    uint256 donationThresholdForToken; // 必須
-    address payable beneficiary; // 必須
-    address rewardToken; // 必須
+    string name; // required
+    string description; // required
+    string url; // optional
+    string imageUrl; // optional
+    bool isOpen; // required
+    uint256 startedAt; // optional
+    uint256 endedAt; // optional
+    uint256 donationThresholdForToken; // required
+    address payable beneficiary; // required
+    address rewardToken; // required
   }
 
   struct ConstructorArgs {
@@ -61,10 +60,16 @@ contract Fundraiser is Ownable {
 
   event FundraiserUpdated(address indexed updater, uint256 updatedAt);
   event FundraiserDeleted(address indexed deletor, uint256 deletedAt);
-  event DonationReceived(address indexed donor, uint256 value, uint256 donatedAt);
+  event DonationReceived(
+    address indexed donor,
+    uint256 value,
+    uint256 donatedAt
+  );
 
   constructor(ConstructorArgs _args) {
-    _fundraiserHandler = AdministratorFundraiserHandler(address(_args.fundraiserHandlerAddress));
+    _fundraiserHandler = AdministratorFundraiserHandler(
+      address(_args.fundraiserHandlerAddress)
+    );
 
     id = uint256(_args.id);
 
@@ -87,23 +92,59 @@ contract Fundraiser is Ownable {
   }
 
   modifier notDeleted() {
-    require(deletedAt == 0);
+    require(deletedAt == 0, "fundraiser has already deleted");
     _;
   }
 
   modifier active() {
-    require(isActive());
+    require(_isActive(), "fundraiser in not active");
     _;
   }
 
-  function updateFundraiser(FundraiserArgs memory args) public onlyOwner notDeleted {
-    require(bytes(args.name).length > 0 && bytes(args.name).length <= 400, "name length is invalid.");
-    require(bytes(args.description).length > 0 && bytes(args.description).length <= 4000, "description length is invalid.");
-    require(bytes(args.url).length >= 0 && bytes(args.url).length <= 4000, "url length is invalid.");
-    require(bytes(args.imageUrl).length >= 0 && bytes(args.imageUrl).length <= 4000, "imageUrl length is invalid.");
-    require(args.donationThresholdForToken > 0, "donationThresholdForToken value is invalid.");
-    require(args.beneficiary != address(0), "beneficiary format is invalid.");
-    // TODO: rewardToken が ERC721 準拠のコントラクトであることを確認
+  function _isActive() private view returns (bool) {
+    return (isOpen &&
+      deletedAt == 0 &&
+      startedAt <= block.timestamp && // solhint-disable-line not-rely-on-time
+      endedAt > block.timestamp); // solhint-disable-line not-rely-on-time
+  }
+
+  function _tokenAddressIsErc721(address _address) private view returns (bool) {
+    try IERC721(_address).name() returns (string memory) {
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function updateFundraiser(
+    FundraiserArgs memory args
+  ) public onlyOwner notDeleted {
+    require(
+      bytes(args.name).length > 0 && bytes(args.name).length <= 400,
+      "name length is invalid"
+    );
+    require(
+      bytes(args.description).length > 0 &&
+        bytes(args.description).length <= 4000,
+      "description length is invalid"
+    );
+    require(
+      bytes(args.url).length >= 0 && bytes(args.url).length <= 4000,
+      "url length is invalid"
+    );
+    require(
+      bytes(args.imageUrl).length >= 0 && bytes(args.imageUrl).length <= 4000,
+      "imageUrl length is invalid"
+    );
+    require(
+      args.donationThresholdForToken > 0,
+      "donationThresholdForToken value is invalid"
+    );
+    require(args.beneficiary != address(0), "beneficiary format is invalid");
+    require(
+      _tokenAddressIsErc721(args.rewardToken),
+      "rewardToken format is invalid"
+    );
 
     name = args.name;
     description = args.description;
@@ -116,29 +157,20 @@ contract Fundraiser is Ownable {
     beneficiary = args.beneficiary;
     rewardToken = args.rewardToken;
 
-    emit FundraiserUpdated(msg.sender, block.timestamp);
+    emit FundraiserUpdated(msg.sender, block.timestamp); // solhint-disable-line not-rely-on-time
   }
 
   function deleteFundraiser() public onlyOwner notDeleted {
-    deletedAt = block.timestamp;
+    deletedAt = block.timestamp; // solhint-disable-line not-rely-on-time
 
     emit FundraiserDeleted(msg.sender, deletedAt);
   }
 
-  function isActive() public view returns (bool) {
-    return (
-      isOpen &&
-      deletedAt == 0 &&
-      startedAt <= block.timestamp &&
-      endedAt > block.timestamp
-    );
-  }
-
-  function donate() public payable active {
+  function donate() public payable active notDeleted {
     // update _donations
     Donation memory donation = Donation({
       value: msg.value,
-      date: block.timestamp
+      date: block.timestamp // solhint-disable-line not-rely-on-time
     });
     _donations[msg.sender].push(donation);
 
@@ -157,6 +189,7 @@ contract Fundraiser is Ownable {
       rewardTokenContract.mint(msg.sender);
     }
 
+    // solhint-disable-next-line func-named-parameters, not-rely-on-time
     emit DonationReceived(msg.sender, msg.value, block.timestamp);
   }
 
