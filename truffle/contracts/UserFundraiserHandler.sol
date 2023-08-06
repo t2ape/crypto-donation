@@ -1,21 +1,22 @@
 pragma solidity ^0.8.19;
 
-import "./Fundraiser.sol";
-import "./FundraiserStorage.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import Fundraiser from "./Fundraiser.sol";
+import FundraiserStorage from "./FundraiserStorage.sol";
 
 contract UserFundraiserHandler {
-  // activeFundraisers 関数が返すアイテムの最大値
-  uint256 constant maxLimit = 50;
-
   FundraiserStorage internal _fundraiserStorage;
 
   constructor(address fundraiserStorageAddress) {
     _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
   }
 
-  function activeFundraisers(uint256 limit, uint256 offset) public view returns (Fundraiser[] memory collection) {
+  function activeFundraisers(
+    uint256 limit,
+    uint256 offset
+  ) public view returns (Fundraiser[] memory collection) {
     require(offset <= activeFundraisersCount(), "offset is over limit.");
+
+    uint256 maxLimit = 50;
 
     uint256 size = activeFundraisersCount() - offset;
     size = size < limit ? size : limit;
@@ -23,10 +24,16 @@ contract UserFundraiserHandler {
     collection = new Fundraiser[](size);
 
     uint256 collectionIndex = 0;
-    uint256 fundraisersCount = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
+    uint256 fundraisersCount = _fundraiserStorage.getUint(
+      keccak256("fundraisersCount")
+    );
 
     for (uint256 i = 0; i < fundraisersCount; i++) {
-      Fundraiser fundraiser = Fundraiser(_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", i))));
+      Fundraiser fundraiser = Fundraiser(
+        _fundraiserStorage.getAddress(
+          keccak256(abi.encodePacked("fundraiser", i))
+        )
+      );
       if (fundraiser.isActive()) {
         if (collectionIndex >= offset && collectionIndex < offset + size) {
           // インクリメントしていった collectionIndex が offset 以上 offset + size 未満の時だけ、
@@ -47,15 +54,17 @@ contract UserFundraiserHandler {
     return collection;
   }
 
-  function fundraisersDonatedByMsgSender() public view returns (address[] memory) {
-    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("fundraisersDonatedByDonor", msg.sender)));
-  }
-
   function activeFundraisersCount() public view returns (uint256) {
     uint256 count = 0;
-    uint256 fundraisersCount = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
+    uint256 fundraisersCount = _fundraiserStorage.getUint(
+      keccak256("fundraisersCount")
+    );
     for (uint256 i = 0; i < fundraisersCount; i++) {
-      Fundraiser fundraiser = Fundraiser(_fundraiserStorage.getAddress(keccak256(abi.encodePacked("fundraiser", i))));
+      Fundraiser fundraiser = Fundraiser(
+        _fundraiserStorage.getAddress(
+          keccak256(abi.encodePacked("fundraiser", i))
+        )
+      );
       if (fundraiser.isActive()) {
         count++;
       }
@@ -63,8 +72,14 @@ contract UserFundraiserHandler {
     return count;
   }
 
-  // TODO: 不要そうであれば削除
-  function donatedFundraisers() public view returns(address[] memory) {
-    return _fundraiserStorage.getAddressArray(keccak256(abi.encodePacked("donatedFundraisers", msg.sender)));
+  function fundraisersDonatedByMsgSender()
+    public
+    view
+    returns (address[] memory)
+  {
+    return
+      _fundraiserStorage.getAddressArray(
+        keccak256(abi.encodePacked("fundraisersDonatedByDonor", msg.sender))
+      );
   }
 }
