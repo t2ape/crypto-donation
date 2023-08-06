@@ -1,8 +1,17 @@
-const HeartToken = artifacts.require('HeartToken');
-// TODO: 本番デプロイ時に修正
-const founders = '0xC269Bf93B4ed3D561Df78Dc23c4E8518604887A9';
+require('dotenv').config();
+
+const HeartToken = artifacts.require("HeartToken");
+
+const founders = process.env.FOUNDERS_ADDRESS;
+if (!founders) {
+  throw new Error("founders is not set");
+}
+
+const proxyRegistry = process.env.FOUNDERS_ADDRESS;
+if (!proxyRegistry) {
+  throw new Error("proxyRegistry is not set");
+}
 
 module.exports = async function (deployer) {
-  //  TODO: opensea について調べたら proxyRegistry を用いる形に修正
-  await deployer.deploy(HeartToken, founders);
+  await deployer.deploy(HeartToken, founders, proxyRegistry);
 };
