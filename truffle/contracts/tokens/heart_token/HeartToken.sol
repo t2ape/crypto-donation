@@ -291,19 +291,91 @@ contract HeartToken is Ownable, IERC721, ERC721 {
     uint256 seed = _randomValue(tokenId, nonce++);
     string[10] memory colors;
     if (seed % 10 == 0) {
+      // rainbow style
       colors = [
-        "#F94144",
-        "#F3722C",
-        "#F8961E",
-        "#F9844A",
-        "#F9C74F",
-        "#90BE6D",
-        "#43AA8B",
-        "#4D908E",
-        "#577590",
-        "#277DA1"
+        "#FF595E",
+        "#FF924C",
+        "#FFCA3A",
+        "#C5CA30",
+        "#8AC926",
+        "#36949D",
+        "#1982C4",
+        "#4267AC",
+        "#565AA0",
+        "#6A4C93"
+      ];
+    } else if (seed % 10 == 1) {
+      // luxury style
+      colors = [
+        "#F8F3E6",
+        "#F8F3E6",
+        "#E7CC8F",
+        "#E7CC8F",
+        "#EFAA52",
+        "#EFAA52",
+        "#AB3E16",
+        "#AB3E16",
+        "#48120E",
+        "#48120E"
+      ];
+    } else if (seed % 10 == 2) {
+      // sweet style
+      colors = [
+        "#4BBCF4",
+        "#4BBCF4",
+        "#61C0BF",
+        "#61C0BF",
+        "#BBDED6",
+        "#BBDED6",
+        "#FFB6B9",
+        "#FFB6B9",
+        "#FAE3D9",
+        "#FAE3D9"
+      ];
+    } else if (seed % 10 == 3) {
+      // tropical style
+      colors = [
+        "#F5AB99",
+        "#F5AB99",
+        "#FEB47B",
+        "#FEB47B",
+        "#FF7E5F",
+        "#FF7E5F",
+        "#765285",
+        "#765285",
+        "#351C4D",
+        "#351C4D"
+      ];
+    } else if (seed % 10 == 4 || seed % 10 == 5) {
+      // green style
+      colors = [
+        "#006400",
+        "#006400",
+        "#007200",
+        "#007200",
+        "#008000",
+        "#008000",
+        "#38B000",
+        "#38B000",
+        "#70E000",
+        "#70E000"
+      ];
+    } else if (seed % 10 == 6 || seed % 10 == 7) {
+      // blue style
+      colors = [
+        "#EDFAFD",
+        "#EDFAFD",
+        "#AFD9DA",
+        "#AFD9DA",
+        "#3DDAD7",
+        "#3DDAD7",
+        "#2A93D5",
+        "#2A93D5",
+        "#135589",
+        "#135589"
       ];
     } else {
+      // red style
       colors = [
         "#E6B8C2",
         "#E6B8C2",
