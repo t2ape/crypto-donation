@@ -1,7 +1,7 @@
 pragma solidity ^0.8.19;
 
-import Fundraiser from "./Fundraiser.sol";
-import FundraiserStorage from "./FundraiserStorage.sol";
+import {Fundraiser} from "./Fundraiser.sol";
+import {FundraiserStorage} from "./FundraiserStorage.sol";
 
 contract UserFundraiserHandler {
   FundraiserStorage private _fundraiserStorage;

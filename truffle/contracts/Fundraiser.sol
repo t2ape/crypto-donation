@@ -1,8 +1,8 @@
 pragma solidity ^0.8.19;
 
-import Ownable from "@openzeppelin/contracts/access/Ownable.sol";
-import SafeMath from "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import AdministratorFundraiserHandler from "./AdministratorFundraiserHandler.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {SafeMath} from "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import {AdministratorFundraiserHandler} from "./AdministratorFundraiserHandler.sol";
 
 interface IRewardTokenContract {
   function mint(address to) external;
