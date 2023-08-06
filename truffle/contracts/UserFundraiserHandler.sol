@@ -4,7 +4,7 @@ import Fundraiser from "./Fundraiser.sol";
 import FundraiserStorage from "./FundraiserStorage.sol";
 
 contract UserFundraiserHandler {
-  FundraiserStorage internal _fundraiserStorage;
+  FundraiserStorage private _fundraiserStorage;
 
   constructor(address fundraiserStorageAddress) {
     _fundraiserStorage = FundraiserStorage(fundraiserStorageAddress);
