@@ -6,7 +6,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract AdministratorFundraiserHandler is Ownable {
-  FundraiserStorage internal _fundraiserStorage;
+  FundraiserStorage private _fundraiserStorage;
 
   struct FundraiserArgs {
     string name; // required
@@ -113,7 +113,7 @@ contract AdministratorFundraiserHandler is Ownable {
 
     Fundraiser fundraiser = new Fundraiser(constructorArgs);
 
-    setFundraisersCount(count + 1);
+    _setFundraisersCount(count + 1);
     _fundraiserStorage.setAddress(
       keccak256(abi.encodePacked("fundraiser", count)),
       address(fundraiser)
@@ -151,7 +151,7 @@ contract AdministratorFundraiserHandler is Ownable {
     return _fundraiserStorage.getUint(keccak256("fundraisersCount"));
   }
 
-  function setFundraisersCount(uint256 count) internal onlyOwner {
+  function _setFundraisersCount(uint256 count) private {
     _fundraiserStorage.setUint(keccak256("fundraisersCount"), count);
   }
 
