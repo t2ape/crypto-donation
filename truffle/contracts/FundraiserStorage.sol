@@ -7,12 +7,12 @@ contract FundraiserStorage is Ownable {
 
   mapping(address => bool) private _accessPermissions;
 
-  mapping(bytes32 => address) private addressStorage;
-  mapping(bytes32 => address[]) private addressArrayStorage;
-  mapping(bytes32 => bool) private boolStorage;
-  mapping(bytes32 => bytes) private bytesStorage;
-  mapping(bytes32 => int256) private intStorage;
-  mapping(bytes32 => uint256) private uintStorage;
+  mapping(bytes32 => address) private _addressStorage;
+  mapping(bytes32 => address[]) private _addressArrayStorage;
+  mapping(bytes32 => bool) private _boolStorage;
+  mapping(bytes32 => bytes) private _bytesStorage;
+  mapping(bytes32 => int256) private _intStorage;
+  mapping(bytes32 => uint256) private _uintStorage;
   mapping(bytes32 => string) private stringStorage;
 
   modifier onlyAccessPermittedContract() {
@@ -51,29 +51,29 @@ contract FundraiserStorage is Ownable {
   // *** Getter Methods ***
 
   function getAddress(bytes32 _key) external view returns (address) {
-    return addressStorage[_key];
+    return _addressStorage[_key];
   }
 
   function getAddressArray(
     bytes32 _key
   ) external view returns (address[] memory) {
-    return addressArrayStorage[_key];
+    return _addressArrayStorage[_key];
   }
 
   function getBool(bytes32 _key) external view returns (bool) {
-    return boolStorage[_key];
+    return _boolStorage[_key];
   }
 
   function getBytes(bytes32 _key) external view returns (bytes memory) {
-    return bytesStorage[_key];
+    return _bytesStorage[_key];
   }
 
   function getInt(bytes32 _key) external view returns (int256) {
-    return intStorage[_key];
+    return _intStorage[_key];
   }
 
   function getUint(bytes32 _key) external view returns (uint256) {
-    return uintStorage[_key];
+    return _uintStorage[_key];
   }
 
   function getString(bytes32 _key) external view returns (string memory) {
@@ -86,42 +86,42 @@ contract FundraiserStorage is Ownable {
     bytes32 _key,
     address _value
   ) external onlyAccessPermittedContract {
-    addressStorage[_key] = _value;
+    _addressStorage[_key] = _value;
   }
 
   function setAddressArray(
     bytes32 _key,
     address[] memory _values
   ) external onlyAccessPermittedContract {
-    addressArrayStorage[_key] = _values;
+    _addressArrayStorage[_key] = _values;
   }
 
   function setBool(
     bytes32 _key,
     bool _value
   ) external onlyAccessPermittedContract {
-    boolStorage[_key] = _value;
+    _boolStorage[_key] = _value;
   }
 
   function setBytes(
     bytes32 _key,
     bytes calldata _value
   ) external onlyAccessPermittedContract {
-    bytesStorage[_key] = _value;
+    _bytesStorage[_key] = _value;
   }
 
   function setInt(
     bytes32 _key,
     int256 _value
   ) external onlyAccessPermittedContract {
-    intStorage[_key] = _value;
+    _intStorage[_key] = _value;
   }
 
   function setUint(
     bytes32 _key,
     uint256 _value
   ) external onlyAccessPermittedContract {
-    uintStorage[_key] = _value;
+    _uintStorage[_key] = _value;
   }
 
   function setString(
@@ -134,27 +134,27 @@ contract FundraiserStorage is Ownable {
   // *** Delete Methods ***
 
   function deleteAddress(bytes32 _key) external onlyAccessPermittedContract {
-    delete addressStorage[_key];
+    delete _addressStorage[_key];
   }
 
   function deleteAddress(bytes32 _key) external onlyAccessPermittedContract {
-    delete addressArrayStorage[_key];
+    delete _addressArrayStorage[_key];
   }
 
   function deleteBool(bytes32 _key) external onlyAccessPermittedContract {
-    delete boolStorage[_key];
+    delete _boolStorage[_key];
   }
 
   function deleteBytes(bytes32 _key) external onlyAccessPermittedContract {
-    delete bytesStorage[_key];
+    delete _bytesStorage[_key];
   }
 
   function deleteInt(bytes32 _key) external onlyAccessPermittedContract {
-    delete intStorage[_key];
+    delete _intStorage[_key];
   }
 
   function deleteUint(bytes32 _key) external onlyAccessPermittedContract {
-    delete uintStorage[_key];
+    delete _uintStorage[_key];
   }
 
   function deleteString(bytes32 _key) external onlyAccessPermittedContract {
