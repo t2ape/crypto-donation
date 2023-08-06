@@ -1,22 +1,25 @@
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FundraiserStorage is Ownable {
   address[] private _accessPermittedContracts;
 
   mapping(address => bool) private _accessPermissions;
 
-  mapping(bytes32 => address) addressStorage;
-  mapping(bytes32 => address[]) addressArrayStorage;
-  mapping(bytes32 => bool) boolStorage;
-  mapping(bytes32 => bytes) bytesStorage;
-  mapping(bytes32 => int) intStorage;
-  mapping(bytes32 => uint) uintStorage;
-  mapping(bytes32 => string) stringStorage;
+  mapping(bytes32 => address) private addressStorage;
+  mapping(bytes32 => address[]) private addressArrayStorage;
+  mapping(bytes32 => bool) private boolStorage;
+  mapping(bytes32 => bytes) private bytesStorage;
+  mapping(bytes32 => int256) private intStorage;
+  mapping(bytes32 => uint256) private uintStorage;
+  mapping(bytes32 => string) private stringStorage;
 
   modifier onlyAccessPermittedContract() {
-    require(msgSenderIsAccessPermittedContract());
+    require(
+      msgSenderIsAccessPermittedContract(),
+      "msg.sender is not authorized."
+    );
     _;
   }
 
@@ -65,11 +68,11 @@ contract FundraiserStorage is Ownable {
     return bytesStorage[_key];
   }
 
-  function getInt(bytes32 _key) external view returns (int) {
+  function getInt(bytes32 _key) external view returns (int256) {
     return intStorage[_key];
   }
 
-  function getUint(bytes32 _key) external view returns (uint) {
+  function getUint(bytes32 _key) external view returns (uint256) {
     return uintStorage[_key];
   }
 
@@ -109,14 +112,14 @@ contract FundraiserStorage is Ownable {
 
   function setInt(
     bytes32 _key,
-    int _value
+    int256 _value
   ) external onlyAccessPermittedContract {
     intStorage[_key] = _value;
   }
 
   function setUint(
     bytes32 _key,
-    uint _value
+    uint256 _value
   ) external onlyAccessPermittedContract {
     uintStorage[_key] = _value;
   }
