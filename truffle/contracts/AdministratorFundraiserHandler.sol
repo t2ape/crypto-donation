@@ -32,7 +32,7 @@ contract AdministratorFundraiserHandler is Ownable {
   }
 
   modifier onlyFundraiser() {
-    require(_msgSenderIsFundraiser(), "msg.sender is not authorized.");
+    require(_msgSenderIsFundraiser(), "msg.sender is not authorized");
     _;
   }
 
@@ -62,29 +62,29 @@ contract AdministratorFundraiserHandler is Ownable {
     // validations
     require(
       bytes(args.name).length > 0 && bytes(args.name).length <= 400,
-      "name length is invalid."
+      "name length is invalid"
     );
     require(
       bytes(args.description).length > 0 &&
         bytes(args.description).length <= 4000,
-      "description length is invalid."
+      "description length is invalid"
     );
     require(
       bytes(args.url).length >= 0 && bytes(args.url).length <= 4000,
-      "url length is invalid."
+      "url length is invalid"
     );
     require(
       bytes(args.imageUrl).length >= 0 && bytes(args.imageUrl).length <= 4000,
-      "imageUrl length is invalid."
+      "imageUrl length is invalid"
     );
     require(
       args.donationThresholdForToken > 0,
-      "donationThresholdForToken value is invalid."
+      "donationThresholdForToken value is invalid"
     );
-    require(args.beneficiary != address(0), "beneficiary format is invalid.");
+    require(args.beneficiary != address(0), "beneficiary format is invalid");
     require(
       _tokenAddressIsErc721(args.rewardToken),
-      "rewardToken format is invalid."
+      "rewardToken format is invalid"
     );
 
     uint256 count = fundraisersCount();
@@ -127,7 +127,7 @@ contract AdministratorFundraiserHandler is Ownable {
     uint256 limit,
     uint256 offset
   ) public view onlyOwner returns (Fundraiser[] memory collection) {
-    require(offset <= fundraisersCount(), "offset is over limit.");
+    require(offset <= fundraisersCount(), "offset is over limit");
 
     uint256 maxLimit = 50;
 
