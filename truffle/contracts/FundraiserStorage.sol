@@ -17,13 +17,13 @@ contract FundraiserStorage is Ownable {
 
   modifier onlyAccessPermittedContract() {
     require(
-      msgSenderIsAccessPermittedContract(),
+      _msgSenderIsAccessPermittedContract(),
       "msg.sender is not authorized."
     );
     _;
   }
 
-  function msgSenderIsAccessPermittedContract() private view returns (bool) {
+  function _msgSenderIsAccessPermittedContract() private view returns (bool) {
     for (uint256 i = 0; i < _accessPermittedContracts.length; i++) {
       if (_accessPermittedContracts[i] == msg.sender) {
         return true;
