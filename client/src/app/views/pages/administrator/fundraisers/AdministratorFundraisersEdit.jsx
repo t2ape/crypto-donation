@@ -303,7 +303,7 @@ function AdministratorFundraisersEdit() {
                   <StyledTextField
                     fullWidth
                     name="donationThresholdForToken"
-                    label="Donation threshold for token"
+                    label="Donation threshold for token (wei)"
                     size="small"
                     variant="outlined"
                     type="number"

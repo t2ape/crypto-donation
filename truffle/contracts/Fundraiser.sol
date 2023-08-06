@@ -50,34 +50,40 @@ contract Fundraiser is Ownable {
     address rewardToken; // 必須
   }
 
+  struct ConstructorArgs {
+    address fundraiserHandlerAddress;
+    uint256 id;
+    FundraiserArgs fundraiserArgs;
+    address custodian;
+  }
+
   mapping(address => Donation[]) private _donations;
 
   event FundraiserUpdated(address indexed updater, uint256 updatedAt);
   event FundraiserDeleted(address indexed deletor, uint256 deletedAt);
   event DonationReceived(address indexed donor, uint256 value, uint256 donatedAt);
 
-  constructor(
-    address _fundraiserHandlerAddress,
-    uint256 _id,
-    FundraiserArgs memory _args,
-    address _custodian
-  ) {
-    _fundraiserHandler = AdministratorFundraiserHandler(_fundraiserHandlerAddress);
-    id = _id;
-    name = _args.name;
-    description = _args.description;
-    url = _args.url;
-    imageUrl = _args.imageUrl;
-    isOpen = _args.isOpen;
-    startedAt = _args.startedAt;
-    endedAt = _args.endedAt;
+  constructor(ConstructorArgs _args) {
+    _fundraiserHandler = AdministratorFundraiserHandler(address(_args.fundraiserHandlerAddress));
+
+    id = uint256(_args.id);
+
+    fundraiserArgs = FundraiserArgs(_args.fundraiserArgs);
+
+    name = fundraiserArgs.name;
+    description = fundraiserArgs.description;
+    url = fundraiserArgs.url;
+    imageUrl = fundraiserArgs.imageUrl;
+    isOpen = fundraiserArgs.isOpen;
+    startedAt = fundraiserArgs.startedAt;
+    endedAt = fundraiserArgs.endedAt;
     donationsAmount = 0;
     donationsCount = 0;
-    donationThresholdForToken = _args.donationThresholdForToken;
-    beneficiary = _args.beneficiary;
-    rewardToken = _args.rewardToken;
+    donationThresholdForToken = fundraiserArgs.donationThresholdForToken;
+    beneficiary = fundraiserArgs.beneficiary;
+    rewardToken = fundraiserArgs.rewardToken;
 
-    transferOwnership(_custodian);
+    transferOwnership(address(_args.custodian));
   }
 
   modifier notDeleted() {
