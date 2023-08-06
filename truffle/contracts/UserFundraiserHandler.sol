@@ -14,7 +14,7 @@ contract UserFundraiserHandler {
     uint256 limit,
     uint256 offset
   ) public view returns (Fundraiser[] memory collection) {
-    require(offset <= activeFundraisersCount(), "offset is over limit.");
+    require(offset <= activeFundraisersCount(), "offset is over limit");
 
     uint256 maxLimit = 50;
 
