@@ -3,17 +3,17 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FundraiserStorage is Ownable {
-  // array 関連の function を追加
-
   address[] private _accessPermittedContracts;
+
   mapping(address => bool) private _accessPermissions;
-  mapping(bytes32 => uint) uIntStorage;
-  mapping(bytes32 => string) stringStorage;
+
   mapping(bytes32 => address) addressStorage;
   mapping(bytes32 => address[]) addressArrayStorage;
-  mapping(bytes32 => bytes) bytesStorage;
   mapping(bytes32 => bool) boolStorage;
+  mapping(bytes32 => bytes) bytesStorage;
   mapping(bytes32 => int) intStorage;
+  mapping(bytes32 => uint) uintStorage;
+  mapping(bytes32 => string) stringStorage;
 
   modifier onlyAccessPermittedContract() {
     require(msgSenderIsAccessPermittedContract());
@@ -30,11 +30,11 @@ contract FundraiserStorage is Ownable {
     return false;
   }
 
-  function setAccessPermittedContract(address _contract) public onlyOwner {
+  function addAccessPermittedContract(address _contract) public onlyOwner {
     _accessPermittedContracts.push(_contract);
   }
 
-  function deleteAccessPermittedContract(address _contract) public onlyOwner {
+  function removeAccessPermittedContract(address _contract) public onlyOwner {
     for(uint256 i = 0; i < _accessPermittedContracts.length; i++) {
       if(_accessPermittedContracts[i] == _contract) {
         // Delete does not change the array length.
@@ -46,13 +46,6 @@ contract FundraiserStorage is Ownable {
   }
 
   // *** Getter Methods ***
-  function getUint(bytes32 _key) external view returns(uint) {
-    return uIntStorage[_key];
-  }
-
-  function getString(bytes32 _key) external view returns(string memory) {
-    return stringStorage[_key];
-  }
 
   function getAddress(bytes32 _key) external view returns(address) {
     return addressStorage[_key];
@@ -62,26 +55,27 @@ contract FundraiserStorage is Ownable {
     return addressArrayStorage[_key];
   }
 
-  function getBytes(bytes32 _key) external view returns(bytes memory) {
-    return bytesStorage[_key];
-  }
-
   function getBool(bytes32 _key) external view returns(bool) {
     return boolStorage[_key];
+  }
+
+  function getBytes(bytes32 _key) external view returns(bytes memory) {
+    return bytesStorage[_key];
   }
 
   function getInt(bytes32 _key) external view returns(int) {
     return intStorage[_key];
   }
 
-  // *** Setter Methods ***
-  function setUint(bytes32 _key, uint _value) onlyAccessPermittedContract external {
-    uIntStorage[_key] = _value;
+  function getUint(bytes32 _key) external view returns(uint) {
+    return uintStorage[_key];
   }
 
-  function setString(bytes32 _key, string calldata _value) onlyAccessPermittedContract external {
-    stringStorage[_key] = _value;
+  function getString(bytes32 _key) external view returns(string memory) {
+    return stringStorage[_key];
   }
+
+  // *** Setter Methods ***
 
   function setAddress(bytes32 _key, address _value) onlyAccessPermittedContract external {
     addressStorage[_key] = _value;
@@ -91,40 +85,53 @@ contract FundraiserStorage is Ownable {
     addressArrayStorage[_key] = _values;
   }
 
-  function setBytes(bytes32 _key, bytes calldata _value) onlyAccessPermittedContract external {
-    bytesStorage[_key] = _value;
-  }
-
   function setBool(bytes32 _key, bool _value) onlyAccessPermittedContract external {
     boolStorage[_key] = _value;
+  }
+
+  function setBytes(bytes32 _key, bytes calldata _value) onlyAccessPermittedContract external {
+    bytesStorage[_key] = _value;
   }
 
   function setInt(bytes32 _key, int _value) onlyAccessPermittedContract external {
     intStorage[_key] = _value;
   }
 
-  // *** Delete Methods ***
-  function deleteUint(bytes32 _key) onlyAccessPermittedContract external {
-    delete uIntStorage[_key];
+  function setUint(bytes32 _key, uint _value) onlyAccessPermittedContract external {
+    uintStorage[_key] = _value;
   }
 
-  function deleteString(bytes32 _key) onlyAccessPermittedContract external {
-    delete stringStorage[_key];
+  function setString(bytes32 _key, string calldata _value) onlyAccessPermittedContract external {
+    stringStorage[_key] = _value;
   }
+
+  // *** Delete Methods ***
 
   function deleteAddress(bytes32 _key) onlyAccessPermittedContract external {
     delete addressStorage[_key];
   }
 
-  function deleteBytes(bytes32 _key) onlyAccessPermittedContract external {
-    delete bytesStorage[_key];
+  function deleteAddress(bytes32 _key) onlyAccessPermittedContract external {
+    delete addressArrayStorage[_key];
   }
 
   function deleteBool(bytes32 _key) onlyAccessPermittedContract external {
     delete boolStorage[_key];
   }
 
+  function deleteBytes(bytes32 _key) onlyAccessPermittedContract external {
+    delete bytesStorage[_key];
+  }
+
   function deleteInt(bytes32 _key) onlyAccessPermittedContract external {
     delete intStorage[_key];
+  }
+
+  function deleteUint(bytes32 _key) onlyAccessPermittedContract external {
+    delete uintStorage[_key];
+  }
+
+  function deleteString(bytes32 _key) onlyAccessPermittedContract external {
+    delete stringStorage[_key];
   }
 }
