@@ -65,32 +65,32 @@ contract AdministratorFundraiserHandler is Ownable {
   }
 
   // TODO: Fundraiser 作成・更新時に、HeartToken の minters に Fundraiser を add/delete する方法を検討
-  function createFundraiser(FundraiserArgs memory args) public onlyOwner {
+  function createFundraiser(FundraiserArgs memory _args) public onlyOwner {
     // validations
     require(
-      bytes(args.name).length > 0 && bytes(args.name).length <= 400,
+      bytes(_args.name).length > 0 && bytes(_args.name).length <= 400,
       "name length is invalid"
     );
     require(
-      bytes(args.description).length > 0 &&
-        bytes(args.description).length <= 4000,
+      bytes(_args.description).length > 0 &&
+        bytes(_args.description).length <= 4000,
       "description length is invalid"
     );
     require(
-      bytes(args.url).length >= 0 && bytes(args.url).length <= 4000,
+      bytes(_args.url).length >= 0 && bytes(_args.url).length <= 4000,
       "url length is invalid"
     );
     require(
-      bytes(args.imageUrl).length >= 0 && bytes(args.imageUrl).length <= 4000,
+      bytes(_args.imageUrl).length >= 0 && bytes(_args.imageUrl).length <= 4000,
       "imageUrl length is invalid"
     );
     require(
-      args.donationThresholdForToken > 0,
+      _args.donationThresholdForToken > 0,
       "donationThresholdForToken value is invalid"
     );
-    require(args.beneficiary != address(0), "beneficiary format is invalid");
+    require(_args.beneficiary != address(0), "beneficiary format is invalid");
     require(
-      _tokenAddressIsErc721(args.rewardToken),
+      _tokenAddressIsErc721(_args.rewardToken),
       "rewardToken format is invalid"
     );
 
@@ -98,16 +98,16 @@ contract AdministratorFundraiserHandler is Ownable {
 
     Fundraiser.FundraiserArgs memory fundraiserArgs = Fundraiser
       .FundraiserArgs({
-        name: args.name,
-        description: args.description,
-        url: args.url,
-        imageUrl: args.imageUrl,
-        isOpen: args.isOpen,
-        startedAt: args.startedAt,
-        endedAt: args.endedAt,
-        donationThresholdForToken: args.donationThresholdForToken,
-        beneficiary: args.beneficiary,
-        rewardToken: args.rewardToken
+        name: _args.name,
+        description: _args.description,
+        url: _args.url,
+        imageUrl: _args.imageUrl,
+        isOpen: _args.isOpen,
+        startedAt: _args.startedAt,
+        endedAt: _args.endedAt,
+        donationThresholdForToken: _args.donationThresholdForToken,
+        beneficiary: _args.beneficiary,
+        rewardToken: _args.rewardToken
       });
 
     Fundraiser.ConstructorArgs memory constructorArgs = Fundraiser
@@ -131,22 +131,22 @@ contract AdministratorFundraiserHandler is Ownable {
   }
 
   function fundraisers(
-    uint256 limit,
-    uint256 offset
+    uint256 _limit,
+    uint256 _offset
   ) public view onlyOwner returns (Fundraiser[] memory collection) {
-    require(offset <= fundraisersCount(), "offset is over limit");
+    require(_offset <= fundraisersCount(), "offset is over limit");
 
     uint256 maxLimit = 50;
 
-    uint256 size = fundraisersCount() - offset;
-    size = size < limit ? size : limit;
+    uint256 size = fundraisersCount() - _offset;
+    size = size < _limit ? size : _limit;
     size = size < maxLimit ? size : maxLimit;
     collection = new Fundraiser[](size);
 
     for (uint256 i = 0; i < size; i++) {
       collection[i] = Fundraiser(
         _fundraiserStorage.getAddress(
-          keccak256(abi.encodePacked("fundraiser", offset + i))
+          keccak256(abi.encodePacked("fundraiser", _offset + i))
         )
       );
     }
@@ -158,21 +158,21 @@ contract AdministratorFundraiserHandler is Ownable {
     return _fundraiserStorage.getUint(keccak256("fundraisersCount"));
   }
 
-  function _setFundraisersCount(uint256 count) private {
-    _fundraiserStorage.setUint(keccak256("fundraisersCount"), count);
+  function _setFundraisersCount(uint256 _count) private {
+    _fundraiserStorage.setUint(keccak256("fundraisersCount"), _count);
   }
 
   function setFundraisersDonatedByDonor(
-    address donor,
-    address fundraiser
+    address _donor,
+    address _fundraiser
   ) public onlyFundraiser {
     bool contractIsPresentInFundraisers = false;
     address[] memory fundraisersArray = _fundraiserStorage.getAddressArray(
-      keccak256(abi.encodePacked("fundraisersDonatedByDonor", donor))
+      keccak256(abi.encodePacked("fundraisersDonatedByDonor", _donor))
     );
 
     for (uint256 i = 0; i < fundraisersArray.length; i++) {
-      if (fundraisersArray[i] == address(fundraiser)) {
+      if (fundraisersArray[i] == address(_fundraiser)) {
         contractIsPresentInFundraisers = true;
         break;
       }
@@ -185,10 +185,10 @@ contract AdministratorFundraiserHandler is Ownable {
       for (uint256 i = 0; i < fundraisersArray.length; i++) {
         newFundraisers[i] = fundraisersArray[i];
       }
-      newFundraisers[fundraisersArray.length] = address(fundraiser);
+      newFundraisers[fundraisersArray.length] = address(_fundraiser);
 
       _fundraiserStorage.setAddressArray(
-        keccak256(abi.encodePacked("fundraisersDonatedByDonor", donor)),
+        keccak256(abi.encodePacked("fundraisersDonatedByDonor", _donor)),
         newFundraisers
       );
     }

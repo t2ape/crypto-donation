@@ -125,45 +125,45 @@ contract Fundraiser is Ownable {
   }
 
   function updateFundraiser(
-    FundraiserArgs memory args
+    FundraiserArgs memory _args
   ) public onlyOwner notDeleted {
     require(
-      bytes(args.name).length > 0 && bytes(args.name).length <= 400,
+      bytes(_args.name).length > 0 && bytes(_args.name).length <= 400,
       "name length is invalid"
     );
     require(
-      bytes(args.description).length > 0 &&
-        bytes(args.description).length <= 4000,
+      bytes(_args.description).length > 0 &&
+        bytes(_args.description).length <= 4000,
       "description length is invalid"
     );
     require(
-      bytes(args.url).length >= 0 && bytes(args.url).length <= 4000,
+      bytes(_args.url).length >= 0 && bytes(_args.url).length <= 4000,
       "url length is invalid"
     );
     require(
-      bytes(args.imageUrl).length >= 0 && bytes(args.imageUrl).length <= 4000,
+      bytes(_args.imageUrl).length >= 0 && bytes(_args.imageUrl).length <= 4000,
       "imageUrl length is invalid"
     );
     require(
-      args.donationThresholdForToken > 0,
+      _args.donationThresholdForToken > 0,
       "donationThresholdForToken value is invalid"
     );
-    require(args.beneficiary != address(0), "beneficiary format is invalid");
+    require(_args.beneficiary != address(0), "beneficiary format is invalid");
     require(
-      _tokenAddressIsErc721(args.rewardToken),
+      _tokenAddressIsErc721(_args.rewardToken),
       "rewardToken format is invalid"
     );
 
-    name = args.name;
-    description = args.description;
-    url = args.url;
-    imageUrl = args.imageUrl;
-    isOpen = args.isOpen;
-    startedAt = args.startedAt;
-    endedAt = args.endedAt;
-    donationThresholdForToken = args.donationThresholdForToken;
-    beneficiary = args.beneficiary;
-    rewardToken = args.rewardToken;
+    name = _args.name;
+    description = _args.description;
+    url = _args.url;
+    imageUrl = _args.imageUrl;
+    isOpen = _args.isOpen;
+    startedAt = _args.startedAt;
+    endedAt = _args.endedAt;
+    donationThresholdForToken = _args.donationThresholdForToken;
+    beneficiary = _args.beneficiary;
+    rewardToken = _args.rewardToken;
 
     emit FundraiserUpdated(msg.sender, block.timestamp); // solhint-disable-line not-rely-on-time
   }

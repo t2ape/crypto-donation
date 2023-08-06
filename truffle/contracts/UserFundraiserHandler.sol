@@ -13,15 +13,15 @@ contract UserFundraiserHandler {
   }
 
   function activeFundraisers(
-    uint256 limit,
-    uint256 offset
+    uint256 _limit,
+    uint256 _offset
   ) public view returns (Fundraiser[] memory collection) {
-    require(offset <= activeFundraisersCount(), "offset is over limit");
+    require(_offset <= activeFundraisersCount(), "offset is over limit");
 
     uint256 maxLimit = 50;
 
-    uint256 size = activeFundraisersCount() - offset;
-    size = size < limit ? size : limit;
+    uint256 size = activeFundraisersCount() - _offset;
+    size = size < _limit ? size : _limit;
     size = size < maxLimit ? size : maxLimit;
     collection = new Fundraiser[](size);
 
@@ -37,17 +37,17 @@ contract UserFundraiserHandler {
         )
       );
       if (fundraiser.isActive()) {
-        if (collectionIndex >= offset && collectionIndex < offset + size) {
+        if (collectionIndex >= _offset && collectionIndex < _offset + size) {
           // インクリメントしていった collectionIndex が offset 以上 offset + size 未満の時だけ、
           // collection に fundraiser を追加していく。
           // collection[collectionIndex - offset] とすることで、
           // collection[0] から順に fundraiser が追加されていく。
-          collection[collectionIndex - offset] = fundraiser;
+          collection[collectionIndex - _offset] = fundraiser;
         }
         // collection に追加する・しないに関わらず、collectionIndex はインクリメントしていく
         collectionIndex++;
 
-        if (collectionIndex >= offset + size) {
+        if (collectionIndex >= _offset + size) {
           break;
         }
       }
