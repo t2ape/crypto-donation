@@ -143,7 +143,7 @@ function AdministratorFundraisersNew() {
       <div className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Pages', path: '/pages' },
+            { name: 'Fundraisers', path: '/administrator/fundraisers' },
             { name: 'New Fundraiser' },
           ]}
         />

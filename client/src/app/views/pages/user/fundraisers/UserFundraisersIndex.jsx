@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import { styled, TablePagination } from '@mui/material';
+import { Button, styled, TablePagination } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { Breadcrumb } from 'app/components';
+import { FlexBox } from 'app/components/FlexBox';
 import useCollection from 'app/hooks/useCollection';
 import FundraiserCard from 'app/views/pages/user/fundraisers/FundraiserCard';
 import UserFundraiserHandlerContract from 'contracts/UserFundraiserHandler.json';
@@ -13,19 +15,20 @@ const Container = styled('div')(({ theme }) => ({
   margin: '30px',
   [theme.breakpoints.down('sm')]: { margin: '16px' },
 }));
+const FlexEndBox = styled(FlexBox)({ justifyContent: 'flex-end' });
 
 function UserFundraisersIndex() {
   const { page, itemsPerPage, handleChangePage } = useCollection();
   const [fundraisers, setFundraisers] = useState([]);
   const [fundraisersCount, setFundraisersCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const init = async () => {
       try {
         const localWeb3 = await getWeb3();
         const localNetworkId = await localWeb3.eth.net.getId();
-        const localDeployedNetwork =
-          UserFundraiserHandlerContract.networks[localNetworkId];
+        const localDeployedNetwork = UserFundraiserHandlerContract.networks[localNetworkId];
         const localContract = new localWeb3.eth.Contract(
           UserFundraiserHandlerContract.abi,
           localDeployedNetwork && localDeployedNetwork.address,
@@ -53,6 +56,16 @@ function UserFundraisersIndex() {
       <Container>
         <Breadcrumb routeSegments={[{ name: 'Fundraisers' }]} />
       </Container>
+
+      <FlexEndBox mb={3} px={2} gap={2} className="donated-fundraisers">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => navigate('/user/donated_fundraisers')}
+        >
+          Donated Fundraisers
+        </Button>
+      </FlexEndBox>
 
       <div>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>

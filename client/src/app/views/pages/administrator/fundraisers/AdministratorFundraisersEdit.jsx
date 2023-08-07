@@ -199,7 +199,7 @@ function AdministratorFundraisersEdit() {
       <div className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Fundraisers', path: '/fundraisers' },
+            { name: 'Fundraisers', path: '/administrator/fundraisers' },
             { name: 'Edit Fundraiser' },
           ]}
         />
