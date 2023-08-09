@@ -27,12 +27,6 @@ const Separator = styled('h4')(({ theme }) => ({
   color: theme.palette.text.hint,
 }));
 
-const StyledIcon = styled(Icon)(() => ({
-  marginLeft: 8,
-  marginBottom: '4px',
-  verticalAlign: 'middle',
-}));
-
 const Breadcrumb = ({ routeSegments }) => {
   const theme = useTheme();
   const hint = theme.palette.text.hint;
@@ -53,11 +47,9 @@ const Breadcrumb = ({ routeSegments }) => {
           display: 'flex',
           alignItems: 'center',
           position: 'relative',
+          marginLeft: '8px',
         }}
       >
-        <NavLink to="/">
-          <StyledIcon color="primary">home</StyledIcon>
-        </NavLink>
         {routeSegments
           ? routeSegments.map((route, index) => {
               return index !== routeSegments.length - 1 ? (
