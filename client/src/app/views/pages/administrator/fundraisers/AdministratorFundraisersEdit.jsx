@@ -1,5 +1,3 @@
-// TODO: donationThresholdForToken に double を設定できないようなので修正
-
 import { useState, useEffect } from 'react';
 
 import {
@@ -194,7 +192,6 @@ function AdministratorFundraisersEdit() {
   });
 
   return (
-    // TODO: Home への遷移が上手くいっていなさそうなので修正
     <Container>
       <div className="breadcrumb">
         <Breadcrumb
