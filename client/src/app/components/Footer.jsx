@@ -1,14 +1,13 @@
+import React from 'react';
+
 import {
   AppBar,
-  Button,
   styled,
-  ThemeProvider,
   Toolbar,
-  useTheme,
 } from '@mui/material';
-import useSettings from 'app/hooks/useSettings';
+import { Link } from 'react-router-dom';
+
 import { topBarHeight } from 'app/utils/constant';
-import { Paragraph, Span } from './Typography';
 
 // styled components
 const AppFooter = styled(Toolbar)({
@@ -34,35 +33,52 @@ const FooterContent = styled('div')({
   maxWidth: '1170px',
   padding: '0px 1rem',
   alignItems: 'center',
+  justifyContent: 'center',
 });
 
-const Footer = () => {
-  const theme = useTheme();
-  const { settings } = useSettings();
-
-  const footerTheme = settings.themes[settings.footer.theme] || theme;
-
+function Footer() {
   return (
-    <ThemeProvider theme={footerTheme}>
-      <AppBar color="primary" position="static" sx={{ zIndex: 96 }}>
-        <AppFooter>
-          <FooterContent>
-            <a href="https://ui-lib.com/downloads/matx-pro-react-admin/">
-              <Button variant="contained" color="secondary">
-                Get MatX Pro
-              </Button>
-            </a>
-
-            <Span sx={{ m: 'auto' }} />
-
-            <Paragraph sx={{ m: 0 }} className="sfsdfsdf">
-              Design and Developed by <a href="http://ui-lib.com">UI Lib</a>
-            </Paragraph>
-          </FooterContent>
-        </AppFooter>
-      </AppBar>
-    </ThemeProvider>
+    <AppBar color="primary" position="static" sx={{ zIndex: 96 }}>
+      <AppFooter>
+        <FooterContent>
+          <ul
+            style={{
+              listStyleType: 'none',
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '20px',
+              padding: 0,
+            }}
+          >
+            <li>
+              <Link
+                to="/about"
+                style={{ color: '#fff', textDecoration: 'none' }}
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/donate"
+                style={{ color: '#fff', textDecoration: 'none' }}
+              >
+                How to Donate
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/disclaimer"
+                style={{ color: '#fff', textDecoration: 'none' }}
+              >
+                Disclaimer
+              </Link>
+            </li>
+          </ul>
+        </FooterContent>
+      </AppFooter>
+    </AppBar>
   );
-};
+}
 
 export default Footer;

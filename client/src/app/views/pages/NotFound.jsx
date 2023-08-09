@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import { Link } from 'react-router-dom';
+
 import { FlexAlignCenter } from 'app/components/FlexBox';
 
 // styled components
@@ -24,8 +24,6 @@ function NotFound() {
     <NotFoundRoot>
       <JustifyBox>
         <p>404 Not Found</p>
-
-        <Link to="/">Click here to go home</Link>
       </JustifyBox>
     </NotFoundRoot>
   );
