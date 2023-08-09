@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, Card, Divider, Grid, styled, TextField } from '@mui/material';
+import {
+  Button, Card, Divider, Grid, styled, TextField,
+} from '@mui/material';
 import { Formik } from 'formik';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -44,6 +46,7 @@ function FundraiserShow() {
   const [endedAt, setEndedAt] = useState(null);
   const [donationsAmountLabel, setDonationsAmountLabel] = useState(null);
   const [donationsCount, setDonationsCount] = useState(null);
+  const [donationThresholdForTokenLabel, setDonationThresholdForTokenLabel] = useState(null);
   const [url, setUrl] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -96,6 +99,14 @@ function FundraiserShow() {
           .donationsCount()
           .call();
         setDonationsCount(localDonationsCount);
+        const localDonationThresholdForToken = await localContract.methods
+          .donationThresholdForToken()
+          .call();
+        const localDonationThresholdForTokenLabel = localWeb3.utils.fromWei(
+          localDonationThresholdForToken,
+          'ether',
+        );
+        setDonationThresholdForTokenLabel(localDonationThresholdForTokenLabel);
         const localStartedAt = await localContract.methods.startedAt().call();
         setStartedAt(localStartedAt);
         const localEndedAt = await localContract.methods.endedAt().call();
@@ -182,7 +193,9 @@ function FundraiserShow() {
             <Paragraph sx={{ mt: 0, mb: 1 }} style={{ whiteSpace: 'pre-line' }}>
               {details.map((detail) => (
                 <React.Fragment key={detail.label}>
-                  {detail.label} {detail.value}
+                  {detail.label}
+                  {' '}
+                  {detail.value}
                   {'\n'}
                 </React.Fragment>
               ))}
@@ -206,24 +219,50 @@ function FundraiserShow() {
               }) => (
                 <Form
                   onSubmit={handleSubmit}
-                  style={{ display: 'flex', alignItems: 'center' }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                  }}
                 >
-                  <StyledTextField
-                    type="text"
-                    name="donationAmount"
-                    label="Donation Amout (ether)"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.donationAmount || 0}
-                    error={Boolean(
-                      touched.donationAmount && errors.donationAmount,
-                    )}
-                    helperText={touched.donationAmount && errors.donationAmount}
-                    style={{ marginRight: '20px' }}
-                  />
-                  <Button type="submit" color="primary" variant="contained">
-                    Donate
-                  </Button>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <StyledTextField
+                      type="text"
+                      name="donationAmount"
+                      label="Donation Amout (ether)"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.donationAmount || 0}
+                      error={Boolean(
+                        touched.donationAmount && errors.donationAmount,
+                      )}
+                      helperText={
+                        touched.donationAmount && errors.donationAmount
+                      }
+                      style={{ marginRight: '20px' }}
+                    />
+                    <Button type="submit" color="primary" variant="contained">
+                      Donate
+                    </Button>
+                  </div>
+                  <Paragraph
+                    sx={{ mt: 0, mb: 1 }}
+                    style={{ whiteSpace: 'pre-line' }}
+                  >
+                    Receive an NFT when you donate
+                    {' '}
+                    <strong>
+                      {donationThresholdForTokenLabel}
+                      {' '}
+                      ETH
+                    </strong>
+                    {' '}
+                    or
+                    more at once.
+                    <br />
+                    You can view your acquired NFT on NFT marketplaces like
+                    Opensea.
+                  </Paragraph>
                 </Form>
               )}
             </Formik>
