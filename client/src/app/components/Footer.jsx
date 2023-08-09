@@ -60,14 +60,6 @@ function Footer() {
             </li>
             <li>
               <Link
-                to="/donate"
-                style={{ color: '#fff', textDecoration: 'none' }}
-              >
-                How to Donate
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/disclaimer"
                 style={{ color: '#fff', textDecoration: 'none' }}
               >
