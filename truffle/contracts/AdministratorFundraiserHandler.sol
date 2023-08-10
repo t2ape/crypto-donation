@@ -5,7 +5,6 @@ pragma solidity ^0.8.19;
 import {Fundraiser} from "./Fundraiser.sol";
 import {FundraiserStorage} from "./FundraiserStorage.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 interface IERC165 {
   function supportsInterface(bytes4 interfaceID) external view returns (bool);
@@ -62,6 +61,10 @@ contract AdministratorFundraiserHandler is Ownable {
     } catch {
       return false;
     }
+  }
+
+  function msgSenderIsOwner() public view onlyOwner returns (bool) {
+    return true;
   }
 
   // TODO: Fundraiser 作成・更新時に、HeartToken の minters に Fundraiser を add/delete する方法を検討
