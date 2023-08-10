@@ -108,7 +108,7 @@ function FundraiserCard({ fundraiser }) {
         <Grid item md={6} xs={12}>
           <H4 sx={{ mt: 0, mb: 2 }}>{name}</H4>
 
-          <p>{description}</p>
+          <p style={{ whiteSpace: 'pre-line' }}>{description}</p>
 
           <Divider sx={{ my: 2 }} />
 
