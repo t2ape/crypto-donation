@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { Breadcrumb } from 'app/components';
+import { Breadcrumb, MatxLoading } from 'app/components';
 import { TableHead, TableToolbar } from 'app/components/data-table';
 import { FlexBox } from 'app/components/FlexBox';
 import useCollection from 'app/hooks/useCollection';
@@ -19,6 +19,7 @@ import AdministratorFundraiserHandlerContract from 'contracts/AdministratorFundr
 import getWeb3 from 'utils/getWeb3';
 
 import FundraiserRow from './FundraiserRow';
+import NotFound from '../../NotFound';
 
 // styled components
 const Container = styled('div')(({ theme }) => ({
@@ -36,6 +37,8 @@ function AdministratorFundraisersIndex() {
   const [fundraisers, setFundraisers] = useState([]);
   const [fundraisersCount, setFundraisersCount] = useState(0);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasPermission, setHasPermission] = useState(false);
 
   // TABLE HEADER COLUMN LIST
   const columns = [
@@ -81,20 +84,34 @@ function AdministratorFundraisersIndex() {
     const init = async () => {
       try {
         const localWeb3 = await getWeb3();
+        const localAccounts = await localWeb3.eth.getAccounts();
         const localNetworkId = await localWeb3.eth.net.getId();
-        const localDeployedNetwork =
-          AdministratorFundraiserHandlerContract.networks[localNetworkId];
+        const localDeployedNetwork = AdministratorFundraiserHandlerContract
+          .networks[localNetworkId];
         const localContract = new localWeb3.eth.Contract(
           AdministratorFundraiserHandlerContract.abi,
           localDeployedNetwork && localDeployedNetwork.address,
         );
+
+        const localHasPermission = await localContract.methods
+          .msgSenderIsOwner()
+          .call({ from: localAccounts[0] });
+        if (localHasPermission) {
+          setHasPermission(true);
+          setIsLoading(false);
+        } else {
+          setHasPermission(false);
+          setIsLoading(false);
+          return;
+        }
+
         const localFundraisers = await localContract.methods
           .fundraisers(itemsPerPage, page * itemsPerPage)
-          .call();
+          .call({ from: localAccounts[0] });
         setFundraisers(localFundraisers);
         const localFundraisersCount = await localContract.methods
           .fundraisersCount()
-          .call();
+          .call({ from: localAccounts[0] });
         setFundraisersCount(parseInt(localFundraisersCount, 10));
       } catch (error) {
         alert(
@@ -105,6 +122,14 @@ function AdministratorFundraisersIndex() {
     };
     init();
   }, [page, itemsPerPage]);
+
+  useEffect(() => {}, []);
+
+  if (isLoading) return <MatxLoading />;
+
+  if (!hasPermission) {
+    return <NotFound />;
+  }
 
   return (
     <Container>
