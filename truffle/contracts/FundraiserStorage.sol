@@ -10,7 +10,6 @@ contract FundraiserStorage is Ownable {
   mapping(address => bool) private _accessPermissions;
 
   mapping(bytes32 => address) private _addressStorage;
-  mapping(bytes32 => address[]) private _addressArrayStorage;
   mapping(bytes32 => bool) private _boolStorage;
   mapping(bytes32 => bytes) private _bytesStorage;
   mapping(bytes32 => int256) private _intStorage;
@@ -56,12 +55,6 @@ contract FundraiserStorage is Ownable {
     return _addressStorage[_key];
   }
 
-  function getAddressArray(
-    bytes32 _key
-  ) external view returns (address[] memory) {
-    return _addressArrayStorage[_key];
-  }
-
   function getBool(bytes32 _key) external view returns (bool) {
     return _boolStorage[_key];
   }
@@ -89,13 +82,6 @@ contract FundraiserStorage is Ownable {
     address _value
   ) external onlyAccessPermittedContract {
     _addressStorage[_key] = _value;
-  }
-
-  function setAddressArray(
-    bytes32 _key,
-    address[] memory _values
-  ) external onlyAccessPermittedContract {
-    _addressArrayStorage[_key] = _values;
   }
 
   function setBool(
@@ -137,10 +123,6 @@ contract FundraiserStorage is Ownable {
 
   function deleteAddress(bytes32 _key) external onlyAccessPermittedContract {
     delete _addressStorage[_key];
-  }
-
-  function deleteAddressArray(bytes32 _key) external onlyAccessPermittedContract {
-    delete _addressArrayStorage[_key];
   }
 
   function deleteBool(bytes32 _key) external onlyAccessPermittedContract {
