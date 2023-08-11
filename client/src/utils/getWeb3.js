@@ -2,7 +2,7 @@ import Web3 from 'web3';
 
 const getWeb3 = async () => {
   // Wait for loading completion to avoid race conditions with web3 injection timing.
-  await window.ethereum?.enable();
+  await window.ethereum?.request({ method: 'eth_requestAccounts' });
 
   // Modern dapp browsers...
   if (window.ethereum) {
