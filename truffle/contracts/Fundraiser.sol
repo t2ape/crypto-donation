@@ -21,8 +21,6 @@ contract Fundraiser is Ownable {
 
   AdministratorFundraiserHandler internal _fundraiserHandler;
 
-  IRewardTokenContract public rewardTokenContract;
-
   uint256 public id;
   string public name;
   string public description;
@@ -67,11 +65,6 @@ contract Fundraiser is Ownable {
 
   event FundraiserUpdated(address indexed updater, uint256 updatedAt);
   event FundraiserDeleted(address indexed deletor, uint256 deletedAt);
-  event DonationReceived(
-    address indexed donor,
-    uint256 value,
-    uint256 donatedAt
-  );
 
   constructor(ConstructorArgs memory _args) {
     _fundraiserHandler = AdministratorFundraiserHandler(
@@ -190,18 +183,12 @@ contract Fundraiser is Ownable {
 
     // mint a token
     if (msg.value >= donationThresholdForToken) {
-      if (rewardTokenContract != IRewardTokenContract(rewardToken)) {
-        rewardTokenContract = IRewardTokenContract(rewardToken);
-      }
-
-      rewardTokenContract.mint(msg.sender);
+      IRewardTokenContract _tempRewardTokenContract = IRewardTokenContract(rewardToken);
+      _tempRewardTokenContract.mint(msg.sender);
     }
 
     // donate
     beneficiary.transfer(msg.value);
-
-    // solhint-disable-next-line func-named-parameters, not-rely-on-time
-    emit DonationReceived(msg.sender, msg.value, block.timestamp);
   }
 
   function donations() public view returns (Donation[] memory) {
