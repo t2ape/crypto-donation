@@ -47,6 +47,7 @@ function FundraiserShow() {
   const [donationsAmountLabel, setDonationsAmountLabel] = useState(null);
   const [donationsCount, setDonationsCount] = useState(null);
   const [donationThresholdForTokenLabel, setDonationThresholdForTokenLabel] = useState(null);
+  const [beneficiary, setBeneficiary] = useState(null);
   const [url, setUrl] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -111,6 +112,8 @@ function FundraiserShow() {
         setStartedAt(localStartedAt);
         const localEndedAt = await localContract.methods.endedAt().call();
         setEndedAt(localEndedAt);
+        const localBeneficiary = await localContract.methods.beneficiary().call();
+        setBeneficiary(localBeneficiary);
       } catch (error) {
         alert(
           'Failed to load web3, accounts, or contract. Check console for details.',
@@ -245,6 +248,16 @@ function FundraiserShow() {
                       Donate
                     </Button>
                   </div>
+                  <Paragraph
+                    sx={{ mt: 0, mb: 1 }}
+                    style={{ whiteSpace: 'pre-line' }}
+                  >
+                    This donation will ultimately be transferred to
+                    {' '}
+                    <strong>
+                      {beneficiary}
+                    </strong>
+                  </Paragraph>
                   <Paragraph
                     sx={{ mt: 0, mb: 1 }}
                     style={{ whiteSpace: 'pre-line' }}
