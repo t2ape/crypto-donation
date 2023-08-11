@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+
 import { MatxLoading } from 'app/components';
 import NotFound from 'app/views/pages/NotFound';
-import getWeb3 from "utils/getWeb3";
-import AdministratorFundraiserHandlerContract from "contracts/AdministratorFundraiserHandler.json";
+import AdministratorFundraiserHandlerContract from 'contracts/AdministratorFundraiserHandler.json';
+import getWeb3 from 'utils/getWeb3';
 
 export default function withAuthorization(WrappedComponent) {
   return function WithAuthorizationWrapper(props) {
@@ -48,6 +49,6 @@ export default function withAuthorization(WrappedComponent) {
       return <NotFound />;
     }
 
-    return <WrappedComponent {...props} />;
+    return <WrappedComponent {...props} />; // eslint-disable-line react/jsx-props-no-spreading
   };
 }
