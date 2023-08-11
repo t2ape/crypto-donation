@@ -14,13 +14,20 @@ export const getDonations = createAsyncThunk(
   async (id) => {
     const web3 = await getWeb3();
     const accounts = await web3.eth.getAccounts();
-    const selectedAccount = accounts[0];
-
     const contract = new web3.eth.Contract(FundraiserContract.abi, id);
 
-    const donations = await contract.methods
-      .donations()
-      .call({ from: selectedAccount });
+    const fundraiserDonatedEvents = await contract.getPastEvents(
+      'FundraiserDonated',
+      {
+        filter: { donor: accounts[0] },
+        fromBlock: 0,
+        toBlock: 'latest',
+      },
+    );
+    const donations = fundraiserDonatedEvents.map((event) => ({
+      value: event.returnValues.value,
+      date: event.returnValues.date,
+    }));
     return donations;
   },
 );
