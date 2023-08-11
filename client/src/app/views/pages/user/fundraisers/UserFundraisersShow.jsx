@@ -144,7 +144,7 @@ function FundraiserShow() {
         alert('Successfully donated');
       } catch (error) {
         console.error(error); // eslint-disable-line no-console
-        alert('Failed to create fundraiser');
+        alert('Failed to donate fundraiser');
       }
     };
 
