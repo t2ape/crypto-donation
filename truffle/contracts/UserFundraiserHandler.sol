@@ -80,13 +80,14 @@ contract UserFundraiserHandler {
     returns (address[] memory)
   {
     uint256 size = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
-    collection = new Fundraiser[];
+
+    // This is an overestimate, but ensures we have a large enough array.
+    address[] memory tempCollection = new address[](size);
+    uint256 count = 0; // To keep track of how many addresses we've added.
 
     for (uint256 i = 0; i < size; i++) {
-      Fundraiser fundraiser = Fundraiser(
-        _fundraiserStorage.getAddress(
-          keccak256(abi.encodePacked("fundraiser", i))
-        )
+      address fundraiserAddress = _fundraiserStorage.getAddress(
+        keccak256(abi.encodePacked("fundraiser", i))
       );
 
       if (
@@ -95,13 +96,20 @@ contract UserFundraiserHandler {
             abi.encodePacked( // solhint-disable-line func-named-parameters
               "fundraisersDonatedByDonor",
               msg.sender,
-              fundraiser
-            )
+              fundraiserAddress
           )
         )
+      )
       ) {
-        collection.push(fundraiser);
+        tempCollection[count] = fundraiserAddress;
+        count++;
       }
+    }
+
+    // Create a new array with the correct size.
+    address[] memory collection = new address[](count);
+    for (uint256 i = 0; i < count; i++) {
+      collection[i] = tempCollection[i];
     }
 
     return collection;
