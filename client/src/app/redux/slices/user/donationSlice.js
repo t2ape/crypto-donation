@@ -26,7 +26,7 @@ export const getDonations = createAsyncThunk(
     );
     const donations = fundraiserDonatedEvents.map((event) => ({
       value: event.returnValues.value,
-      date: event.returnValues.date,
+      donatedAt: event.returnValues.donatedAt,
     }));
     return donations;
   },

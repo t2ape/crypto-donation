@@ -11,7 +11,7 @@ function DonationRow({ donation }) {
   DonationRow.propTypes = {
     donation: PropTypes.shape({
       value: PropTypes.number.isRequired,
-      date: PropTypes.string.isRequired,
+      donatedAt: PropTypes.string.isRequired,
     }).isRequired,
   };
 
@@ -36,7 +36,7 @@ function DonationRow({ donation }) {
         {web3 ? web3.utils.fromWei(donation.value, 'ether') : null}
       </TableCell>
       <TableCell align="center">
-        {new Date(donation.date * 1000).toLocaleString()}
+        {new Date(donation.donatedAt * 1000).toLocaleString()}
       </TableCell>
     </TableRow>
   );

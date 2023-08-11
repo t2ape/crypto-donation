@@ -35,11 +35,6 @@ contract Fundraiser is Ownable {
   address payable public beneficiary;
   address public rewardToken;
 
-  struct Donation {
-    uint256 value;
-    uint256 date;
-  }
-
   struct FundraiserArgs {
     string name; // required
     string description; // required
@@ -60,10 +55,13 @@ contract Fundraiser is Ownable {
     address custodian;
   }
 
-  mapping(address => Donation[]) private _donations;
-
   event FundraiserUpdated(address indexed updater, uint256 updatedAt);
   event FundraiserDeleted(address indexed deletor, uint256 deletedAt);
+  event FundraiserDonated(
+    address indexed donor,
+    uint256 value,
+    uint256 donatedAt
+  );
 
   constructor(ConstructorArgs memory _args) {
     _fundraiserHandler = AdministratorFundraiserHandler(
@@ -167,18 +165,12 @@ contract Fundraiser is Ownable {
   }
 
   function donate() public payable active notDeleted {
-    // update _donations
-    Donation memory donation = Donation({
-      value: msg.value,
-      date: block.timestamp // solhint-disable-line not-rely-on-time
-    });
-    _donations[msg.sender].push(donation);
-
-    _fundraiserHandler.setFundraiserIsDonated(msg.sender, address(this));
-
     // update this fundraisers' stat
     donationsAmount = donationsAmount.add(msg.value);
     donationsCount++;
+
+    // update donated history
+    _fundraiserHandler.setFundraiserIsDonated(msg.sender, address(this));
 
     // mint a token
     if (msg.value >= donationThresholdForToken) {
@@ -189,10 +181,8 @@ contract Fundraiser is Ownable {
     }
 
     // donate
-    beneficiary.transfer(msg.value);
-  }
+    emit FundraiserDonated(msg.sender, msg.value, block.timestamp); // solhint-disable-line not-rely-on-time, func-named-parameters
 
-  function donations() public view returns (Donation[] memory) {
-    return _donations[msg.sender];
+    beneficiary.transfer(msg.value);
   }
 }
