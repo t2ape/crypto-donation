@@ -63,8 +63,8 @@ contract AdministratorFundraiserHandler is Ownable {
     }
   }
 
-  function msgSenderIsOwner() public view onlyOwner returns (bool) {
-    return true;
+  function msgSenderIsOwner() public view returns (bool) {
+    return msg.sender == owner();
   }
 
   // TODO: Fundraiser 作成・更新時に、HeartToken の minters に Fundraiser を add/delete する方法を検討
