@@ -94,7 +94,7 @@ contract UserFundraiserHandler {
         _fundraiserStorage.getBool(
           keccak256(
             abi.encodePacked( // solhint-disable-line func-named-parameters
-              "fundraisersDonatedByDonor",
+              "fundraiserIsDonated",
               msg.sender,
               fundraiserAddress
           )
