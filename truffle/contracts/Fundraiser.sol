@@ -174,7 +174,7 @@ contract Fundraiser is Ownable {
     });
     _donations[msg.sender].push(donation);
 
-    _fundraiserHandler.setFundraisersDonatedByDonor(msg.sender, address(this));
+    _fundraiserHandler.setFundraiserIsDonated(msg.sender, address(this));
 
     // update this fundraisers' stat
     donationsAmount = donationsAmount.add(msg.value);
