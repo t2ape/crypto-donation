@@ -79,9 +79,31 @@ contract UserFundraiserHandler {
     view
     returns (address[] memory)
   {
-    return
-      _fundraiserStorage.getAddressArray(
-        keccak256(abi.encodePacked("fundraisersDonatedByDonor", msg.sender))
+    uint256 size = _fundraiserStorage.getUint(keccak256("fundraisersCount"));
+    collection = new Fundraiser[];
+
+    for (uint256 i = 0; i < size; i++) {
+      Fundraiser fundraiser = Fundraiser(
+        _fundraiserStorage.getAddress(
+          keccak256(abi.encodePacked("fundraiser", i))
+        )
       );
+
+      if (
+        _fundraiserStorage.getBool(
+          keccak256(
+            abi.encodePacked( // solhint-disable-line func-named-parameters
+              "fundraisersDonatedByDonor",
+              msg.sender,
+              fundraiser
+            )
+          )
+        )
+      ) {
+        collection.push(fundraiser);
+      }
+    }
+
+    return collection;
   }
 }
