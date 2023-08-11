@@ -197,6 +197,9 @@ contract Fundraiser is Ownable {
       rewardTokenContract.mint(msg.sender);
     }
 
+    // donate
+    beneficiary.transfer(msg.value);
+
     // solhint-disable-next-line func-named-parameters, not-rely-on-time
     emit DonationReceived(msg.sender, msg.value, block.timestamp);
   }
