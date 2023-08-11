@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 import { H5 } from 'app/components/Typography';
-import WithAuthorization from 'app/views/pages/administrator/WithAuthorization';
 import FundraiserContract from 'contracts/Fundraiser.json';
 import getWeb3 from 'utils/getWeb3';
 
@@ -100,4 +99,4 @@ function FundraiserRow({ fundraiser }) {
   );
 }
 
-export default WithAuthorization(FundraiserRow);
+export default FundraiserRow;
