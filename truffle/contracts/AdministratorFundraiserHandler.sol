@@ -165,35 +165,13 @@ contract AdministratorFundraiserHandler is Ownable {
     _fundraiserStorage.setUint(keccak256("fundraisersCount"), _count);
   }
 
-  function setFundraisersDonatedByDonor(
+  function setFundraiserIsDonated(
     address _donor,
     address _fundraiser
   ) public onlyFundraiser {
-    bool contractIsPresentInFundraisers = false;
-    address[] memory fundraisersArray = _fundraiserStorage.getAddressArray(
-      keccak256(abi.encodePacked("fundraisersDonatedByDonor", _donor))
+    _fundraiserStorage.setBool(
+      keccak256(abi.encodePacked("fundraiserIsDonated", _donor, _fundraiser)), // solhint-disable-line func-named-parameters
+      true
     );
-
-    for (uint256 i = 0; i < fundraisersArray.length; i++) {
-      if (fundraisersArray[i] == address(_fundraiser)) {
-        contractIsPresentInFundraisers = true;
-        break;
-      }
-    }
-
-    if (!contractIsPresentInFundraisers) {
-      address[] memory newFundraisers = new address[](
-        fundraisersArray.length + 1
-      );
-      for (uint256 i = 0; i < fundraisersArray.length; i++) {
-        newFundraisers[i] = fundraisersArray[i];
-      }
-      newFundraisers[fundraisersArray.length] = address(_fundraiser);
-
-      _fundraiserStorage.setAddressArray(
-        keccak256(abi.encodePacked("fundraisersDonatedByDonor", _donor)),
-        newFundraisers
-      );
-    }
   }
 }
