@@ -18,6 +18,7 @@ import * as yup from 'yup';
 import { Breadcrumb } from 'app/components';
 import { FlexBox } from 'app/components/FlexBox';
 import { H4, Paragraph } from 'app/components/Typography';
+import WithAuthorization from 'app/views/pages/administrator/WithAuthorization';
 import AdministratorFundraiserHandlerContract from 'contracts/AdministratorFundraiserHandler.json';
 import dateToSecond from 'utils/dateFormatter';
 import getWeb3 from 'utils/getWeb3';
@@ -280,8 +281,8 @@ function AdministratorFundraisersNew() {
                     />
 
                     <Paragraph fontSize={13}>
-                      Fundraiser is open to donation (Add this fundraiser
-                      to the minter of the rewardToken before open).
+                      Fundraiser is open to donation (Add this fundraiser to the
+                      minter of the rewardToken before open).
                     </Paragraph>
                   </FlexBox>
                 </Grid>
@@ -335,4 +336,4 @@ function AdministratorFundraisersNew() {
   );
 }
 
-export default AdministratorFundraisersNew;
+export default WithAuthorization(AdministratorFundraisersNew);

@@ -20,6 +20,7 @@ import * as yup from 'yup';
 import { Breadcrumb } from 'app/components';
 import { FlexBox } from 'app/components/FlexBox';
 import { H4, Paragraph } from 'app/components/Typography';
+import WithAuthorization from 'app/views/pages/administrator/WithAuthorization';
 import FundraiserContract from 'contracts/Fundraiser.json';
 import dateToSecond from 'utils/dateFormatter';
 import getWeb3 from 'utils/getWeb3';
@@ -150,8 +151,8 @@ function AdministratorFundraisersEdit() {
       endedAt: dateToSecond(values.endedAt),
     };
     if (
-      formattedInputValues.startedAt !== null &&
-      formattedInputValues.endedAt !== null
+      formattedInputValues.startedAt !== null
+      && formattedInputValues.endedAt !== null
     ) {
       submitInputValues(values, formattedInputValues);
     } else {
@@ -308,12 +309,12 @@ function AdministratorFundraisersEdit() {
                     onChange={handleChange}
                     value={values.donationThresholdForToken || 0}
                     error={Boolean(
-                      touched.donationThresholdForToken &&
-                        errors.donationThresholdForToken,
+                      touched.donationThresholdForToken
+                        && errors.donationThresholdForToken,
                     )}
                     helperText={
-                      touched.donationThresholdForToken &&
-                      errors.donationThresholdForToken
+                      touched.donationThresholdForToken
+                      && errors.donationThresholdForToken
                     }
                   />
 
@@ -421,4 +422,4 @@ function AdministratorFundraisersEdit() {
   );
 }
 
-export default AdministratorFundraisersEdit;
+export default WithAuthorization(AdministratorFundraisersEdit);

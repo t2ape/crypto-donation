@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
 import { Edit } from '@mui/icons-material';
-import { Box, IconButton, styled, TableCell, TableRow } from '@mui/material';
+import {
+  Box, IconButton, styled, TableCell, TableRow,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 import { H5 } from 'app/components/Typography';
+import WithAuthorization from 'app/views/pages/administrator/WithAuthorization';
 import FundraiserContract from 'contracts/Fundraiser.json';
 import getWeb3 from 'utils/getWeb3';
 
@@ -88,9 +91,7 @@ function FundraiserRow({ fundraiser }) {
       <TableCell align="center">{donationsCount}</TableCell>
       <TableCell align="center">
         <IconButton
-          onClick={() =>
-            navigate(`/administrator/fundraisers/${fundraiser}/edit`)
-          }
+          onClick={() => navigate(`/administrator/fundraisers/${fundraiser}/edit`)}
         >
           <Edit />
         </IconButton>
@@ -99,4 +100,4 @@ function FundraiserRow({ fundraiser }) {
   );
 }
 
-export default FundraiserRow;
+export default WithAuthorization(FundraiserRow);
