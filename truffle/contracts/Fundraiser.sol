@@ -3,7 +3,6 @@
 pragma solidity ^0.8.19;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {SafeMath} from "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import {AdministratorFundraiserHandler} from "./AdministratorFundraiserHandler.sol";
 
@@ -183,7 +182,9 @@ contract Fundraiser is Ownable {
 
     // mint a token
     if (msg.value >= donationThresholdForToken) {
-      IRewardTokenContract _tempRewardTokenContract = IRewardTokenContract(rewardToken);
+      IRewardTokenContract _tempRewardTokenContract = IRewardTokenContract(
+        rewardToken
+      );
       _tempRewardTokenContract.mint(msg.sender);
     }
 
