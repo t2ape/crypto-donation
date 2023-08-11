@@ -7,6 +7,7 @@ const extensions = ['.js', '.jsx'];
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  devtool: process.env.NODE_ENV === 'production' ? 'none' : 'eval-source-map',
   entry: './src/index.jsx',
   output: {
     path: path.resolve(__dirname, 'build'),
