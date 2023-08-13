@@ -86,10 +86,16 @@ function AdministratorFundraisersNew() {
         const gasLimit = await contract.methods
           .createFundraiser(createFundraiserParams)
           .estimateGas({ from: accounts[0] });
+
         const gasPrice = await web3.eth.getGasPrice();
+        const gasPriceBN = new web3.utils.BN(gasPrice);
+        const factor = new web3.utils.BN('60');
+        const base = new web3.utils.BN('100');
+        const adjustedGasPrice = gasPriceBN.mul(factor).div(base);
+
         await contract.methods
           .createFundraiser(createFundraiserParams)
-          .send({ from: accounts[0], gasLimit, gasPrice });
+          .send({ from: accounts[0], gasLimit, adjustedGasPrice });
 
         alert('Successfully created fundraiser');
       } catch (error) {
