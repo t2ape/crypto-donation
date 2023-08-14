@@ -396,6 +396,7 @@ contract HeartToken is Ownable, IERC721, ERC721 {
       abi.encodePacked( // solhint-disable-line func-named-parameters
           // solhint-disable-next-line quotes
           '<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">\n',
+          '<rect width="1080" height="1080" fill="#F8F3E6" />',
           image,
           "</svg>"
         );
