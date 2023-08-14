@@ -112,7 +112,9 @@ function FundraiserShow() {
         setStartedAt(localStartedAt);
         const localEndedAt = await localContract.methods.endedAt().call();
         setEndedAt(localEndedAt);
-        const localBeneficiary = await localContract.methods.beneficiary().call();
+        const localBeneficiary = await localContract.methods
+          .beneficiary()
+          .call();
         setBeneficiary(localBeneficiary);
       } catch (error) {
         alert(
@@ -245,19 +247,9 @@ function FundraiserShow() {
                       style={{ marginRight: '20px' }}
                     />
                     <Button type="submit" color="primary" variant="contained">
-                      Donate
+                      Read below & donate
                     </Button>
                   </div>
-                  <Paragraph
-                    sx={{ mt: 0, mb: 1 }}
-                    style={{ whiteSpace: 'pre-line' }}
-                  >
-                    This donation will ultimately be transferred to
-                    {' '}
-                    <strong>
-                      {beneficiary}
-                    </strong>
-                  </Paragraph>
                   <Paragraph
                     sx={{ mt: 0, mb: 1 }}
                     style={{ whiteSpace: 'pre-line' }}
@@ -275,6 +267,17 @@ function FundraiserShow() {
                     <br />
                     You can view your acquired NFT on NFT marketplaces like
                     Opensea.
+                  </Paragraph>
+                  <Paragraph
+                    sx={{ mt: 0, mb: 1 }}
+                    style={{ whiteSpace: 'pre-line' }}
+                  >
+                    This donation will ultimately be transferred to
+                    {' '}
+                    <strong>{beneficiary}</strong>
+                    <br />
+                    The final amount you will spend will be the donation amount
+                    plus the cost of gas.
                   </Paragraph>
                 </Form>
               )}
