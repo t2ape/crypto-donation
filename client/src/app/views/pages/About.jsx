@@ -40,6 +40,8 @@ function About() {
             1. Choose your desired donation recipient from the donation list.
             <br />
             2. Specify the amount you wish to donate.
+            <br />
+            3. The final amount you will spend will be the donation amount plus the cost of gas.
           </Paragraph>
 
           <H4 sx={{ mt: 0, mb: 1 }}>Safety Precautions for Donations</H4>
