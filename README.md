@@ -1,39 +1,29 @@
-# React Truffle Box
+# Crypto Donation
+Crypto Donation は、暗号通貨を使って簡単に寄付ができるサービスです。
 
-This box comes with everything you need to start using Truffle to write, compile, test, and deploy smart contracts, and interact with them from a React app.
+# 利用方法
+## 寄付の手順
+1. 寄付リストからご希望の寄付先を選ぶ。
+2. 寄付金額を指定する。
+3. 最終的な金額 (寄付金額＋ガス代) を確認した上で寄付を行う。
 
-## Installation
+## 寄付に関する安全上の注意
+- 暗号通貨ウォレットで寄付する場合、Metamask などのウォレットに表示される内容が、意図する取引内容になっているか確認してください。 
+- これは取引の安全を確保するための重要なステップです。
 
-First ensure you are in an empty directory.
+## 特別な報酬: NFT の発行
+- 一定の基準以上の金額を寄付していただくと、報酬としてユニークな NFT を発行します。 
+- この NFT 発行に必要な寄付金額は、寄付の詳細ページでご確認いただけます。 
+- また、発行された NFT は、OpenSea などの NFT マーケットプレイスで取引や検証が可能です。
 
-Run the `unbox` command using 1 of 2 ways.
-
-```sh
-# Install Truffle globally and run `truffle unbox`
-$ npm install -g truffle
-$ truffle unbox react
-```
-
-```sh
-# Alternatively, run `truffle unbox` via npx
-$ npx truffle unbox react
-```
-
-Start the react dev server.
-
+# 開発
+## フロントエンド
+- React を用いて開発しています。
+- 以下の手順でサーバーを立ち上げてください。
 ```sh
 $ cd client
 $ npm start
 ```
 
-From there, follow the instructions on the hosted React app. It will walk you through using Truffle and Ganache to deploy the `SimpleStorage` contract, making calls to it, and sending transactions to change the contract's state.
-
-## FAQ
-
-- __How do I use this with Ganache (or any other network)?__
-
-  The Truffle project is set to deploy to Ganache by default. If you'd like to change this, it's as easy as modifying the Truffle config file! Check out [our documentation on adding network configurations](https://trufflesuite.com/docs/truffle/reference/configuration/#networks). From there, you can run `truffle migrate` pointed to another network, restart the React dev server, and see the change take place.
-
-- __Where can I find more resources?__
-
-  This Box is a sweet combo of [Truffle](https://trufflesuite.com) and [Webpack](https://webpack.js.org). Either one would be a great place to start!
+## スマートコントラクト
+- Solidity + Truffle を用いて開発しています。
