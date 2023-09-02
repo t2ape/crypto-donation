@@ -31,3 +31,9 @@ $ npm start
 
 ## スマートコントラクト
 - Solidity + Truffle を用いて開発しています。
+- Ganache などをインストールし、以下の設定でローカル環境にブロックチェーンネットワークを立ち上げてください。
+```
+hostname: 127.0.0.1
+port number: 8545
+network id: 1337
+```
